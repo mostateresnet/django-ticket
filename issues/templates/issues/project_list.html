@@ -1,0 +1,25 @@
+{% extends "issues/base.html" %}
+
+{% block title %}
+    {{ block.super }}
+    Projects
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/project_list.css" />
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/project_list.js"></script>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <ul class="project-list">
+    {% for project in object_list %}
+        <li id='{{ project|slugify }}' class="project">{{ project.as_a }} <a href="{% url project_detail_closed slug=project.slug %}">[view closed]</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'issues/base.svg' %}
+
+{% block content %}
+    <style type="text/css" >
+        <![CDATA[
+
+            text{
+                fill: #333333;
+                font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
+            }
+            line, circle, polyline {
+                fill: #333333;
+                stroke: #333333;
+                stroke-width: 2px;
+            }
+            line.grid{
+                stroke: #eeeeee;
+                stroke-width: .5px;
+            }
+            line.label-line {
+                stroke: #333;
+            }
+            line.background-grid-vert{
+                stroke:rgb(230,230,230);
+                stroke-width:0.5;
+            }
+            polyline.optimal {
+                stroke:#458000;
+                stroke-width: 1px;
+                fill: none;
+            }
+            polyline.progress{
+                fill: none;
+                stroke-width:3;
+            }
+            
+            /* circle.progress{} */
+            /* line.axis{} */
+            
+            line.projected{
+                stroke:#999999;
+                stroke-width: 1px;
+            }
+        ]]>
+    </style>
+
+    <defs>
+        <clipPath id="graph-innards" >
+            <rect x='0' y='0' height='{{ height }}' width='{{ width }}'/>
+        </clipPath>
+    </defs>
+    <g transform="translate(20,20)">
+        <!-- Background lines -->
+        {% for x in day_widths %}
+            <line class="grid vert" x1="{{ x }}" y1="0" x2="{{ x }}" y2="{{ height }}" />
+        {% endfor %}
+        {% for y in day_heights %}
+            <line class="grid horizontal" x1="0" y1="{{ y }}" x2="{{ width }}" y2="{{ y }}" />
+        {% endfor %}
+        <!-- Optimal line -->
+        <polyline class="optimal" points="
+            {% for x,y in optimal_line_points %}
+                {{ x }}, {{ y }} 
+            {% endfor %}
+            "/>
+        <!-- Projected line -->
+        <line class="projected" clip-path="url(#graph-innards)" x1="{{ projected.p1.x }}" y1="{{ projected.p1.y }}" x2="{{ projected.p2.x }}" y2="{{ projected.p2.y }}" />
+        <!-- Progress line -->
+        <polyline class="progress" points="
+            {% for x,y in points %}
+                {{ x }}, {{ y }} 
+            {% endfor %}
+            "/>
+        <!-- Progress line dots -->
+        {% for x,y in points %}
+            <circle class="progress" cx="{{ x }}" cy="{{ y }}" r="4" />
+        {% endfor %}
+        <!-- Horizontal axis -->
+        <line class="axis" x1="0" y1="{{ height }}" x2="{{ width }}" y2="{{ height }}" />
+        <!-- Vertical axis -->
+        <line class="axis" x1="0" y1="0" x2="0" y2="{{ height }}" />
+        <!-- End date label -->
+        <g transform="translate({{ width }}, {{ height }})">
+            <line class="label-line" x1="0" y1="0" x2="0" y2="10"/>
+            <text transform="translate(-6 15) rotate(70)" >{{ end_date }}</text>
+        </g>
+        {% if start_date < today_date and today_date < end_date %} 
+        <!-- Today date label -->
+        <g transform="translate({{ today_width }}, {{ height }})">
+            <line class="label-line" x1="0" y1="0" x2="0" y2="10"/>
+            <text transform="translate(-6 15) rotate(70)" >{{ today_date }}</text>
+        </g>
+        {% endif %}
+        <!-- Start date label -->
+        <g transform="translate(0, {{ height }})">
+            <line class="label-line" x1="0" y1="0" x2="0" y2="10"/>
+            <text transform="translate(-6 15) rotate(70)" >{{ start_date }}</text>
+        </g>
+    </g>
+{% endblock %}

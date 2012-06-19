@@ -1,0 +1,101 @@
+{% extends "issues/base.html" %}
+
+{% block title %}
+    {{ block.super }}
+    Issues for {{ object }}
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/project_detail.css" />
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/project_detail.js"></script>
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    {% csrf_token %}
+    <h1>{{ object }}</h1>
+    <a href="#" id="new-issue-button"> new issue </a>
+    <form id="new-issue" action="new" method="post">
+        {% csrf_token %}
+        <table>
+        {{ issue_form.as_table }}
+        </table>
+        <input type="submit" value="Save"/>
+    </form>
+    <ul class="issue-list">
+    {% for issue in issues %}
+        <li id="issue-{{ issue.pk }}" class="issue">
+            <a id="close-{{ issue.pk }}"class="button close-button" href="#" >x</a>
+            {% if issue.milestone %}
+              <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone.deadline.date }}</a>
+            {% endif %}
+            <span class="assigned-to">
+                {% if issue.assigned_to %}
+                    {% if issue.assigned_to.get_full_name %}
+                        {{ issue.assigned_to.get_full_name }}
+                    {% else %}
+                        {{ issue.assigned_to }}
+                    {% endif %}
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </span>
+            <img class="handle" src="{{ STATIC_URL }}img/handle.png" />
+            <div class="type button {{issue.get_type_display|slugify}}">{{ issue.type }}</div>
+            <span class="issue-id" >{{ issue.pk }}</span>
+            <span class="issue-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
+            <div class="simple_overlay" id="issue-details-{{ issue.pk }}"> 
+                <div class="details"> 
+                    <h3>{{ issue }}</h3> 
+                    <h4>created by 
+                        {% if issue.creator.get_full_name %}
+                            {{ issue.creator.get_full_name }}
+                        {% else %}
+                            {{ issue.creator }}
+                        {% endif %}
+                    </h4> 
+                    <p>assigned to: {{ issue.assigned_to }}</p>
+                    <p>milestone: {{ issue.milestone }}</p>
+                    <p>days estimate: {{ issue.days_estimate }}</p>
+                    <p> 
+                        {{ issue.description }}
+                    </p>  
+                    <p class="help">
+                        Double-click to edit
+                    </p>
+                </div> 
+                <div class="details-form">
+                    {% with issue.form as form %}
+                        <form id="issue-{{ issue.pk }}-edit" action="{{ issue.get_absolute_url }}" method="post">
+                            {% csrf_token %}
+                            <h3>{{ form.title }}</h3> 
+                            <h4>created by 
+                                {% if issue.creator.get_full_name %}
+                                    {{ issue.creator.get_full_name }}
+                                {% else %}
+                                    {{ issue.creator }}
+                                {% endif %}
+                            </h4> 
+                            <p> assigned to: {{ form.assigned_to }} </p>
+                            <p>milestone: {{ form.milestone }}</p>
+                            <p>days estimate: {{ form.days_estimate }}</p>
+                            <p> 
+                                {{ form.description }}
+                            </p>  
+                            <p>
+                                {{ form.type }}
+                            </p>
+                            <input type="submit" value="save" />
+                        </form>
+                    {% endwith %}
+                </div>
+            </div> 
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

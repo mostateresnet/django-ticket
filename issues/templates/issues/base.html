@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+    {% block head %}
+      <head>
+          <title>{% block title %}{% endblock %}</title>
+          {% block css %}
+              <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css" />
+          {% endblock %}
+          
+          {% block js %}
+              <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery.tools.min.js"></script>
+              <!-- <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-1.5.1.min.js"></script> -->
+              <script type="text/javascript" src="{{ STATIC_URL }}js/lib/jquery-ui-1.8.11.custom.min.js"></script>
+          {% endblock %}
+      </head>
+    {% endblock %}
+    {% block body %}
+      <body>
+          <div id="container">
+          {% block content %}{% endblock %}
+          </div>
+      </body>
+    {% endblock %}
+</html>
