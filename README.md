@@ -19,14 +19,14 @@ pip install -r https://raw.github.com/mostateresnet/django-ticket/master/pip-req
 ```sh
 django-admin startproject myproject
 ```
-*Install the app:*
+*Install the app:*  
 In `settings.py`, under `INSTALLED_APPS = (` add the lines:
 ```python
 'django.contrib.admin',
 'issues',
 ```
 
-*Set up the urls:*
+*Set up the urls:*  
 In `urls.py`, at the top, add the lines:
 ```python
 from django.contrib import admin
@@ -34,15 +34,15 @@ admin.autodiscover()
 ```
 In `urls.py`, under `urlpatterns = patterns('',`, add the lines:
 ```python
-url(r'^admin/', include(admin.site.urls))
+url(r'^admin/', include(admin.site.urls)),
 url(r'^', include('issues.urls')),
 ```
 
-*Configure your database:*
-In `settings.py` configure where it says `DATABASES = {` 
-Run:
+*Configure your database:*  
+In `settings.py` configure where it says `DATABASES = {`  
+Next, run:  
 ```sh
 python manage.py syncdb #and follow instructions
 python manage.py runserver
 ```
-In the browser go to `http://127.0.0.1:8000/admin`.
+In a browser go to `http://127.0.0.1:8000/admin`.
