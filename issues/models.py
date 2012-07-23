@@ -39,7 +39,7 @@ class Issue(models.Model):
     closed_by_revision = models.CharField(max_length=1000, blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey(Project, null=True)
-    days_estimate = models.DecimalField(blank=True, null=True, max_digits=99, decimal_places=5, help_text="How many days will it take to complete e.g. 0.5")
+    days_estimate = models.DecimalField(blank=True, null=True, max_digits=65, decimal_places=5, help_text="How many days will it take to complete e.g. 0.5")
     milestone = models.ForeignKey('Milestone', null=True, blank=True)
     
     class Meta:
