@@ -63,7 +63,7 @@
                             {{ issue.creator }}
                         {% endif %}
                     </h4> 
-                    <p>assigned to: {{ issue.assigned_to }}</p>
+                    <p>assigned to: {{ issue.assigned_to.get_full_name }}</p>
                     <p>milestone: {{ issue.milestone }}</p>
                     <p>days estimate: {{ issue.days_estimate }}</p>
                     <p> 
