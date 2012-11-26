@@ -1,4 +1,5 @@
 {% extends "issues/base.html" %}
+{% load gravatar %}
 
 {% block title %}
     {{ block.super }}
@@ -18,6 +19,7 @@
 {% block content %}
     {{ block.super }}
     {% csrf_token %}
+
     <h1>{{ object }}</h1>
     <a href="#" id="new-issue-button"> new issue </a>
     <form id="new-issue" action="new" method="post">
@@ -35,12 +37,14 @@
               <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone.deadline.date }}</a>
             {% endif %}
             <span class="assigned-to">
+
                 {% if issue.assigned_to %}
                     {% if issue.assigned_to.get_full_name %}
                         {{ issue.assigned_to.get_full_name }}
                     {% else %}
                         {{ issue.assigned_to }}
                     {% endif %}
+                  <img src= "{{ issue.assigned_to.email|gravatar }}" width=18 height=18>
                 {% else %}
                     &nbsp;
                 {% endif %}

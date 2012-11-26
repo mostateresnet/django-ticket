@@ -31,7 +31,7 @@ class ProjectDetailView(DetailView):
 
 class ProjectDetailViewClosed(DetailView):
     model = Project
-    
+
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailViewClosed, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
@@ -72,7 +72,7 @@ def sort_issue(request, slug):
         issue.priority = priority
         issue.save()
     return HttpResponse("success")
-    
+
 @login_required
 def new_issue(request, slug):
     project = Project.objects.get(slug=slug)
@@ -87,10 +87,10 @@ def new_issue(request, slug):
     else:
         return HttpResponse("failure")
     return HttpResponseReload(request)
-    
+
 def days_apart(start_date, end_date):
     """ Return the number of days apart between two datetimes
-    
+
     >>> day1 = datetime.datetime(year=2011, month=9, day = 29)
     >>> day2 = datetime.datetime(year=2011, month=10, day = 3)
     >>> days_apart(day1, day2)
@@ -102,7 +102,7 @@ def day_range(start_date, end_date):
     """ Given two dates, generate (date, day#) pairs for all the days in the
     range, inclusive
 
-    >>> day1 = datetime.datetime(year=2011, month=9, day = 29)
+    >>> day1 = datetime.datetime(year=2011, mProjectListViewonth=9, day = 29)
     >>> day2 = datetime.datetime(year=2011, month=10, day = 3)
     >>> list(day_range(day1, day2))
     [(datetime.date(2011, 9, 29), 0), (datetime.date(2011, 9, 30), 1), (datetime.dat
@@ -131,7 +131,7 @@ def business_day_range(start_date, end_date):
 
 def business_weeks(start_date, end_date):
     """ Given two dates, generate (date1, date2, ...) for all contiguous business days in
-    the range. 
+    the range.
     >>> day1 = datetime.datetime(year=2012, month=4, day = 16)
     >>> day2 = datetime.datetime(year=2012, month=4, day = 23)
     >>> list(business_weeks(day1, day2)
