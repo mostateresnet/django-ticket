@@ -82,14 +82,16 @@ def sort_issue(request, slug):
 @login_required
 def new_issue(request, slug):
     project = Project.objects.get(slug=slug)
+    print request.POST
     form = IssueForm(request.POST)
     if form.is_valid():
-        issue = form.save(commit=False)
+        issue = form.save(commit=False)        
         issue.priority = 0
         issue.creator = request.user
         issue.closed_by_revision = u''
         issue.project = project
         issue.save()
+        form.save_m2m()
     else:
         return HttpResponse("failure")
     return HttpResponseReload(request)

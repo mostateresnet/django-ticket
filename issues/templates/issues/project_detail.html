@@ -44,15 +44,22 @@
                     {% else %}
                         {{ issue.assigned_to }}
                     {% endif %}
-                  <img src= "{{ issue.assigned_to.email|gravatar }}" width=18 height=18>
+                  <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32>
                 {% else %}
                     &nbsp;
                 {% endif %}
             </span>
             <img class="handle" src="{{ STATIC_URL }}img/handle.png" />
-            <div class="type button {{issue.get_type_display|slugify}}">{{ issue.type }}</div>
+
             <span class="issue-id" >{{ issue.pk }}</span>
             <span class="issue-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
+
+            <div class = "tag_list">
+              {% for tag in issue.tags.all %}
+                <div style="background-color:#{{ tag.color }}" class = "tag">{{ tag.label }}</div>
+              {% endfor %}
+            </div>
+
             <div class="simple_overlay" id="issue-details-{{ issue.pk }}"> 
                 <div class="details"> 
                     <h3>{{ issue }}</h3> 
@@ -69,6 +76,13 @@
                     <p> 
                         {{ issue.description|linebreaksbr }}
                     </p>  
+                    <p>
+                        <div>
+                          {% for tag in issue.tags.all %}
+                            <div style="background-color:#{{ tag.color }}" class = "tag">{{ tag.label }}</div>
+                          {% endfor %}
+                        </div>
+                    </p>
                     <p class="help">
                         Double-click to edit
                     </p>
@@ -85,14 +99,14 @@
                                     {{ issue.creator }}
                                 {% endif %}
                             </h4> 
-                            <p> assigned to: {{ form.assigned_to }} </p>
+                            <p>assigned to: {{ form.assigned_to }} </p>
                             <p>milestone: {{ form.milestone }}</p>
                             <p>days estimate: {{ form.days_estimate }}</p>
                             <p> 
                                 {{ form.description }}
                             </p>  
                             <p>
-                                {{ form.type }}
+                                {# Add code to apply/edit tags #}
                             </p>
                             <input type="submit" value="save" />
                         </form>

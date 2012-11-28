@@ -14,7 +14,7 @@
 .issue .bug {
     background-color: #F53131;
     border-color: #C42727;
-    color: white;
+    color: white;sh
 }
 
 .issue .feature {
@@ -66,6 +66,7 @@ ul.issue-list {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     background-color: white;
+    height: 32px;
 }
 
 .issue .close-button {
@@ -74,6 +75,20 @@ ul.issue-list {
     float: right;
     background-color: #333;
     border: none;
+}
+
+.tag
+{
+  padding: 2px 2px 2px 2px;
+  margin: 0px 2px 0px 2px;
+  float: left;
+  color: black;
+}
+
+.tag_list
+{
+  display: block;
+  padding-left: 3em;
 }
 
 .assigned-to {

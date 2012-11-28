@@ -4,6 +4,13 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
 
+class Tag(models.Model):
+    label = models.CharField(max_length=32)
+    color = models.CharField(max_length=6)
+
+    def __unicode__(self):
+        return self.label
+
 class Project(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
@@ -24,16 +31,9 @@ class Project(models.Model):
         return ('project_detail', (), {'slug': self.slug})
 
 class Issue(models.Model):
-    TYPE_CHOICES = (
-        (u'F', u'Feature'),
-        (u'B', u'Bug'),
-        (u'C', u'Cosmetic'),
-        (u'O', u'Other'),
-    )
     title = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     priority = models.IntegerField(default=-1, blank=False, null=False)
-    type = models.CharField(max_length=1, choices=TYPE_CHOICES, blank=True, null=True)
     creator = models.ForeignKey(User, related_name="+")
     assigned_to = models.ForeignKey(User, blank=True, null=True)
     closed_by_revision = models.CharField(max_length=1000, blank=True, null=True)
@@ -41,6 +41,7 @@ class Issue(models.Model):
     project = models.ForeignKey(Project, null=True)
     days_estimate = models.DecimalField(blank=True, null=True, max_digits=65, decimal_places=5, help_text="How many days will it take to complete e.g. 0.5")
     milestone = models.ForeignKey('Milestone', null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     
     class Meta:
         ordering = ['project', 'closed_by_revision', '-priority']
