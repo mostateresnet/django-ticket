@@ -1,0 +1,60 @@
+#wrapper{
+    overflow: auto;
+}
+
+#right{
+    float: right;
+    width: 390px;
+    background-color: white;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#left{
+    float: left;
+    width: 780px;
+    background-color: white;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.project{
+    padding-bottom: 5px;
+}
+
+#header-in-tabs{
+    width: 300px;
+    float: left;
+}
+
+#developer-in-tabs{
+    width: 150px;
+}
+
+.header{
+    overflow:auto;
+}
+
+.header-title{
+    float:left;
+    font-size: 24px;
+}
+
+.new{
+    float:right;
+}
+
+.tabs a{
+    padding-bottom: 1px !important;
+    padding-right: 3px !important;
+    padding-left: 3px !important;
+    padding-top: 1px !important;
+}
+
+.tab-content{
+    padding: 2px !important;
+}

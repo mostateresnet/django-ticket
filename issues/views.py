@@ -10,9 +10,15 @@ from django.db.models import Q
 from annoying.utils import HttpResponseReload
 from issues.forms import IssueForm, IssueCloseForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 class ProjectListView(ListView):
     queryset = Project.objects.all()
+    
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['users'] = User.objects.filter(is_active=True)
+        return context
 
 class ProjectDetailView(DetailView):
     model = Project

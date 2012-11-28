@@ -8,18 +8,90 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/project_list.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/project_list.js"></script>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script>
+    $(document).ready(function() {
+
+    });
+    $(function() {
+        $( 'div[id^="tabs"]' ).tabs({ collapsible: true });
+    });
+    </script>
 {% endblock %}
 
 {% block content %}
     {{ block.super }}
-    <ul class="project-list">
-    {% for project in object_list %}
-        <li id='{{ project|slugify }}' class="project">{{ project.as_a }} <a href="{% url project_detail_closed slug=project.slug %}">[view closed]</a></li>
-    {% endfor %}
-    </ul>
+    <div id="wrapper">
+        <div id="left">
+            <div class="header">
+                <div class="header-title">Projects</div>
+                <div class="new"><a href="">New Project</a></div>
+            </div>
+            <div class="project-list">
+            {% for project in object_list %}
+                <div id='{{ project|slugify }}' class="project">
+                    <div id="tabs-{{ project.pk }}" class="tabs">
+                        <ul>
+                            <div id="header-in-tabs">{{ project.as_a }}</a><span style="font-size: 10px">({{ project.issue_set.all.count }} issues)</span></div>
+                            <li><a href="#tabs-{{ project.pk }}-inprogress">In Progress</a></li>
+                            <li><a href="#tabs-{{ project.pk }}-new">New</a></li>
+                            <li><a href="#tabs-{{ project.pk }}-completed">Completed</a></li>
+                            <li><a href="#tabs-{{ project.pk }}-deleted">Deleted</a></li>
+                        </ul>
+                        <div id="tabs-{{ project.pk }}-new" class="tab-content">
+                            New Issues for {{ project }}
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            asdf
+                        </div>
+                        <div id="tabs-{{ project.pk }}-inprogress" class="tab-content">
+                            In Progress Issues for {{ project }}
+                        </div>
+                        <div id="tabs-{{ project.pk }}-completed" class="tab-content">
+                            <a href="{% url project_detail_closed slug=project.slug %}">Completed</a> Issues for {{ project }}
+                        </div>
+                        <div id="tabs-{{ project.pk }}-deleted" class="tab-content">
+                            Deleted Issues go here
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+        
+        <div id="right">
+            <div class="header">
+                <div class="header-title">Developers</div>
+                <div class="new"><a href="">New Developer</a></div>
+            </div>
+            {% for user in users %}
+            <div class="project">
+                <div id="tabs-{{ user.pk }}" class="tabs">
+                    <ul>
+                        <li id="developer-in-tabs">{{ user.first_name }}</li>
+                        <li><a href="#tabs-{{ user.pk }}-inprogress">In Progress</a></li>
+                        <li><a href="#tabs-{{ user.pk }}-completed">Completed</a></li>
+                    </ul>
+                    <div id="tabs-{{ user.pk }}-inprogress" class="tab-content">
+                        In Progress Issues for {{ user.first_name }}
+                    </div>
+                    <div id="tabs-{{ user.pk }}-completed" class="tab-content">
+                        Completed Issues for {{ user.first_name }}                           
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+
 {% endblock %}
