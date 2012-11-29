@@ -7,17 +7,15 @@
     width: 390px;
     background-color: white;
     margin-bottom: 10px;
-    margin-top: 10px;
     padding: 5px;
     border-radius: 5px;
 }
 
 #left{
     float: left;
-    width: 780px;
+    width: 770px;
     background-color: white;
     margin-bottom: 10px;
-    margin-top: 10px;
     padding: 5px;
     border-radius: 5px;
 }
@@ -57,4 +55,8 @@
 
 .tab-content{
     padding: 2px !important;
+}
+
+#container{
+    background-color: transparent;
 }

@@ -1,7 +1,8 @@
 import datetime
+from django import forms
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.base import TemplateView
 from issues.models import Project, Issue, Milestone
 from django.shortcuts import get_object_or_404
@@ -19,6 +20,14 @@ class ProjectListView(ListView):
         context = super(ListView, self).get_context_data(**kwargs)
         context['users'] = User.objects.filter(is_active=True)
         return context
+        
+class ProjectNewView(CreateView):
+    model = Project
+    
+    # def post(self, form):
+        # print "f"*80
+        # form_valid(self, form)
+        
 
 class ProjectDetailView(DetailView):
     model = Project

@@ -32,7 +32,7 @@
         <div id="left">
             <div class="header">
                 <div class="header-title">Projects</div>
-                <div class="new"><a href="">New Project</a></div>
+                <div class="new"><a href="{% url project_new %}">New Project</a></div>
             </div>
             <div class="project-list">
             {% for project in object_list %}
