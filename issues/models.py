@@ -29,6 +29,18 @@ class Project(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('project_detail', (), {'slug': self.slug})
+        
+    def recently_closed_issues(self):
+        return self.issue_set.filter(close_date__isnull=False).order_by('close_date')[:10]
+        
+    def unassigned_issues(self):
+        return self.issue_set.filter(status="Unassigned").order_by('-pk')[:10]
+        
+    def assigned_issues(self):
+        return self.issue_set.filter(status="Assigned")
+        
+    def recently_deleted_issues(self):
+        return self.issue_set.filter(status="Deleted")[:10]
 
 class Issue(models.Model):
     title = models.CharField(max_length=1000)
@@ -42,6 +54,8 @@ class Issue(models.Model):
     days_estimate = models.DecimalField(blank=True, null=True, max_digits=65, decimal_places=5, help_text="How many days will it take to complete e.g. 0.5")
     milestone = models.ForeignKey('Milestone', null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
+    status = models.CharField(max_length="64", blank=True, null=True)
+    notes = models.CharField(max_length="1000", blank=True, null=True)
     
     class Meta:
         ordering = ['project', 'closed_by_revision', '-priority']
@@ -49,6 +63,12 @@ class Issue(models.Model):
     def save(self, *args, **kwargs):
         try:
             old = Issue.objects.get(pk=self.pk)
+            #put status updates here
+            print "%"*80
+            if self.assigned_to == None:
+               self.status = "Unassigned"
+            else:
+                self.status = "Assigned"
             if not old.closed_by_revision and self.closed_by_revision:
                 self.close_date = datetime.datetime.now()
         except Issue.DoesNotExist:

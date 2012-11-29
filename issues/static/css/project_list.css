@@ -30,7 +30,7 @@
 }
 
 #developer-in-tabs{
-    width: 150px;
+    width: 120px;
 }
 
 .header{
@@ -46,7 +46,7 @@
     float:right;
 }
 
-.tabs a{
+.tab{
     padding-bottom: 1px !important;
     padding-right: 3px !important;
     padding-left: 3px !important;
@@ -59,4 +59,20 @@
 
 #container{
     background-color: transparent;
+}
+.issue{
+    overflow: auto;
+    border-bottom: 1px solid #747481;
+}
+
+.hr{
+    border-top: 1px solid #747481;
+}
+
+.issue-right{
+    float:right;
+}
+
+.issue-left{
+    float: left;
 }

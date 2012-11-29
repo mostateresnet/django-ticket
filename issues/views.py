@@ -23,11 +23,6 @@ class ProjectListView(ListView):
         
 class ProjectNewView(CreateView):
     model = Project
-    
-    # def post(self, form):
-        # print "f"*80
-        # form_valid(self, form)
-        
 
 class ProjectDetailView(DetailView):
     model = Project
@@ -99,6 +94,7 @@ def new_issue(request, slug):
         issue.creator = request.user
         issue.closed_by_revision = u''
         issue.project = project
+        issue.status = "New"
         issue.save()
         form.save_m2m()
     else:
