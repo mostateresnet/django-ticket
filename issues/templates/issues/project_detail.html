@@ -22,13 +22,9 @@
 
     <h1>{{ object }}</h1>
     <a href="#" id="new-issue-button"> new issue </a>
-    <form id="new-issue" action="new" method="post">
-        {% csrf_token %}
-        <table>
-        {{ issue_form.as_table }}
-        </table>
-        <input type="submit" value="Save"/>
-    </form>
+    
+    {% include 'issues/issue_new.html' %}
+
     <ul class="issue-list">
     {% for issue in issues %}
         <li id="issue-{{ issue.pk }}" class="issue">

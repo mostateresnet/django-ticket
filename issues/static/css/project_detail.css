@@ -54,6 +54,7 @@
 
 ul.issue-list {
     list-style-type: none;
+    clear:both;
 }
 
 .issue:first-child {
@@ -160,6 +161,7 @@ ul.issue-list {
     width:350px;
 }
 
+
 .details-form {
     display: none;
 }
@@ -167,3 +169,49 @@ ul.issue-list {
 .issue-title {
     cursor: pointer;
 }
+
+
+.new_issue_container
+{
+    width:80%; 
+    margin:0 auto; 
+    display: block;
+}
+
+.new_issue_left
+{
+    float: left;
+    width: 65%;
+}
+
+.new_issue_right
+{
+    float: right;
+    width: 25%;
+}
+
+.new_issue_footer
+{
+    clear:both;
+}
+
+#new-issue div div p input
+{
+    width:100%;
+    border-width:1px;
+}
+
+#new-issue div div p textarea
+{
+    width:100%;
+    border-width:1px;
+    padding: 0px;
+}
+
+#new-issue div div p select
+{
+    width:100%;
+    border-width:1px;
+}
+
+
