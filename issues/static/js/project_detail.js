@@ -52,8 +52,11 @@ $(function() {
     });
     $("span[rel]").overlay();
     $( "#new-issue-button" ).click(function(event){
-        $(event.currentTarget).hide();
-        $(" #new-issue ").show();
+  //      $(event.currentTarget).hide();
+        $(" #new-issue ").slideDown();
+    });
+    $( "#new-issue-cancel-button" ).click(function(event){
+        $(" #new-issue ").slideUp();
     });
     $( ".handle" ).disableSelection();
     $( ".close-button" ).click(function(event){
