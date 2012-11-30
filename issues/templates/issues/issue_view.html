@@ -1,0 +1,17 @@
+
+
+<div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}"> 
+    <p class ="left issue_status">Created by: {{ issue.creator }}</p> 
+
+    <p class ="left issue_status">Milestone: {{ issue.milestone }}</p>
+    <p class ="left issue_status">Days Estimate: {{ issue.days_estimate }}</p>
+    <label class ="right issue_edit" href="url">Edit</label>
+
+    <p class ="clear issue_description"> 
+        {{ issue.description|linebreaksbr }}
+    </p>  
+</div> 
+
+
+
+

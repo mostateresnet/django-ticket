@@ -1,0 +1,21 @@
+
+    <div class="clear hidden edit_drop" id="issue_input">
+        {% with issue.form as form %}
+            <form id="issue-{{ issue.pk }}-edit" action="{{ issue.get_absolute_url }}" method="post">
+                {% csrf_token %}
+                <div class = "left new_issue_left">
+                    <p >{{ form.title.label_tag }}:{{ form.title }}</p>        
+                    <p>{{ form.description.label_tag }}:{{ form.description }}</p>
+                </div>
+                <div class = "right new_issue_right">
+                    <p>{{ form.assigned_to.label_tag }}:{{ form.assigned_to }}</p>
+                    <p>{{ form.milestone.label_tag }}:{{ form.milestone }}</p> 
+                    <p>{{ form.days_estimate.label_tag }}:{{ form.days_estimate }}</p>      
+                    <p>{{ form.tags.label_tag }}:{{ form.tags }}</p>
+                </div>
+                <div class = "clear" ><input type="submit" value="Save"/><input id="new-issue-cancel-button" type="Button" value="Cancel"/></div>
+
+            </form>
+        {% endwith %}
+    </div>
+

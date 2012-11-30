@@ -67,7 +67,7 @@ ul.issue-list {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     background-color: white;
-    height: 32px;
+    height: auto; /*32*/
 }
 
 .issue .close-button {
@@ -134,6 +134,7 @@ ul.issue-list {
     -webkit-box-shadow: 0 0 9px #aaa;
 }
 
+
 /* close button positioned on upper right corner */
 .simple_overlay .close {
     background-image:url("../../site_media/img/close.png");
@@ -152,24 +153,16 @@ ul.issue-list {
     padding-top: 1em;
 }
 
-.details {
-    position:absolute;
-    top:15px;
-    left:15px;
-    font-size:11px;
-    /* color:#fff; */
-    width:350px;
-}
-
-
-.details-form {
-    display: none;
-}
 
 .issue-title {
     cursor: pointer;
 }
 
+
+.details_drop
+{
+  padding-left: 3em;
+}
 
 .new_issue_container
 {
@@ -179,21 +172,42 @@ ul.issue-list {
 }
 
 .new_issue_left
-{
-    float: left;
-    width: 65%;
-}
+{ width: 65%; }
 
 .new_issue_right
+{ width: 25%; }
+
+.issue_status
 {
-    float: right;
-    width: 25%;
+  padding: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
+  width: 28%;
+  border:1px solid #666;
 }
 
-.new_issue_footer
+.issue_edit
 {
-    clear:both;
+  padding: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
+  width: 5%;
+  border:1px solid #666;
+  text-align:center;
+  cursor:pointer;
+  background-color: #DDDDDD;
 }
+.edit_drop
+{
+    width:80%; 
+    margin:0 auto; 
+}
+
+.issue_description
+{
+  border:1px solid #666;
+  padding: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
+}
+
 
 #new-issue div div p input
 {
@@ -214,4 +228,23 @@ ul.issue-list {
     border-width:1px;
 }
 
+
+#issue_input form div p input
+{
+    width:100%;
+    border-width:1px;
+}
+
+#issue_input textarea
+{
+    width:100%;
+    border-width:1px;
+    padding: 0px;
+}
+
+#issue_input select
+{
+    width:100%;
+    border-width:1px;
+}
 

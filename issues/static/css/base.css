@@ -31,3 +31,8 @@ body {
     margin-top: 10px;
     padding: 5px;
 }
+
+.left { float: left; }
+.right { float: right; }
+.clear { clear: both; }
+.hidden { display: none; }

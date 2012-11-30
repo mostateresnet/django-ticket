@@ -56,59 +56,10 @@
               {% endfor %}
             </div>
 
-            <div class="simple_overlay" id="issue-details-{{ issue.pk }}"> 
-                <div class="details"> 
-                    <h3>{{ issue }}</h3> 
-                    <h4>created by 
-                        {% if issue.creator.get_full_name %}
-                            {{ issue.creator.get_full_name }}
-                        {% else %}
-                            {{ issue.creator }}
-                        {% endif %}
-                    </h4> 
-                    <p>assigned to: {{ issue.assigned_to.get_full_name }}</p>
-                    <p>milestone: {{ issue.milestone }}</p>
-                    <p>days estimate: {{ issue.days_estimate }}</p>
-                    <p> 
-                        {{ issue.description|linebreaksbr }}
-                    </p>  
-                    <p>
-                        <div>
-                          {% for tag in issue.tags.all %}
-                            <div style="background-color:#{{ tag.color }}" class = "tag">{{ tag.label }}</div>
-                          {% endfor %}
-                        </div>
-                    </p>
-                    <p class="help">
-                        Double-click to edit
-                    </p>
-                </div> 
-                <div class="details-form">
-                    {% with issue.form as form %}
-                        <form id="issue-{{ issue.pk }}-edit" action="{{ issue.get_absolute_url }}" method="post">
-                            {% csrf_token %}
-                            <h3>{{ form.title }}</h3> 
-                            <h4>created by 
-                                {% if issue.creator.get_full_name %}
-                                    {{ issue.creator.get_full_name }}
-                                {% else %}
-                                    {{ issue.creator }}
-                                {% endif %}
-                            </h4> 
-                            <p>assigned to: {{ form.assigned_to }} </p>
-                            <p>milestone: {{ form.milestone }}</p>
-                            <p>days estimate: {{ form.days_estimate }}</p>
-                            <p> 
-                                {{ form.description }}
-                            </p>  
-                            <p>
-                                {# Add code to apply/edit tags #}
-                            </p>
-                            <input type="submit" value="save" />
-                        </form>
-                    {% endwith %}
-                </div>
-            </div> 
+
+                {% include 'issues/issue_view.html' %}
+                {% include 'issues/issue_edit.html' %}
+          <div style = "clear: both;"></div>
         </li>
     {% endfor %}
     </ul>

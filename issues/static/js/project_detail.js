@@ -26,6 +26,17 @@ $(function() {
         $(e.currentTarget).find('.details-form').show();
         $(e.currentTarget).find('.details').hide();
     });
+
+    $( ".issue-title").click(function(e){
+        $(this).siblings('.edit_drop').slideUp(
+        function() { $(this).siblings('.details_drop').slideToggle(); } );      
+    });
+
+    $( ".issue_edit").click(function(e){
+        $(this).closest('.details_drop').slideUp(
+        function() { $(this).closest('.details_drop').siblings('.edit_drop').slideDown(); } );      
+    });
+
     $( ".issue-list" ).sortable({
         // revert: true,
         distance: 5,
@@ -50,13 +61,16 @@ $(function() {
                 });
         }
     });
-    $("span[rel]").overlay();
+    //$("span[rel]").overlay();
     $( "#new-issue-button" ).click(function(event){
-  //      $(event.currentTarget).hide();
         $(" #new-issue ").slideDown();
     });
     $( "#new-issue-cancel-button" ).click(function(event){
         $(" #new-issue ").slideUp();
+    });
+    $( "#edit-issue-cancel-button" ).click(function(event)
+    {
+        $(this).closest('.edit_drop').slideUp();
     });
     $( ".handle" ).disableSelection();
     $( ".close-button" ).click(function(event){
