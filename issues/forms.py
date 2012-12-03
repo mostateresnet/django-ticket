@@ -10,7 +10,7 @@ class IssueForm(ModelForm):
 
     class Meta:
         model = Issue
-        fields = ('title', 'description', 'assigned_to', 'milestone', 'days_estimate', 'tags' )
+        fields = ('title', 'description', 'notes', 'assigned_to', 'milestone', 'days_estimate', 'tags' )
 
 class IssueCloseForm(ModelForm):
     class Meta:

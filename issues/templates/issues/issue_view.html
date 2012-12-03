@@ -10,6 +10,13 @@
     <p class ="clear issue_description"> 
         {{ issue.description|linebreaksbr }}
     </p>  
+
+    {% if issue.notes %}
+    <p class ="clear issue_description"> 
+        {{ issue.notes|linebreaksbr }}
+    </p>  
+    {% endif %}
+
 </div> 
 
 
