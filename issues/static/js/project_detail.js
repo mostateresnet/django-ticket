@@ -61,7 +61,52 @@ $(function() {
                 });
         }
     });
-    //$("span[rel]").overlay();
+
+
+    $( ".new_tag").click(function(e)
+    {
+        var new_tag_name = $(this).siblings('.new_tag_input').attr('value');
+        var post_action = window.location.pathname + "tags/";
+        var default_color = "AAAAAA";
+        var post_data = "label=" + new_tag_name + "&color=" + default_color;
+        $('.new_tag_input').attr('value','');
+       $.post(post_action, post_data, function(data)   
+       {                 
+            var new_element = new_tag_line.clone();
+            new_element.find('.tag_label').text(new_tag_name);
+            new_element.find('.tag_mod').css('background-color',"#" + default_color);
+            new_element.find('.tag_check').attr('id', 'tagchk_' + data.id);
+            $('.add_tag_area').before(new_element);
+        } );
+    });
+
+
+    $( ".edit_form, #new-issue" ).submit(function(event)
+    {       
+        // Intercept the post data and append
+        // our custom tags.
+        var serial_data = $(this).serialize();
+
+        var pk_str = $(this).attr('id');
+        var pk_id = pk_str.match(/\d+/);
+        var append_str = "";
+
+        $(this).find(".tag_editor input:checked").each(function()
+        {
+            var i = $(this).attr('id');
+            var chk_id = i.match(/\d+/);
+            if (pk_id)
+            { append_str += "&" + pk_id + "-tags=" + chk_id;  }
+            else
+            { append_str += "&tags=" + chk_id;  }
+        });
+
+        serial_data += append_str;
+        $.post($(this).attr('action'), serial_data, function(){window.location.reload(true);});
+        
+        return false;
+    });
+
     $( "#new-issue-button" ).click(function(event){
         $(" #new-issue ").slideDown();
     });

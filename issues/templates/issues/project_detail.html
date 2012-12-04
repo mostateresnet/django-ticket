@@ -14,6 +14,11 @@
 {% block js %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/project_detail.js"></script>
+
+    <script type="text/javascript">
+    var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/tag_line.html' %}{% endspaceless %}{% endfilter %}")
+    </script>
+
 {% endblock %}
 
 {% block content %}
@@ -55,7 +60,6 @@
                 <div style="background-color:#{{ tag.color }}" class = "tag">{{ tag.label }}</div>
               {% endfor %}
             </div>
-
 
                 {% include 'issues/issue_view.html' %}
                 {% include 'issues/issue_edit.html' %}

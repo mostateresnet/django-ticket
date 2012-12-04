@@ -9,7 +9,16 @@
             <p>{{ issue_form.assigned_to.label_tag }}:{{ issue_form.assigned_to }}</p>
             <p>{{ issue_form.milestone.label_tag }}:{{ issue_form.milestone }}</p> 
             <p>{{ issue_form.days_estimate.label_tag }}:{{ issue_form.days_estimate }}</p>      
-            <p>{{ issue_form.tags.label_tag }}:{{ issue_form.tags }}</p>
+            <p>{{ issue_form.tags.label_tag }}:</p>
+           <div class = "tag_editor clear" data-count="{{ tags.count }}">            
+                {% for tag in tags %}
+                        {% include 'issues/tag_line.html' %}
+                {% endfor %}
+                <div class = "clear add_tag_area" style = "display: inline-block">
+                    <input type="text" class="new_tag_input"/><button type="button" class = "new_tag">Add</button>
+                </div>
+            </div>
+
         </div>
         <div class = "clear" ><input type="submit" value="Save"/><input id="new-issue-cancel-button" type="Button" value="Cancel"/></div>
     </div>

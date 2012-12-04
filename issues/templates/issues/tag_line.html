@@ -1,0 +1,6 @@
+<div class = "tag_line">
+    <div class = "tag_mod" style="background-color:#{{ tag.color }}"></div>&nbsp;
+    <label class="tag_label">{{ tag.label }}</label>
+    <input class = "right tag_check" type="checkbox" id="tagchk_{{ tag.pk }}" {% if checked %} checked="" {% endif %}>
+</div>
+

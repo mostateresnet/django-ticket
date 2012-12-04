@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^(?P<slug>[\w-]+)/sort$', sort_issue, name="sort_issue"),
     url(r'^(?P<slug>[\w-]+)/new$', new_issue, name="new_issue"),
     url(r'^(?P<slug>[\w-]+)/milestone/(?P<pk>[\w-]+)/chart$', BurndownChartView.as_view(), name="burndown_chart"),
+    url(r'^(?P<slug>[\w-]+)/tags/$', TagUpdateView.as_view(), name="tag_update_view"),
 )

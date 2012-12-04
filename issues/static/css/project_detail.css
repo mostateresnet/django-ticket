@@ -209,12 +209,17 @@ ul.issue-list {
 }
 
 
+#new-issue div div p select, 
+#issue_input form div p input, 
+#issue_input select, 
 #new-issue div div p input
 {
     width:100%;
     border-width:1px;
 }
 
+
+#issue_input textarea, 
 #new-issue div div p textarea
 {
     width:100%;
@@ -222,29 +227,41 @@ ul.issue-list {
     padding: 0px;
 }
 
-#new-issue div div p select
+
+.tag_mod
 {
-    width:100%;
-    border-width:1px;
+  margin: 1px 1px 1px 1px;
+  width: 14px;
+  height: 14px;
+  border-width:0px;
+  display: inline-block;
+}
+
+.tag_line
+{
+  border:1px solid #666;
+  margin: 1px 1px 1px 1px;
+  display: block;
+  background-color: #EEEEEE;
 }
 
 
-#issue_input form div p input
+.tag_editor
 {
-    width:100%;
-    border-width:1px;
+   background-color: #AAAAAA;
+   border:1px solid #666;
+   padding: 4px;
 }
 
-#issue_input textarea
+.new_tag
 {
-    width:100%;
-    border-width:1px;
-    padding: 0px;
+   padding: 1px 4px 1px 4px;
+   margin-bottom: 1px;
+   display: inline-block;
+   height: 100%;
+   border:1px solid #666;
+   text-align:center;
+   cursor:pointer;
 }
 
-#issue_input select
-{
-    width:100%;
-    border-width:1px;
-}
 

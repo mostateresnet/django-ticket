@@ -1,10 +1,10 @@
-import datetime
+import datetime, json
 from django import forms
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.base import TemplateView
-from issues.models import Project, Issue, Milestone
+from issues.models import Project, Issue, Milestone, Tag
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
@@ -12,6 +12,8 @@ from annoying.utils import HttpResponseReload
 from issues.forms import IssueForm, IssueCloseForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+
+
 
 class ProjectListView(ListView):
     queryset = Project.objects.all()
@@ -23,6 +25,7 @@ class ProjectListView(ListView):
         
 class ProjectNewView(CreateView):
     model = Project
+
 
 class ProjectDetailView(DetailView):
     model = Project
@@ -37,6 +40,7 @@ class ProjectDetailView(DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
         context['issues'] = self.object.open_issues()
+        context['tags'] = self.object.get_tags()
         return context
 
 class ProjectDetailViewClosed(DetailView):
@@ -47,6 +51,13 @@ class ProjectDetailViewClosed(DetailView):
         context['issue_form'] = IssueForm()
         context['issues'] = self.object.closed_issues()
         return context
+
+class TagUpdateView(CreateView):
+    model = Tag
+
+    def form_valid(self, form):
+        pk_id = form.save().pk
+        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
 
 class IssueDetailView(UpdateView):
     model = Issue

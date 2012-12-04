@@ -22,6 +22,10 @@ class Project(models.Model):
     
     def open_issues(self):
         return Issue.objects.filter(project=self).filter(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True))
+
+    def get_tags(self):
+        # we should filter by project...
+        return Tag.objects.all() #filter(project=self)
     
     def closed_issues(self):
         return Issue.objects.filter(project=self).exclude(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True)).order_by('-close_date')
