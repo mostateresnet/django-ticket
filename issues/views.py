@@ -52,13 +52,27 @@ class ProjectDetailViewClosed(DetailView):
         context['issues'] = self.object.closed_issues()
         return context
 
-class TagUpdateView(CreateView):
+class TagCreateView(CreateView):
     model = Tag
 
     def form_valid(self, form):
         pk_id = form.save().pk
         return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
 
+class TagUpdateView(UpdateView):
+    model = Tag
+
+    def form_valid(self, form):
+        pk_id = form.save().pk
+        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+
+    def form_invalid(self, form):
+        pk_id = form.save().pk
+        return HttpResponse(json.dumps({'status': 'error', 'id': pk_id}), mimetype='application/json')
+
+    def post(self, request, *args, **kwargs):
+        
+    
 class IssueDetailView(UpdateView):
     model = Issue
 

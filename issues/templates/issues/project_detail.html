@@ -9,6 +9,14 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/project_detail.css" />
+
+    <style>
+    {% for tagcss in tags %}
+        .tag_{{ tagcss.pk }}
+        { background-color: #{{ tagcss.color}} ; }        
+    {% endfor %}
+    </style>
+
 {% endblock %}
 
 {% block js %}
@@ -29,6 +37,7 @@
     <a href="#" id="new-issue-button"> new issue </a>
     
     {% include 'issues/issue_new.html' %}
+    {% include 'issues/color_selector.html' %}
 
     <ul class="issue-list">
     {% for issue in issues %}
@@ -57,7 +66,7 @@
 
             <div class = "tag_list">
               {% for tag in issue.tags.all %}
-                <div style="background-color:#{{ tag.color }}" class = "tag">{{ tag.label }}</div>
+                <div class = "tag tag_{{ tag.pk }}">{{ tag.label }}</div>
               {% endfor %}
             </div>
 

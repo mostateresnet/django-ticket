@@ -1,4 +1,17 @@
 // Prevents CSRF for AJAX
+
+var colors = 
+[
+    '444444', '5A5A5A', '6F6F6F', '777777', '888888', 'AAAAAA', 'CCCCCC', 'EEEEEE', 'FFFFFF',
+    '440000', '5A0000', '6F0000', '770000', '880000', 'AA0000', 'CC0000', 'EE0000', 'FF0000',
+    '004400', '005A00', '006F00', '007700', '008800', '00AA00', '00CC00', '00EE00', '00FF00',
+    '000044', '00005A', '00006F', '000077', '000088', '0000AA', '0000CC', '0000EE', '0000FF',
+    '444400', '5A5A00', '6F6F00', '777700', '888800', 'AAAA00', 'CCCC00', 'EEEE00', 'FFFF00',
+    '442200', '5A2D00', '6F3800', '773C00', '884400', 'AA5500', 'CC6600', 'EE7700', 'FF8800',
+    '004444', '005A5A', '006F6F', '007777', '008888', '00AAAA', '00CCCC', '00EEEE', '00FFFF',
+    '440044', '5A005A', '6F006F', '770077', '880088', 'AA00AA', 'CC00CC', 'EE00EE', 'FF00FF'
+];
+
 $('html').ajaxSend(function(event, xhr, settings) {
     function getCookie(name) {
         var cookieValue = null;
@@ -62,6 +75,59 @@ $(function() {
         }
     });
 
+    $('.new_tag_input').keypress(function (e) 
+    {
+        if (e.which == 13) 
+        {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    $(document).click(function(e)
+    {
+        $("#color_selector").hide('slow');
+    });
+
+    $( ".tag_mod").live('click',function(e)
+    {
+        var pos = $(this).offset();
+        var clr_selector = $('#color_selector');
+        clr_selector.css('left',pos.left - 2 + 'px');
+        clr_selector.css('top',pos.top + 16 + 'px');
+        clr_selector.attr('data-cls',$(this).attr('data-cls'));
+        clr_selector.show('slow');
+
+    });
+
+    $(".color_spot").live('click',function(e)
+    {
+        $("#color_selector").attr('data-sel', $(this).attr('data-sel'));
+
+        var tag_id = $("#color_selector").attr('data-cls');
+        var color_id = $("#color_selector").attr('data-sel');
+        var new_color = colors[color_id];
+
+        $(".tag_" + tag_id).css('background-color', '#' + new_color);
+        $( "#color_selector").hide('slow');
+
+        var existing_label = $(".tag_mod.tag_" + tag_id + ":first").siblings('.tag_label').text();
+
+        var post_action = window.location.pathname + "tags/" + tag_id;
+        var post_data = "label=" + existing_label + "&color=" + new_color;
+        $.post(post_action, post_data);
+
+    });
+
+    $( "#color_selector").ready(function(e)
+    {
+        for (x in colors)
+        {
+            var clr = $("<div class=\"color_spot\" data-sel=\""+ x +"\"></div>");
+            clr.css('background-color',"#" + colors[x]);           
+            $("#color_selector").append(clr);
+        }
+    });
 
     $( ".new_tag").click(function(e)
     {
@@ -72,10 +138,16 @@ $(function() {
         $('.new_tag_input').attr('value','');
        $.post(post_action, post_data, function(data)   
        {                 
+            $("<style type='text/css'> .tag_" + data.id + " { background-color:#" + default_color + ";}</style>").appendTo("head");
+
             var new_element = new_tag_line.clone();
+            var tag_mod = new_element.find('.tag_mod');
+            tag_mod.removeClass("tag_"); // Left over from the clone...
+            tag_mod.addClass('tag_'+ data.id);
+            tag_mod.attr('data-cls', data.id);    
             new_element.find('.tag_label').text(new_tag_name);
-            new_element.find('.tag_mod').css('background-color',"#" + default_color);
             new_element.find('.tag_check').attr('id', 'tagchk_' + data.id);
+        
             $('.add_tag_area').before(new_element);
         } );
     });

@@ -264,4 +264,36 @@ ul.issue-list {
    cursor:pointer;
 }
 
+.color_spot
+{
+    width: 14px;
+    height: 14px;
+    cursor:pointer;
+    display: inline-block;
+    border:1px solid #AAAAAA;
+}
+
+.color_spot:hover
+{
+    width: 14px;
+    height: 14px;
+    cursor:pointer;
+    display: inline-block;
+   border:1px solid #000000;
+}
+
+#color_selector
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+    width: 145px;
+    height: 150px;
+    z-index:42;
+    float: left;
+    border:1px solid #666;
+    border-radius: 5px;
+    padding: 2px 2px 2px 2px;
+    background-color: #AAAAAA;
+}
 
