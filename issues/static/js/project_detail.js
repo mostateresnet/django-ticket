@@ -86,7 +86,8 @@ $(function() {
 
     $(document).click(function(e)
     {
-        $("#color_selector").hide('slow');
+        if($(e.target || e.srcElement).closest('#color_selector').length == 0)
+        { $("#color_selector").hide('slow'); }
     });
 
     $( ".tag_mod").live('click',function(e)
@@ -119,13 +120,36 @@ $(function() {
 
     });
 
+    $(".color_spot").live('hover',function(e)
+    {
+        var color_id = $(this).attr('data-sel');
+        var new_color = colors[color_id];
+        $("#color_input").attr('value',new_color);
+    });
+
+
+    $("#color_hex_button").click(function(e)
+    {
+        var tag_id = $("#color_selector").attr('data-cls');
+        var new_color = $("#color_input").attr('value');
+
+        $(".tag_" + tag_id).css('background-color', '#' + new_color);
+        $( "#color_selector").hide('slow');
+
+        var existing_label = $(".tag_mod.tag_" + tag_id + ":first").siblings('.tag_label').text();
+
+        var post_action = window.location.pathname + "tags/" + tag_id;
+        var post_data = "label=" + existing_label + "&color=" + new_color;
+        $.post(post_action, post_data);
+    });
+
     $( "#color_selector").ready(function(e)
     {
         for (x in colors)
         {
             var clr = $("<div class=\"color_spot\" data-sel=\""+ x +"\"></div>");
             clr.css('background-color',"#" + colors[x]);           
-            $("#color_selector").append(clr);
+            $("#color_palette").append(clr);
         }
     });
 

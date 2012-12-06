@@ -70,7 +70,7 @@ class TagUpdateView(UpdateView):
         pk_id = form.save().pk
         return HttpResponse(json.dumps({'status': 'error', 'id': pk_id}), mimetype='application/json')
 
-    def post(self, request, *args, **kwargs):
+
         
     
 class IssueDetailView(UpdateView):

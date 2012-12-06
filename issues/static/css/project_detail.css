@@ -288,12 +288,18 @@ ul.issue-list {
     left:0px;
     top:0px;
     width: 145px;
-    height: 150px;
+    //height: 150px;
     z-index:42;
     float: left;
     border:1px solid #666;
     border-radius: 5px;
     padding: 2px 2px 2px 2px;
     background-color: #AAAAAA;
+}
+
+#color_input
+{
+    display: inline; 
+    width: 60px;
 }
 
