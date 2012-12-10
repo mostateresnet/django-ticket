@@ -79,7 +79,6 @@ class Issue(models.Model):
     def save(self, *args, **kwargs):
         try:
             old = Issue.objects.get(pk=self.pk)
-            print '%'*80
             if self.status == 'DL':
                 self.close_date = datetime.datetime.now()
             elif self.assigned_to == None:
@@ -124,6 +123,19 @@ class Issue(models.Model):
 
     def __unicode__(self):
         return self.title
+        
+class UserMethods(User):
+    def assigned_issues(self):
+        return self.issue_set.filter(status='AS')
+    
+    def inprogress_issues(self):
+        return self.issue_set.filter(status='IP')
+        
+    def completed_issues(self):
+        return self.issue_set.filter(status='CP').order_by('-close_date')
+    class Meta:
+        proxy=True
+    
 
 class Milestone(models.Model):
     project = models.ForeignKey(Project)

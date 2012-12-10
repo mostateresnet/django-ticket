@@ -4,7 +4,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.base import TemplateView
-from issues.models import Project, Issue, Milestone, Tag
+from issues.models import Project, Issue, Milestone, Tag, UserMethods
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
@@ -20,7 +20,7 @@ class ProjectListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
-        context['users'] = User.objects.filter(is_active=True)
+        context['users'] = UserMethods.objects.filter(is_active=True)
         return context
         
 class ProjectNewView(CreateView):

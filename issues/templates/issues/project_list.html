@@ -82,7 +82,7 @@
                         <div id="tabs-{{ project.pk }}-deleted" class="tab-content">
                             {% for issue in project.recently_deleted_issues %}
                                 <div class="issue">
-                                    <div class="ssue-left">{{ issue }}</div>
+                                    <div class="issue-left">{{ issue }}</div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -107,13 +107,40 @@
                         <li><a href="#tabs-{{ user.pk }}-completed" class="tab">Completed</a></li>
                     </ul>
                     <div id="tabs-{{ user.pk }}-inprogress" class="tab-content">
-                        In Progress Issues for {{ user.first_name }}
+                        {% for issue in user.inprogress_issues %}
+                        <div class="issue">
+                            <div class="issue-left">
+                                {{ issue }}
+                            </div>
+                            <div class="issue-right">
+                                {{ issue.project.as_a }}</a>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                     <div id="tabs-{{ user.pk }}-assigned" class="tab-content">
-                        Assigned Issues for {{ user.first_name }}
+                        {% for issue in user.assigned_issues %}
+                        <div class="issue">
+                            <div class="issue-left">
+                                {{ issue }}
+                            </div>
+                            <div class="issue-right">
+                                {{ issue.project.as_a }}</a>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                     <div id="tabs-{{ user.pk }}-completed" class="tab-content">
-                        Completed Issues for {{ user.first_name }}                           
+                        {% for issue in user.completed_issues %}
+                        <div class="issue">
+                            <div class="issue-left">
+                                {{ issue }}
+                            </div>
+                            <div class="issue-right">
+                                {{ issue.project.as_a }}</a>
+                            </div>
+                        </div>
+                        {% endfor %}                         
                     </div>
                 </div>
             </div>
