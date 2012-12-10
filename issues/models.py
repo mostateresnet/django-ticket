@@ -35,7 +35,7 @@ class Project(models.Model):
         return ('project_detail', (), {'slug': self.slug})
         
     def recently_closed_issues(self):
-        return self.issue_set.filter(close_date__isnull=False).exclude(status = 'DL').order_by('-close_date')[:10]
+        return self.issue_set.filter(closed_by_revision__isnull=False).exclude(status = 'DL').order_by('-close_date')[:10]
         
     def unassigned_issues(self):
         return self.issue_set.filter(status="UA").order_by('-pk')[:10]
