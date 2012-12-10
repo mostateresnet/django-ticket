@@ -196,11 +196,29 @@ $(function() {
             else
             { append_str += "&tags=" + chk_id;  }
         });
-
+        
         serial_data += append_str;
         $.post($(this).attr('action'), serial_data, function(){window.location.reload(true);});
         
         return false;
+    });
+    
+    $( ".issue-delete" ).click(function(event){
+        var targetid = event.target.id;
+        var n=targetid.split("-");
+        var issueid=n[0];
+        var url = window.location.pathname + issueid
+        if( confirm("Are you sure you want to delete this issue?"))
+        {
+            $.post(
+                    url,
+                    {'status': 'DL',},
+                    function(data, textStatus, jqXHR) {
+                        if (textStatus == "success"){
+                            $( '#issue-'+issueid ).remove();
+                        }
+                    });
+        }
     });
 
     $( "#new-issue-button" ).click(function(event){
@@ -214,20 +232,35 @@ $(function() {
         $(this).closest('.edit_drop').slideUp();
     });
     $( ".handle" ).disableSelection();
-    $( ".close-button" ).click(function(event){
+    $( ".issue_complete" ).click(function(event){
         var revision = window.prompt("Closed by which revision?","");
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^close-(\d+)$/)[1]);
             var url = window.location.pathname + issue_id
+            
             $.post(
                 url,
-                {'closed_by_revision': revision},
+                {'closed_by_revision': revision, 'status':'CP',},
                 function(data, textStatus, jqXHR) {
                     if (textStatus == "success"){
                         $( '#issue-'+issue_id ).remove();
                     }
                 });
         }
+    });
+    $( ".issue_work_on").click(function(e){
+        var target = event.target;
+        var n=target.id.split("-");
+        var issueid=n[0];
+        $.ajax({
+            url: ""+window.location.pathname+issueid,
+            type: "post",
+            data: "status=IP",
+            success: function() { 
+                document.getElementById(target.parentNode.parentNode.id).className="issue in-progress";
+            },
+            error: function () { alert("error"); },
+        });
     });
 });

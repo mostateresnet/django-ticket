@@ -195,6 +195,45 @@ ul.issue-list {
   cursor:pointer;
   background-color: #DDDDDD;
 }
+
+.issue_work_on
+{
+  padding: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
+  width: 5%;
+  border:1px solid #666;
+  text-align:center;
+  cursor:pointer;
+  background-color: #DDDDDD;
+}
+
+.issue_complete
+{
+  padding: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 2px;
+  width: 5%;
+  border:1px solid #666;
+  text-align:center;
+  cursor:pointer;
+  background-color: #DDDDDD;
+}
+
+.in-progress .issue_work_on{
+    display:none;
+}
+
+.assigned .issue_complete{
+    display:none;
+}
+
+.unassigned .issue_complete{
+    display:none;
+}
+
+.unassigned .issue_work_on{
+    display:none;
+}
+
 .edit_drop
 {
     width:80%; 

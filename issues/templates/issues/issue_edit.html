@@ -6,7 +6,7 @@
                 <div class = "left new_issue_left">
                     <p >{{ form.title.label_tag }}:{{ form.title }}</p>        
                     <p>{{ form.description.label_tag }}:{{ form.description }}</p>
-                <p >{{ form.notes.label_tag }}:{{ form.notes }}</p>        
+                <p >{{ form.notes.label_tag }}:{{ form.notes }}</p>
                 </div>
                 <div class = "right new_issue_right">
                     <p>{{ form.assigned_to.label_tag }}:{{ form.assigned_to }}</p>
@@ -26,7 +26,7 @@
                         </div>
                     </div>
                 </div>
-                <div class = "clear" ><input type="submit" value="Save"/><input id="new-issue-cancel-button" type="Button" value="Cancel"/></div>
+                <div class = "clear" ><input type="submit" value="Save"/><input id="new-issue-cancel-button" type="Button" value="Cancel"/><input id="{{ issue.pk }}-delete" class="issue-delete" type="Button" value="Delete"/></div>
             </form>
         {% endwith %}
     </div>

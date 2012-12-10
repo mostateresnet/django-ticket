@@ -21,7 +21,7 @@ class Project(models.Model):
         return SafeString('<a href="%s">%s</a>' % (self.get_absolute_url(), self.__unicode__()))
     
     def open_issues(self):
-        return Issue.objects.filter(project=self).filter(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True))
+        return Issue.objects.filter(project=self).filter(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True)).exclude(status='DL')
 
     def get_tags(self):
         # we should filter by project...
@@ -35,18 +35,30 @@ class Project(models.Model):
         return ('project_detail', (), {'slug': self.slug})
         
     def recently_closed_issues(self):
-        return self.issue_set.filter(close_date__isnull=False).order_by('close_date')[:10]
+        return self.issue_set.filter(close_date__isnull=False).exclude(status = 'DL').order_by('-close_date')[:10]
         
     def unassigned_issues(self):
-        return self.issue_set.filter(status="Unassigned").order_by('-pk')[:10]
+        return self.issue_set.filter(status="UA").order_by('-pk')[:10]
         
     def assigned_issues(self):
-        return self.issue_set.filter(status="Assigned")
+        return self.issue_set.filter(status="AS")
         
     def recently_deleted_issues(self):
-        return self.issue_set.filter(status="Deleted")[:10]
+        return self.issue_set.filter(status="DL").order_by('-close_date')[:10]
+    
+    def in_progress_issues(self):
+        return self.issue_set.filter(status="IP")
 
 class Issue(models.Model):
+    
+    STATUS_CHOICES = (
+        ('AS', 'Assigned'),
+        ('IP', 'In Progress'),
+        ('UA', 'Unassigned'),
+        ('CP', 'Completed'),
+        ('DL', 'Deleted'),
+    )
+
     title = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     priority = models.IntegerField(default=-1, blank=False, null=False)
@@ -58,7 +70,7 @@ class Issue(models.Model):
     days_estimate = models.DecimalField(blank=True, null=True, max_digits=65, decimal_places=5, help_text="How many days will it take to complete e.g. 0.5")
     milestone = models.ForeignKey('Milestone', null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
-    status = models.CharField(max_length="64", blank=True, null=True)
+    status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
     notes = models.CharField(max_length="1000", blank=True, null=True)
     
     class Meta:
@@ -67,14 +79,16 @@ class Issue(models.Model):
     def save(self, *args, **kwargs):
         try:
             old = Issue.objects.get(pk=self.pk)
-            #put status updates here
-            print "%"*80
-            if self.assigned_to == None:
-               self.status = "Unassigned"
-            else:
-                self.status = "Assigned"
+            print '%'*80
+            if self.status == 'DL':
+                self.close_date = datetime.datetime.now()
+            elif self.assigned_to == None:
+               self.status = "UA"
+            elif self.assigned_to != old.assigned_to:
+               self.status = "AS"
             if not old.closed_by_revision and self.closed_by_revision:
                 self.close_date = datetime.datetime.now()
+                self.status="CP"
         except Issue.DoesNotExist:
             pass
         super(Issue, self).save(*args, **kwargs)

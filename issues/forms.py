@@ -10,9 +10,15 @@ class IssueForm(ModelForm):
 
     class Meta:
         model = Issue
-        fields = ('title', 'description', 'notes', 'assigned_to', 'milestone', 'days_estimate', 'tags' )
+        fields = ('title', 'description', 'notes', 'assigned_to', 'milestone', 'days_estimate', 'tags', )
 
 class IssueCloseForm(ModelForm):
     class Meta:
         model = Issue
-        fields = ('closed_by_revision',)
+        fields = ('closed_by_revision', 'status')
+        
+class IssueStatusForm(ModelForm):
+    class Meta:
+        print "%"*80
+        model = Issue
+        fields = ('status',)

@@ -41,8 +41,8 @@
                     <div id="tabs-{{ project.pk }}" class="tabs">
                         <ul>
                             <div id="header-in-tabs">{{ project.as_a }}</a><span style="font-size: 10px">({{ project.issue_set.all.count }} issues)</span></div>
+                            <li><a href="#tabs-{{ project.pk }}-inprogress" class="tab">In Progress</a></li>                            
                             <li><a href="#tabs-{{ project.pk }}-assigned" class="tab">Assigned</a></li>
-                            <li><a href="#tabs-{{ project.pk }}-inprogress" class="tab">In Progress</a></li>
                             <li><a href="#tabs-{{ project.pk }}-unassigned" class="tab">Unassigned</a></li>
                             <li><a href="#tabs-{{ project.pk }}-completed" class="tab">Completed</a></li>
                             <li><a href="#tabs-{{ project.pk }}-deleted" class="tab">Deleted</a></li>
@@ -56,7 +56,12 @@
                             {% endfor %}
                         </div>
                         <div id="tabs-{{ project.pk }}-inprogress" class="tab-content">
-                        
+                            {% for issue in project.in_progress_issues %}
+                                <div class="issue">
+                                    <div class="issue-left">{{ issue }}</div>
+                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" width=16 height=16></div>  
+                                </div>
+                            {% endfor %}
                         </div>
                         <div id="tabs-{{ project.pk }}-unassigned" class="tab-content">
                             {% for issue in project.unassigned_issues %}

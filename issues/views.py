@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from annoying.utils import HttpResponseReload
-from issues.forms import IssueForm, IssueCloseForm
+from issues.forms import IssueForm, IssueCloseForm, IssueStatusForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -35,7 +35,7 @@ class ProjectDetailView(DetailView):
         names = super(ProjectDetailView, self).get_template_names()
         names.insert(0, "issues/%s/project_detail.html" % (project.slug))
         return names
-
+        
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
@@ -79,11 +79,13 @@ class IssueDetailView(UpdateView):
     def get_form_class(self):
         if 'closed_by_revision' in self.request.POST:
             return IssueCloseForm
+        elif 'status' in self.request.POST:
+            return IssueStatusForm
         else:
             return self.object.form_class()
 
     def get_form_kwargs(self):
-        if 'closed_by_revision' in self.request.POST:
+        if 'closed_by_revision' in self.request.POST or 'status' in self.request.POST:
             return super(IssueDetailView, self).get_form_kwargs()
         else:
             kwargs = super(IssueDetailView, self).get_form_kwargs()
@@ -119,7 +121,7 @@ def new_issue(request, slug):
         issue.creator = request.user
         issue.closed_by_revision = u''
         issue.project = project
-        issue.status = "New"
+        issue.status = 'UA'
         issue.save()
         form.save_m2m()
     else:

@@ -6,6 +6,9 @@
     <p class ="left issue_status">Milestone: {{ issue.milestone }}</p>
     <p class ="left issue_status">Days Estimate: {{ issue.days_estimate }}</p>
     <label class ="right issue_edit" href="url">Edit</label>
+    
+    <label id="{{ issue.pk }}-work-on" class="right issue_work_on">Work On</label>    
+    <label id="close-{{ issue.pk }}" class="right issue_complete">Complete</label>    
 
     <p class ="clear issue_description"> 
         {{ issue.description|linebreaksbr }}

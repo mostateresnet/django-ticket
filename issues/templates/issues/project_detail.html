@@ -41,14 +41,27 @@
 
     <ul class="issue-list">
     {% for issue in issues %}
-        <li id="issue-{{ issue.pk }}" class="issue">
-            <a id="close-{{ issue.pk }}"class="button close-button" href="#" >x</a>
+        <li id="issue-{{ issue.pk }}" 
+        {% if issue.assigned_to %}
+            {% if issue.assigned_to == user and issue.status = 'IP'%}
+                class="issue in-progress"
+            {% else %}{% if issue.assigned_to == user and issue.status = 'AS' %}
+                class="issue assigned"
+            {% else %}
+                class="issue unassigned"
+            {% endif %} {% endif %}
+        {% else %}
+            class="issue unassigned"
+        {% endif %}
+        >
             {% if issue.milestone %}
               <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone.deadline.date }}</a>
             {% endif %}
             <span class="assigned-to">
-
                 {% if issue.assigned_to %}
+                    {% if issue.status = "IP" %}
+                        (In Progress)
+                    {% endif %}
                     {% if issue.assigned_to.get_full_name %}
                         {{ issue.assigned_to.get_full_name }}
                     {% else %}
