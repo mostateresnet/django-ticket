@@ -50,7 +50,10 @@
     display: inline-block;
 }
 
-
+.issue-list{
+    padding-right: 20px;
+    padding-left: 20px;
+}
 
 ul.issue-list {
     list-style-type: none;
@@ -182,10 +185,12 @@ ul.issue-list {
   padding: 2px 2px 2px 2px;
   margin: 2px 2px 2px 2px;
   width: 28%;
-  border:1px solid #666;
+  border-radius: 4px;
+  background-color: rgba(148, 148, 151, 0.38);
+  border: 1px solid #8B8B8B;
 }
 
-.issue_edit
+.issue-button
 {
   padding: 2px 2px 2px 2px;
   margin: 2px 2px 2px 2px;
@@ -196,26 +201,10 @@ ul.issue-list {
   background-color: #DDDDDD;
 }
 
-.issue_work_on
-{
-  padding: 2px 2px 2px 2px;
-  margin: 2px 2px 2px 2px;
-  width: 5%;
-  border:1px solid #666;
-  text-align:center;
-  cursor:pointer;
-  background-color: #DDDDDD;
-}
-
-.issue_complete
-{
-  padding: 2px 2px 2px 2px;
-  margin: 2px 2px 2px 2px;
-  width: 5%;
-  border:1px solid #666;
-  text-align:center;
-  cursor:pointer;
-  background-color: #DDDDDD;
+.issue-button:hover{
+    border: 1px solid #DDDDDD;
+    background-color: #666;
+    color: white;
 }
 
 .in-progress .issue_work_on{
@@ -242,9 +231,11 @@ ul.issue-list {
 
 .issue_description
 {
-  border:1px solid #666;
-  padding: 2px 2px 2px 2px;
+  border-radius: 4px;
+  padding: 4px 4px 4px 4px;
   margin: 2px 2px 2px 2px;
+  background-color: rgba(148, 148, 151, 0.38);
+  border: 1px solid #8B8B8B;
 }
 
 
@@ -340,5 +331,15 @@ ul.issue-list {
 {
     display: inline; 
     width: 60px;
+}
+
+.emphasis{
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.field-header{
+    text-decoration: underline;
+    font-weight: bold;
 }
 
