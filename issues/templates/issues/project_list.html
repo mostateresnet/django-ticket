@@ -101,7 +101,9 @@
             <div class="project">
                 <div id="tabs-{{ user.pk }}" class="tabs">
                     <ul>
-                        <li id="developer-in-tabs">{{ user.first_name }}</li>
+                        <div id="developer-in-tabs" class="left"> 
+                           <a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a>
+                        </div>
                         <li><a href="#tabs-{{ user.pk }}-inprogress" class="tab">In Progress</a></li>
                         <li><a href="#tabs-{{ user.pk }}-assigned" class="tab">Assigned</a></li>
                         <li><a href="#tabs-{{ user.pk }}-completed" class="tab">Completed</a></li>

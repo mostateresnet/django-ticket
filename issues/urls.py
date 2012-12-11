@@ -5,6 +5,7 @@ from issues.views import *
 urlpatterns = patterns('',
     url(r'^$', ProjectListView.as_view(), name="project_list"),
     url(r'^new_project/$', ProjectNewView.as_view(), name="project_new"),
+    url(r'^profile/(?P<user_id>\d+)$', UserListView.as_view(), name="user_profile_view"),
     url(r'^(?P<slug>[\w-]+)/$', ProjectDetailView.as_view(), name="project_detail"),
     url(r'^(?P<slug>[\w-]+)/filter/(?P<filter>\S+)$', ProjectDetailView.as_view(), name="project_detail"),
     url(r'^(?P<slug>[\w-]+)/closed/$', ProjectDetailViewClosed.as_view(), name="project_detail_closed"),

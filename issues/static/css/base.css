@@ -32,6 +32,12 @@ body {
     padding: 5px;
 }
 
+.gravatar_small
+{
+    width: 16px;
+    height: 16px;
+}
+
 .left { float: left; }
 .right { float: right; }
 .clear { clear: both; }

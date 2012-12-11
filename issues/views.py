@@ -22,6 +22,24 @@ class ProjectListView(ListView):
         context = super(ListView, self).get_context_data(**kwargs)
         context['users'] = UserMethods.objects.filter(is_active=True)
         return context
+
+class UserListView(ListView):
+    queryset = Project.objects.all()
+    template_name = 'issues/user_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+
+            
+        if 'user_id' in self.kwargs:
+            context['user_data'] = UserMethods.objects.get(pk=self.kwargs['user_id'])
+
+    #UserMethods.objects.filter(pk=self.kwargs['user_id'])[0]
+
+
+        return context
+        
+
         
 class ProjectNewView(CreateView):
     model = Project
@@ -149,7 +167,7 @@ def day_range(start_date, end_date):
     """ Given two dates, generate (date, day#) pairs for all the days in the
     range, inclusive
 
-    >>> day1 = datetime.datetime(year=2011, mProjectListViewonth=9, day = 29)
+    >>> day1 = datetime.datetime(year=2011, month=9, day = 29)
     >>> day2 = datetime.datetime(year=2011, month=10, day = 3)
     >>> list(day_range(day1, day2))
     [(datetime.date(2011, 9, 29), 0), (datetime.date(2011, 9, 30), 1), (datetime.dat
