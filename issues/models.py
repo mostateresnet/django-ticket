@@ -75,6 +75,7 @@ class Issue(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
     notes = models.CharField(max_length="1000", blank=True, null=True)
+    issue_group = models.ForeignKey('IssueGroup', blank=True, null=True)
     
     class Meta:
         ordering = ['project', 'closed_by_revision', '-priority']
@@ -126,6 +127,9 @@ class Issue(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class IssueGroup(models.Model):
+    parent = models.ForeignKey('Issue')
         
 class UserMethods(User):
     def assigned_issues(self):
