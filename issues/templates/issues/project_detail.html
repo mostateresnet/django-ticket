@@ -34,7 +34,21 @@
     {% csrf_token %}
 
     <h1>{{ object }}</h1>
-    <a href="#" id="new-issue-button"> new issue </a>
+    <button type = "button" id="new-issue-button"> Add Issue </button>
+
+
+    <div class="right">
+        <label>Filter:</label>
+        <select id="issue_filter" data-pj="{{ project.slug }}">
+          <option value="ALL" {% if filter = 'OPEN' %} selected {% endif %}>Open</option>
+          <option value="IP" {% if filter = 'IP' %} selected {% endif %}>In Progress</option>
+          <option value="AS" {% if filter = 'AS' %} selected {% endif %}>Assigned</option>
+          <option value="UA" {% if filter = 'UA' %} selected {% endif %}>Unassigned</option>
+          <option value="CP" {% if filter = 'CP' %} selected {% endif %}>Completed</option>
+          <option value="DL" {% if filter = 'DL' %} selected {% endif %}>Deleted</option>
+        </select>
+    </div>
+
     
     {% include 'issues/issue_new.html' %}
     {% include 'issues/color_selector.html' %}

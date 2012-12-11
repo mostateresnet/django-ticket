@@ -39,7 +39,14 @@ class ProjectDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
-        context['issues'] = self.object.open_issues()
+
+        if 'filter' in self.kwargs:
+            context['issues'] = self.object.filtered_issues(self.kwargs['filter'])
+            context['filter'] = self.kwargs['filter']
+        else:
+            context['issues'] = self.object.open_issues()
+            context['filter'] = "OPEN"
+
         context['tags'] = self.object.get_tags()
         return context
 

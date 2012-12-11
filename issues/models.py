@@ -29,6 +29,9 @@ class Project(models.Model):
     
     def closed_issues(self):
         return Issue.objects.filter(project=self).exclude(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True)).order_by('-close_date')
+
+    def filtered_issues(self, status_filter):
+        return Issue.objects.filter(project=self, status=status_filter)
     
     @models.permalink
     def get_absolute_url(self):

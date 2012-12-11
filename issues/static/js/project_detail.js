@@ -203,6 +203,14 @@ $(function() {
         return false;
     });
     
+    $('#issue_filter').change(function(e)
+    {
+        var url = $(this).attr('data-pj') + "/";
+        if ($(this).attr('value') != "ALL")
+        { url+="filter/" + $(this).attr('value'); }
+        window.location.pathname = url;
+    });
+
     $( ".issue-delete" ).click(function(event){
         var targetid = event.target.id;
         var n=targetid.split("-");
