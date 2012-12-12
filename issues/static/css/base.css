@@ -30,8 +30,8 @@ body {
     background: white;
     border-radius: 5px;
     margin-top: 10px;
-    padding-left: 0px;
-    padding-right: 0px;
+    border: 1px solid #646485;
+    padding: 5px;
 }
 
 .gravatar_small

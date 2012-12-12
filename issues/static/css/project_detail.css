@@ -1,8 +1,3 @@
-#container{
-    border: 1px solid #646485;
-    padding: 5px;
-}
-
 .handle {
     vertical-align: middle;
     cursor: url("../../site_media/img/slide.cur"), move;

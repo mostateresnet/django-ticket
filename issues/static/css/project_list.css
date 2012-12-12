@@ -2,7 +2,7 @@
     overflow: auto;
 }
 
-#right{
+#users{
     float: right;
     width: 390px;
     background-color: white;
@@ -12,7 +12,7 @@
     border: 1px solid #646485;
 }
 
-#left{
+#projects{
     float: left;
     width: 770px;
     background-color: white;
@@ -115,6 +115,9 @@
 
 #container{
     background-color: transparent;
+    border: none;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 .issue{
     overflow: auto;

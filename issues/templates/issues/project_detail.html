@@ -73,15 +73,17 @@
             {% endif %}
             <span class="assigned-to">
                 {% if issue.assigned_to %}
-                    {% if issue.status = "IP" %}
-                        (In Progress)
-                    {% endif %}
                     {% if issue.assigned_to.get_full_name %}
                         {{ issue.assigned_to.get_full_name }}
                     {% else %}
                         {{ issue.assigned_to }}
                     {% endif %}
                   <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32>
+                  {% if issue.status == 'IP' %}
+                    <span class="clock">
+                        <img src="{{ STATIC_URL }}img/clock.gif" width=32 height=32/> 
+                    </span>
+                    {% endif %}
                 {% else %}
                     &nbsp;
                 {% endif %}
