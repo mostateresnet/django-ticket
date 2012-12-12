@@ -57,7 +57,7 @@
                                 {% endif %}
                                 >
                                     <div class="issue-left">{{ issue }}</div>
-                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>
+                                    <div class="issue-right"><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></a></div>
                                 </div>
                             {% endfor %}
                         </div>
@@ -71,7 +71,7 @@
                                 {% endif %}
                                 >
                                     <div class="issue-left">{{ issue }}</div>
-                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>  
+                                    <div class="issue-right"><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></a></div>  
                                 </div>
                             {% endfor %}
                         </div>
@@ -98,7 +98,7 @@
                                 {% endif %}
                                 >
                                     <div class="issue-left">{{ issue }}</div>
-                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>
+                                    <div class="issue-right"><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></a></div>
                                 </div>
                             {% endfor %}
                             <a href="{% url project_detail_closed slug=project.slug %}">All Completed Issues</a>
@@ -131,7 +131,7 @@
             <div class="project">
                 <div id="tabs-{{ user.pk }}" class="tabs">
                     <ul>
-                        <div id="developer-in-tabs" class="left"> 
+                        <div class="left developer-in-tabs"> 
                            <a href="{% url user_profile_view user_id=user.pk %}"><img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small">{{ user.first_name }}</a>
                         </div>
                         <li><a href="#tabs-{{ user.pk }}-inprogress" class="tab">In Progress</a></li>
@@ -175,7 +175,7 @@
                         {% endfor %}
                     </div>
                     <div id="tabs-{{ user.pk }}-completed" class="tab-content">
-                        {% for issue in user.completed_issues %}
+                        {% for issue in user.completed_issues|slice:":10" %}
                             <div
                             {% if forloop.counter|divisibleby:2 %}
                                 class="issue even"

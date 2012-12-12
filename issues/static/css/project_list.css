@@ -35,7 +35,11 @@
     text-decoration: none;
 }
 
-#developer-in-tabs{
+.header-in-tabs a:hover{
+    text-decoration: underline;
+}
+
+.developer-in-tabs{
     width: 120px;
 }
 
@@ -47,8 +51,16 @@
     text-decoration: none;
 }
 
+.developer-in-tabs a:hover{
+    text-decoration: underline;
+}
+
 .issue a{
     text-decoration: none;
+}
+
+.issue a:hover{
+    text-decoration: underline;
 }
 
 .header-title{
