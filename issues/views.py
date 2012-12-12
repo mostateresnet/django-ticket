@@ -68,15 +68,6 @@ class ProjectDetailView(DetailView):
         context['tags'] = self.object.get_tags()
         return context
 
-class ProjectDetailViewClosed(DetailView):
-    model = Project
-
-    def get_context_data(self, **kwargs):
-        context = super(ProjectDetailViewClosed, self).get_context_data(**kwargs)
-        context['issue_form'] = IssueForm()
-        context['issues'] = self.object.closed_issues()
-        return context
-
 class TagCreateView(CreateView):
     model = Tag
 
