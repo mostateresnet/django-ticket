@@ -1,3 +1,8 @@
+#container{
+    border: 1px solid #646485;
+    padding: 5px;
+}
+
 .handle {
     vertical-align: middle;
     cursor: url("../../site_media/img/slide.cur"), move;
@@ -182,23 +187,23 @@ ul.issue-list {
 
 .issue_status
 {
-  padding: 2px 2px 2px 2px;
-  margin: 2px 2px 2px 2px;
-  width: 28%;
-  border-radius: 4px;
-  background-color: rgba(148, 148, 151, 0.38);
-  border: 1px solid #8B8B8B;
+    padding: 2px 2px 2px 2px;
+    margin: 2px 2px 2px 2px;
+    width: 28%;
+    border-radius: 4px;
+    background-color: #E7EEF1;
+    border: 1px solid #BBBBBB;
 }
 
 .issue-button
 {
-  padding: 2px 2px 2px 2px;
-  margin: 2px 2px 2px 2px;
-  width: 5%;
-  border:1px solid #666;
-  text-align:center;
-  cursor:pointer;
-  background-color: #DDDDDD;
+    padding: 2px 2px 2px 2px;
+    margin: 2px 2px 2px 2px;
+    width: 5%;
+    border:1px solid #666;
+    text-align:center;
+    cursor:pointer;
+    background-color: #DDDDDD;
 }
 
 .issue-button:hover{
@@ -231,11 +236,11 @@ ul.issue-list {
 
 .issue_description
 {
-  border-radius: 4px;
-  padding: 4px 4px 4px 4px;
-  margin: 2px 2px 2px 2px;
-  background-color: rgba(148, 148, 151, 0.38);
-  border: 1px solid #8B8B8B;
+    border-radius: 4px;
+    padding: 4px 4px 4px 4px;
+    margin: 2px 2px 2px 2px;
+    background-color: #E7EEF1;
+    border: 1px solid #BBBBBB
 }
 
 

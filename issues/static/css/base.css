@@ -9,13 +9,14 @@ body {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #66676D;
+    background-color: #5E9FE6;
 }
 
 #header{
     text-align: center;
     background-color: white;
     border-radius: 5px;
+    border: 1px solid #646485;
 }
 
 #header h1{
@@ -29,7 +30,8 @@ body {
     background: white;
     border-radius: 5px;
     margin-top: 10px;
-    padding: 5px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .gravatar_small

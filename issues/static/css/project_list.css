@@ -9,6 +9,7 @@
     margin-bottom: 10px;
     padding: 5px;
     border-radius: 5px;
+    border: 1px solid #646485;
 }
 
 #left{
@@ -18,15 +19,20 @@
     margin-bottom: 10px;
     padding: 5px;
     border-radius: 5px;
+    border: 1px solid #646485;
 }
 
 .project{
     padding-bottom: 5px;
 }
 
-#header-in-tabs{
+.header-in-tabs{
     width: 300px;
     float: left;
+}
+
+.header-in-tabs a{
+    text-decoration: none;
 }
 
 #developer-in-tabs{
@@ -35,6 +41,14 @@
 
 .header{
     overflow:auto;
+}
+
+.developer-in-tabs a{
+    text-decoration: none;
+}
+
+.issue a{
+    text-decoration: none;
 }
 
 .header-title{
@@ -46,11 +60,41 @@
     float:right;
 }
 
+.tabs{
+    border: 1px solid #B1C9F3 !important;
+    padding: 0px !important;
+    border-radius: 3px !important;
+}
+
+.ui-widget-header{
+    background: #B1C9F3 !important;
+    border: none !important;
+    border-top-left-radius: 2px !important;
+    border-top-right-radius: 2px !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
 .tab{
     padding-bottom: 1px !important;
     padding-right: 3px !important;
     padding-left: 3px !important;
     padding-top: 1px !important;
+}
+
+.ui-tabs-anchor{
+    background-color: transparent;
+}
+
+.ui-state-default{
+    background: transparent !important;
+    border-top: 1px solid #929297 !important;
+    border-left: 1px solid #929297 !important;
+    border-right: 1px solid #929297 !important;
+}
+
+.ui-state-active{
+    background: white !important;
 }
 
 .tab-content{
@@ -62,11 +106,14 @@
 }
 .issue{
     overflow: auto;
-    border-bottom: 1px solid #747481;
 }
 
-.hr{
-    border-top: 1px solid #747481;
+.odd{
+    
+}
+
+.even{
+    background-color: #E7EEF1;
 }
 
 .issue-right{

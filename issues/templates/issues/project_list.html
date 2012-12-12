@@ -40,7 +40,7 @@
                 <div id='{{ project|slugify }}' class="project">
                     <div id="tabs-{{ project.pk }}" class="tabs">
                         <ul>
-                            <div id="header-in-tabs">{{ project.as_a }}</a><span style="font-size: 10px">({{ project.issue_set.all.count }} issues)</span></div>
+                            <div class="header-in-tabs">{{ project.as_a }}</a><span style="font-size: 10px"> ({{ project.issue_set.all.count }})</span></div>
                             <li><a href="#tabs-{{ project.pk }}-inprogress" class="tab">In Progress</a></li>                            
                             <li><a href="#tabs-{{ project.pk }}-assigned" class="tab">Assigned</a></li>
                             <li><a href="#tabs-{{ project.pk }}-unassigned" class="tab">Unassigned</a></li>
@@ -49,39 +49,69 @@
                         </ul>
                         <div id="tabs-{{ project.pk }}-assigned" class="tab-content">
                             {% for issue in project.assigned_issues %}
-                                <div class="issue">
+                                <div
+                                {% if forloop.counter|divisibleby:2 %}
+                                    class="issue even"
+                                {% else %}
+                                    class="issue odd"
+                                {% endif %}
+                                >
                                     <div class="issue-left">{{ issue }}</div>
-                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" width=16 height=16></div>
+                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>
                                 </div>
                             {% endfor %}
                         </div>
                         <div id="tabs-{{ project.pk }}-inprogress" class="tab-content">
                             {% for issue in project.in_progress_issues %}
-                                <div class="issue">
+                                <div
+                                {% if forloop.counter|divisibleby:2 %}
+                                    class="issue even"
+                                {% else %}
+                                    class="issue odd"
+                                {% endif %}
+                                >
                                     <div class="issue-left">{{ issue }}</div>
-                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" width=16 height=16></div>  
+                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>  
                                 </div>
                             {% endfor %}
                         </div>
                         <div id="tabs-{{ project.pk }}-unassigned" class="tab-content">
                             {% for issue in project.unassigned_issues %}
-                                <div class="issue">
+                                <div
+                                {% if forloop.counter|divisibleby:2 %}
+                                    class="issue even"
+                                {% else %}
+                                    class="issue odd"
+                                {% endif %}
+                                >
                                     <div class="issue-left">{{ issue }}</div>
                                 </div>
                             {% endfor %}
                         </div>
                         <div id="tabs-{{ project.pk }}-completed" class="tab-content">
                             {% for issue in project.recently_closed_issues %}
-                                <div class="issue">
+                                <div
+                                {% if forloop.counter|divisibleby:2 %}
+                                    class="issue even"
+                                {% else %}
+                                    class="issue odd"
+                                {% endif %}
+                                >
                                     <div class="issue-left">{{ issue }}</div>
-                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" width=16 height=16></div>
+                                    <div class="issue-right">{{ issue.assigned_to.first_name }}<img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>
                                 </div>
                             {% endfor %}
                             <a href="{% url project_detail_closed slug=project.slug %}">All Completed Issues</a>
                         </div>
                         <div id="tabs-{{ project.pk }}-deleted" class="tab-content">
                             {% for issue in project.recently_deleted_issues %}
-                                <div class="issue">
+                                <div
+                                {% if forloop.counter|divisibleby:2 %}
+                                    class="issue even"
+                                {% else %}
+                                    class="issue odd"
+                                {% endif %}
+                                >
                                     <div class="issue-left">{{ issue }}</div>
                                 </div>
                             {% endfor %}
@@ -102,7 +132,7 @@
                 <div id="tabs-{{ user.pk }}" class="tabs">
                     <ul>
                         <div id="developer-in-tabs" class="left"> 
-                           <a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a>
+                           <a href="{% url user_profile_view user_id=user.pk %}"><img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small">{{ user.first_name }}</a>
                         </div>
                         <li><a href="#tabs-{{ user.pk }}-inprogress" class="tab">In Progress</a></li>
                         <li><a href="#tabs-{{ user.pk }}-assigned" class="tab">Assigned</a></li>
@@ -110,7 +140,13 @@
                     </ul>
                     <div id="tabs-{{ user.pk }}-inprogress" class="tab-content">
                         {% for issue in user.inprogress_issues %}
-                        <div class="issue">
+                            <div
+                            {% if forloop.counter|divisibleby:2 %}
+                                class="issue even"
+                            {% else %}
+                                class="issue odd"
+                            {% endif %}
+                            >
                             <div class="issue-left">
                                 {{ issue }}
                             </div>
@@ -122,7 +158,13 @@
                     </div>
                     <div id="tabs-{{ user.pk }}-assigned" class="tab-content">
                         {% for issue in user.assigned_issues %}
-                        <div class="issue">
+                            <div
+                            {% if forloop.counter|divisibleby:2 %}
+                                class="issue even"
+                            {% else %}
+                                class="issue odd"
+                            {% endif %}
+                            >
                             <div class="issue-left">
                                 {{ issue }}
                             </div>
@@ -134,7 +176,13 @@
                     </div>
                     <div id="tabs-{{ user.pk }}-completed" class="tab-content">
                         {% for issue in user.completed_issues %}
-                        <div class="issue">
+                            <div
+                            {% if forloop.counter|divisibleby:2 %}
+                                class="issue even"
+                            {% else %}
+                                class="issue odd"
+                            {% endif %}
+                            >
                             <div class="issue-left">
                                 {{ issue }}
                             </div>
