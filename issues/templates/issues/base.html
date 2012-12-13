@@ -1,10 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!DOCTYPE html>
 <html>
     {% block head %}
       <head>
-          <title>{% block title %}{% endblock %}</title>
+          <title>{% block title %}YOU FORGOT TO OVERWRITE THE TITLE BLOCK{% endblock %}</title>
           {% block css %}
               <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/base.css" />
+              <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery-ui.css" />
           {% endblock %}
           
           {% block js %}
@@ -15,13 +16,14 @@
     {% endblock %}
     {% block body %}
       <body>
-          <div id="header">
-                <h1 style=""><a href="{% url project_list %}">Issues</a></h1>
+          <section id="container">
+            <header>
+                <h1><a href="{% url project_list %}">Issues</a></h1>
                 <span>{{ user }}</span>
-          </div>
-          <div id="container">
-          {% block content %}{% endblock %}
-          </div>
+            </header>
+            {% block content %}{% endblock %}
+            <div class='clear'></div>
+          </section>
       </body>
     {% endblock %}
 </html>
