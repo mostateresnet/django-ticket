@@ -19,6 +19,5 @@ class IssueCloseForm(ModelForm):
         
 class IssueStatusForm(ModelForm):
     class Meta:
-        print "%"*80
         model = Issue
         fields = ('status',)

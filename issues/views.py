@@ -129,7 +129,6 @@ def sort_issue(request, slug):
 @login_required
 def new_issue(request, slug):
     project = Project.objects.get(slug=slug)
-    print request.POST
     form = IssueForm(request.POST)
     if form.is_valid():
         issue = form.save(commit=False)        
