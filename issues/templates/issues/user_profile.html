@@ -30,7 +30,22 @@
 {% block content %}
     {{ block.super }}
 
-<div id="wrapper">        
+        <div class="data_segment right alone_right">
+            <div class="header">
+                
+                <div class="header-title"><img class = "gravatar_medium" src="{{ user.email|gravatar }}"/> {{ user_data.first_name }}</div>            
+            </div>
+
+            <p><label class = "statistic">In Progress: </label><label>{{ user_data.inprogress_issues.count }}</label></p>
+            <p><label class = "statistic">Assigned:  </label><label>{{ user_data.assigned_issues.count }}</label></p>
+            <p><label class = "statistic">Completed: </label><label>{{ user_data.completed_issues.count }}</label></p>
+            <p><label class = "statistic">Most Active: </label> ???? </p>
+            <p><label class = "statistic">Last Project: </label><label>{{ user_data.last_completed.project.as_a }}</label></p>
+            <p><label class = "statistic">Last Completed: </label><p class = "small_text_wrap">{{ user_data.last_completed|truncatechars:256 }}</p></p>
+            <label></label>
+        </div>
+
+<div id="wrapper">  
     <div id="tabs-{{ user.pk }}" class="tabs">
 
         <ul>

@@ -34,12 +34,31 @@ body {
     padding: 5px;
 }
 
+.data_segment
+{
+    background-color: white;
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #646485;
+}
+
+.alone_right
+{
+    margin-left: 5px;
+}
+
 .gravatar_small
 {
     width: 16px;
     height: 16px;
 }
 
+.gravatar_medium
+{
+    width: 32px;
+    height: 32px;
+}
 .left { float: left; }
 .right { float: right; }
 .clear { clear: both; }

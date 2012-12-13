@@ -136,6 +136,14 @@ class UserMethods(User):
         
     def completed_issues(self):
         return self.issue_set.filter(status='CP').order_by('-close_date')
+
+    def last_completed(self):
+        completed = self.issue_set.filter(status='CP').order_by('-close_date');
+        if (completed.count > 0):
+            return completed[0]
+        else:
+            return None
+
     class Meta:
         proxy=True
     
