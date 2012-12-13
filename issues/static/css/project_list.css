@@ -1,25 +1,15 @@
-#wrapper{
-    overflow: auto;
-}
-
 #users{
-    float: right;
-    width: 390px;
-    background-color: white;
-    margin-bottom: 10px;
-    padding: 5px;
+    width: 27%;
+    margin-left: 1%;
+    padding: 1%;
     border-radius: 5px;
-    border: 1px solid #646485;
 }
 
 #projects{
-    float: left;
-    width: 770px;
-    background-color: white;
-    margin-bottom: 10px;
-    padding: 5px;
+    width: 67%;
+    margin-right: 1%;
+    padding: 1%;
     border-radius: 5px;
-    border: 1px solid #646485;
 }
 
 .project{
@@ -27,8 +17,7 @@
 }
 
 .header-in-tabs{
-    width: 300px;
-    float: left;
+    display:inline;
 }
 
 .header-in-tabs a{
@@ -40,11 +29,6 @@
 }
 
 .developer-in-tabs{
-    width: 120px;
-}
-
-.header{
-    overflow:auto;
 }
 
 .developer-in-tabs a{
@@ -63,77 +47,24 @@
     text-decoration: underline;
 }
 
-.header-title{
-    float:left;
-    font-size: 24px;
-}
-
-
 .tabs{
-    border: 1px solid #B1C9F3 !important;
-    padding: 0px !important;
-    border-radius: 3px !important;
-}
-
-.ui-widget-header{
-    background: #B1C9F3 !important;
-    border: none !important;
-    border-top-left-radius: 2px !important;
-    border-top-right-radius: 2px !important;
-    border-bottom-left-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
+    padding: 0px;
+    border-radius: 3px;
+    border:none;
+    width:100%;
 }
 
 .tab{
-    padding-bottom: 1px !important;
-    padding-right: 3px !important;
-    padding-left: 3px !important;
-    padding-top: 1px !important;
-}
-
-.ui-tabs-anchor{
-    background-color: transparent;
-}
-
-.ui-state-default{
-    background: transparent !important;
-    border-top: 1px solid #929297 !important;
-    border-left: 1px solid #929297 !important;
-    border-right: 1px solid #929297 !important;
-}
-
-.ui-state-active{
-    background: white !important;
+    padding-bottom: 1px;
+    padding-right: 3px;
+    padding-left: 3px;
+    padding-top: 1px;
 }
 
 .tab-content{
     padding: 2px !important;
 }
 
-#container{
-    background-color: transparent;
-    border: none;
-    padding-right: 0px;
-    padding-left: 0px;
-}
-.issue{
-    overflow: auto;
-}
-
-.odd{
-    
-}
-
-.even{
-    background-color: #E7EEF1;
-}
-
-.issue-right{
-    float:right;
-}
-
-.issue-left{
-    float: left;
 }
 
 .statistic
@@ -157,4 +88,3 @@
 
 #form_error{
     color: red;
-}

@@ -1,5 +1,5 @@
 html {
-    color: #333;
+    color: #DDD;
     font-family: "Helvetica Neue",Arial,Helvetica,sans-serif;
     font-size: 75%;
 }
@@ -9,29 +9,47 @@ body {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #5E9FE6;
+    background-color: #000;
+    background-image: url( '../img/background.png' );
 }
 
-#header{
-    text-align: center;
-    background-color: white;
+section, header{
+    background-color:rgb(32,32,32);
     border-radius: 5px;
-    border: 1px solid #646485;
 }
 
-#header h1{
+a, h3{
+    color:#DDD;
+}
+
+h3{
+    font-size:24pt;
+    margin:0;
+    padding:5px;
+}
+
+header{
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom:10px;
+    padding:10px;
+}
+
+header h1{
     margin-top: 8px;
     margin-bottom: 0px;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
+header a{
+    text-decoration:none;
+}
+
 #container{
-    background: white;
-    border-radius: 5px;
     margin-top: 10px;
-    border: 1px solid #646485;
-    padding: 5px;
+    padding: 20px;
+    background-color:rgba(37,37,37,0.5);
 }
 
 .data_segment
@@ -63,3 +81,4 @@ body {
 .right { float: right; }
 .clear { clear: both; }
 .hidden { display: none; }
+.small{ font-size:10pt; }
