@@ -1,50 +1,25 @@
 #users{
-    width: 27%;
+    width: 36%;
     margin-left: 1%;
     padding: 1%;
     border-radius: 5px;
 }
 
 #projects{
-    width: 67%;
+    width: 58%;
     margin-right: 1%;
     padding: 1%;
     border-radius: 5px;
 }
 
+span.header-in-tabs{
+    font-size:15pt;
+    padding-top:-5px;
+    padding-right:5px;
+}
+
 .project{
     padding-bottom: 5px;
-}
-
-.header-in-tabs{
-    display:inline;
-}
-
-.header-in-tabs a{
-    text-decoration: none;
-}
-
-.header-in-tabs a:hover{
-    text-decoration: underline;
-}
-
-.developer-in-tabs{
-}
-
-.developer-in-tabs a{
-    text-decoration: none;
-}
-
-.developer-in-tabs a:hover{
-    text-decoration: underline;
-}
-
-.issue a{
-    text-decoration: none;
-}
-
-.issue a:hover{
-    text-decoration: underline;
 }
 
 .tabs{
@@ -54,15 +29,15 @@
     width:100%;
 }
 
+.tabs ul a{
+    font-size:9pt;
+}
+
 .tab{
     padding-bottom: 1px;
     padding-right: 3px;
     padding-left: 3px;
     padding-top: 1px;
-}
-
-.tab-content{
-    padding: 2px !important;
 }
 
 }

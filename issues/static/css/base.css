@@ -22,6 +22,15 @@ a, h3{
     color:#DDD;
 }
 
+a{
+    text-decoration:none;
+    border-width:0;
+}
+
+a:hover{
+    text-decoration:underline;
+}
+
 h3{
     font-size:24pt;
     margin:0;
@@ -48,7 +57,7 @@ header a{
 
 #container{
     margin-top: 10px;
-    padding: 20px;
+    padding: 10px;
     background-color:rgba(37,37,37,0.5);
 }
 

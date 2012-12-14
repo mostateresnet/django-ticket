@@ -38,14 +38,14 @@
         <div class="project-list">
         {% for project in object_list %}
             <div id='{{ project|slugify }}' class="project">
-                <div id="tabs-{{ project.pk }}" class="tabs right">
-                <div class="header-in-tabs">{{ project.as_a }}</a><span style="font-size: 10px"> ({{ project.issue_set.all.count }})</span></div>
+                <div id="tabs-{{ project.pk }}" class="tabs">
                   <ul>
-                      <li><a href="#tabs-{{ project.pk }}-inprogress" class="tab">In Progress</a></li>                            
-                      <li><a href="#tabs-{{ project.pk }}-assigned" class="tab">Assigned</a></li>
-                      <li><a href="#tabs-{{ project.pk }}-unassigned" class="tab">Unassigned</a></li>
-                      <li><a href="#tabs-{{ project.pk }}-completed" class="tab">Completed</a></li>
-                      <li><a href="#tabs-{{ project.pk }}-deleted" class="tab">Deleted</a></li>
+                    <li><a href="#tabs-{{ project.pk }}-inprogress" class="tab">In Progress</a></li>                            
+                    <li><a href="#tabs-{{ project.pk }}-assigned" class="tab">Assigned</a></li>
+                    <li><a href="#tabs-{{ project.pk }}-unassigned" class="tab">Unassigned</a></li>
+                    <li><a href="#tabs-{{ project.pk }}-completed" class="tab">Completed</a></li>
+                    <li><a href="#tabs-{{ project.pk }}-deleted" class="tab">Deleted</a></li>
+                    <span class="header-in-tabs right">{{ project.as_a }}</a><span class='small'> ({{ project.issue_set.all.count }})</span></span>
                   </ul>
                   <div id="tabs-{{ project.pk }}-assigned" class="tab-content">
                       {% for issue in project.assigned_issues %}
@@ -134,9 +134,9 @@
         <div class="project">
             <div id="tabs-{{ user.pk }}" class="tabs">
                 <ul>
-                    <div class="left developer-in-tabs"> 
+                    <span class="right header-in-tabs"> 
                        <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"> <a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a>
-                    </div>
+                    </span>
                     <li><a href="#tabs-{{ user.pk }}-inprogress" class="tab">In Progress</a></li>
                     <li><a href="#tabs-{{ user.pk }}-assigned" class="tab">Assigned</a></li>
                     <li><a href="#tabs-{{ user.pk }}-completed" class="tab">Completed</a></li>
