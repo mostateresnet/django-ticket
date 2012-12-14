@@ -165,6 +165,7 @@ ul.issue-list {
 .details_drop
 {
   padding-left: 3em;
+  white-space: nowrap;
 }
 
 .new_issue_container
@@ -341,5 +342,12 @@ ul.issue-list {
 .field-header{
     text-decoration: underline;
     font-weight: bold;
+}
+
+.new_tag_input
+{
+    border-width:1px;
+    width: 75%;
+    margin-right: 5px;
 }
 

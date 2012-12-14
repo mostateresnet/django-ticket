@@ -2,8 +2,12 @@
 
 <div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}"> 
     <p class ="left issue_status">Created by: <span class="emphasis">{{ issue.creator }}</span></p> 
-    <p class ="left issue_status">Milestone: <span class="emphasis">{{ issue.milestone }}</span></p>
-    <p class ="left issue_status">Days Estimate: <span class="emphasis">{{ issue.days_estimate }}</span></p>
+    {% if issue.milestone %}
+        <p class ="left issue_status">Milestone: <span class="emphasis">{{ issue.milestone }}</span></p>
+    {% endif %}
+    {% if issue.days_estimate %}
+        <p class ="left issue_status">Days Estimate: <span class="emphasis">{{ issue.days_estimate }}</span></p>
+    {% endif %}
     <label class ="right issue-button issue_edit" href="url">Edit</label>    
     <label id="{{ issue.pk }}-work-on" class="right issue-button issue_work_on">Work On</label>    
     <label id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</label>    
