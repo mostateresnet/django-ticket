@@ -216,7 +216,7 @@ $(function() {
         var n=targetid.split("-");
         var issueid=n[0];
         var url = window.location.pathname + issueid
-        if( confirm("Are you sure you want to delete this issue?"))
+        if( confirm("Are you sure you want to delete this issue?") )
         {
             $.post(
                     url,
@@ -235,7 +235,7 @@ $(function() {
     $( "#new-issue-cancel-button" ).click(function(event){
         $(" #new-issue ").slideUp();
     });
-    $( "#edit-issue-cancel-button" ).click(function(event)
+    $( ".edit-issue-cancel-button" ).click(function(event)
     {
         $(this).closest('.edit_drop').slideUp();
     });

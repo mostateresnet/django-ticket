@@ -26,7 +26,11 @@
                         </div>
                     </div>
                 </div>
-                <div class = "clear" ><input type="submit" value="Save"/><input id="new-issue-cancel-button" type="Button" value="Cancel"/><input id="{{ issue.pk }}-delete" class="issue-delete" type="Button" value="Delete"/></div>
+                <div class = "clear" >
+                    <input type="submit" value="Save"/>
+                    <input class="edit-issue-cancel-button" type="Button" value="Cancel"/>
+                    <input id="{{ issue.pk }}-delete" class="issue-delete" type="Button" value="Delete"/>
+                </div>
             </form>
         {% endwith %}
     </div>
