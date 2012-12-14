@@ -176,13 +176,14 @@ $(function() {
     {       
         // Intercept the post data and append
         // our custom tags.
-        var serial_data = $(this).serialize();
+        var $this = $(this);
+        var serial_data = $this.serialize();
 
-        var pk_str = $(this).attr('id');
+        var pk_str = $this.attr('id');
         var pk_id = pk_str.match(/\d+/);
         var append_str = "";
 
-        $(this).find(".tag_editor input:checked").each(function()
+        $this.find(".tag_editor input:checked").each(function()
         {
             var i = $(this).attr('id');
             var chk_id = i.match(/\d+/);
@@ -193,7 +194,24 @@ $(function() {
         });
         
         serial_data += append_str;
-        $.post($(this).attr('action'), serial_data, function(){window.location.reload(true);});
+        $.post($this.attr('action'), serial_data, function(data){
+            $this.find("p.errors").toggleClass("errors", false)
+            if (data.status == "error")
+            {
+                if(pk_id)
+                {
+                    for (var key in data.errors)
+                    {
+                        $("#id_"+pk_id+"-"+key).closest("p").toggleClass("errors", true)
+                    }
+                }
+                return false;
+            }
+            else if (data.status == "success")
+            {
+                window.location.reload(true);
+            }
+        });
         
         return false;
     });

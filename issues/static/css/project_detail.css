@@ -351,3 +351,7 @@ ul.issue-list {
     margin-right: 5px;
 }
 
+.errors input{
+    background-color: red;
+}
+

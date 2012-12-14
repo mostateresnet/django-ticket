@@ -116,9 +116,15 @@ class IssueDetailView(UpdateView):
             kwargs = super(IssueDetailView, self).get_form_kwargs()
             kwargs.update(self.object.form_kwargs())
             return kwargs
+        
+    def form_valid(self, form):
+        project = form.save()
+        return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url() }), mimetype='application/json')
 
-    def get_success_url(self):
-        return self.request.META['HTTP_REFERER']
+    def form_invalid(self, form):
+        print dir(form.errors)
+        return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors }), mimetype='application/json')
+
 
 def issue_detail(request, slug, id):
     project = Project.objects.get(slug=slug)
