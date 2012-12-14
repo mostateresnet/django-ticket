@@ -91,9 +91,9 @@ class Issue(models.Model):
             if not old.closed_by_revision and self.closed_by_revision:
                 self.close_date = datetime.datetime.now()
                 self.status="CP"
-            super(Issue, self).save(*args, **kwargs)
         except Issue.DoesNotExist:
             pass
+        super(Issue, self).save(*args, **kwargs)
 
     def close(self, revision, when=None):
         if not when:
