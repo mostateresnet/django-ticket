@@ -58,7 +58,13 @@
 
         <div id="tabs-{{ user.pk }}-inprogress" class="tab-content">
             {% for issue in user_data.inprogress_issues %}
-            <div class="issue">
+                <div
+                {% if forloop.counter|divisibleby:2 %}
+                    class="issue even"
+                {% else %}
+                    class="issue odd"
+                {% endif %}
+                >
                 <div class="issue-left">
                     {{ issue }}
                 </div>
@@ -70,7 +76,13 @@
         </div>
         <div id="tabs-{{ user.pk }}-assigned" class="tab-content">
             {% for issue in user_data.assigned_issues %}
-            <div class="issue">
+                <div
+                {% if forloop.counter|divisibleby:2 %}
+                    class="issue even"
+                {% else %}
+                    class="issue odd"
+                {% endif %}
+                >
                 <div class="issue-left">
                     {{ issue }}
                 </div>
@@ -82,7 +94,13 @@
         </div>
         <div id="tabs-{{ user.pk }}-completed" class="tab-content">
             {% for issue in user_data.completed_issues %}
-            <div class="issue">
+                <div
+                {% if forloop.counter|divisibleby:2 %}
+                    class="issue even"
+                {% else %}
+                    class="issue odd"
+                {% endif %}
+                >
                 <div class="issue-left">
                     {{ issue }}
                 </div>
