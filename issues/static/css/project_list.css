@@ -154,3 +154,7 @@
     background-color: #E7EEF1;
     border: 1px solid #BBBBBB;
 }
+
+#form_error{
+    color: red;
+}

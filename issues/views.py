@@ -44,6 +44,14 @@ class UserListView(ListView):
         
 class ProjectNewView(CreateView):
     model = Project
+    template_name = "issues/project_detail.html"
+    
+    def form_valid(self, form):
+        project = form.save()
+        return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url() }), mimetype='application/json')
+
+    def form_invalid(self, form):
+        return HttpResponse(json.dumps({'status': 'error', 'message': form.errors.as_text() }), mimetype='application/json')
 
 
 class ProjectDetailView(DetailView):

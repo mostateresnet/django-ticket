@@ -12,7 +12,30 @@ $(function()
 
     $( "#new-project" ).submit(function(event)
     {       
-        $.post($(this).attr('action'), $(this).serialize(), function(){window.location.reload(true);});        
+        var slug = $("#id_slug").val();
+        var project = $("#id_name").val();
+        if (project == "")
+        {
+            $("#form_error").html("* Name cannot be blank.").show();
+        }
+        else if (slug == "")
+        {
+            $("#form_error").html("* Slug cannot be blank.").show();
+        }
+        else
+        {
+            $("#id_slug").val(URLify($("#id_slug").val()))
+            $.post($(this).attr('action'), $(this).serialize(), function(data){
+                if (data.status == "error")
+                {
+                    $("#form_error").html(data.message).show();
+                }
+                else if (data.status == "success")
+                {
+                    window.location.href = data.url;
+                }
+            });        
+        }
         return false;
     });
 
