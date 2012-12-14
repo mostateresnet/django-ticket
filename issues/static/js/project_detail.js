@@ -35,11 +35,6 @@ $('html').ajaxSend(function(event, xhr, settings) {
 });
 
 $(function() {
-    $( ".simple_overlay").dblclick(function(e){
-        $(e.currentTarget).find('.details-form').show();
-        $(e.currentTarget).find('.details').hide();
-    });
-
     $( ".issue-title").click(function(e){
         $(this).siblings('.edit_drop').slideUp(
         function() { $(this).siblings('.details_drop').slideToggle(); } );      

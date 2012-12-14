@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from annoying.utils import HttpResponseReload
-from issues.forms import IssueForm, IssueCloseForm, IssueStatusForm
+from issues.forms import IssueForm, IssueCloseForm, IssueStatusForm, ProjectForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -21,6 +21,7 @@ class ProjectListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
         context['users'] = UserMethods.objects.filter(is_active=True)
+        context['project_form'] = ProjectForm()
         return context
 
 class UserListView(ListView):

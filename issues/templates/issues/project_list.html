@@ -14,6 +14,7 @@
 
 {% block js %}
     {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL}}js/urlify.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/project_list.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
@@ -33,7 +34,8 @@
         <div id="projects">
             <div class="header">
                 <div class="header-title">Projects</div>
-                <div class="new"><a href="{% url project_new %}">New Project</a></div>
+                <button type="button" class="right" id="new_project_button">New Project</button>
+                {% include 'issues/project_new.html' %}
             </div>
             <div class="project-list">
             {% for project in object_list %}
@@ -128,7 +130,7 @@
         <div id="users">
             <div class="header">
                 <div class="header-title">User</div>
-                <div class="new"><a href="">New User</a></div>
+                <div class="right"><a href="">New User</a></div>
             </div>
             {% for user in users %}
             <div class="project">

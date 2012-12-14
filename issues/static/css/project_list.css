@@ -68,9 +68,6 @@
     font-size: 24px;
 }
 
-.new{
-    float:right;
-}
 
 .tabs{
     border: 1px solid #B1C9F3 !important;
@@ -149,3 +146,11 @@
     max-width: 200px;
 }
 
+#new_project
+{
+    padding: 2px 2px 2px 2px;
+    margin: 2px 2px 2px 2px;
+    border-radius: 4px;
+    background-color: #E7EEF1;
+    border: 1px solid #BBBBBB;
+}
