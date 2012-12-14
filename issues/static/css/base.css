@@ -31,10 +31,15 @@ a:hover{
     text-decoration:underline;
 }
 
+h1,h2,h3{
+    font-family:"century gothic", arial, sans-serif;
+}
+
 h3{
     font-size:24pt;
     margin:0;
     padding:5px;
+    font-weight:200;
 }
 
 header{
