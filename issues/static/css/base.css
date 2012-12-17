@@ -64,6 +64,7 @@ header a{
     margin-top: 10px;
     padding: 10px;
     background-color:rgba(37,37,37,0.5);
+    min-width: 800px;
 }
 
 .data_segment
@@ -75,15 +76,11 @@ header a{
     border: 1px solid #646485;
 }
 
-.alone_right
-{
-    margin-left: 5px;
-}
-
 .gravatar_small
 {
     width: 16px;
     height: 16px;
+    padding: 1px;
 }
 
 .gravatar_medium

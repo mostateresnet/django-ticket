@@ -49,74 +49,38 @@
                   </ul>
                   <div id="tabs-{{ project.pk }}-assigned" class="tab-content">
                       {% for issue in project.assigned_issues %}
-                          <div
-                          {% if forloop.counter|divisibleby:2 %}
-                              class="issue even"
-                          {% else %}
-                              class="issue odd"
-                          {% endif %}
-                          >
-                              <div class="left">{{ issue }}</div>
-                              <div class="right"><a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a> <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>
+                          <div class="issue clear">{{ issue }}
+                              <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
+                              <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                           </div>
                       {% endfor %}
                   </div>
                   <div id="tabs-{{ project.pk }}-inprogress" class="tab-content">
                       {% for issue in project.in_progress_issues %}
-                          <div
-                          {% if forloop.counter|divisibleby:2 %}
-                              class="issue even"
-                          {% else %}
-                              class="issue odd"
-                          {% endif %}
-                          >
-                              <div class="left">{{ issue }}</div>
-                              <div class="right"><a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a> <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>  
+                          <div class="issue clear">{{ issue }}
+                              <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
+                              <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                           </div>
                       {% endfor %}
                   </div>
                   <div id="tabs-{{ project.pk }}-unassigned" class="tab-content">
                       {% for issue in project.unassigned_issues %}
-                          <div
-                          {% if forloop.counter|divisibleby:2 %}
-                              class="issue even"
-                          {% else %}
-                              class="issue odd"
-                          {% endif %}
-                          >
-                              <div class="left">{{ issue }}</div>
-                          </div>
+                          <div class="issue clear">{{ issue }}</div>
                       {% endfor %}
                   </div>
                   <div id="tabs-{{ project.pk }}-completed" class="tab-content">
                       {% for issue in project.recently_completed_issues %}
-                          <div
-                          {% if forloop.counter|divisibleby:2 %}
-                              class="issue even clear"
-                          {% else %}
-                              class="issue odd clear"
-                          {% endif %}
-                          >            
-                              <div class="left">{{ issue }}</div>
-                              <div class="right"> 
+                          <div class="issue clear">{{ issue }}
                               {% if issue.assigned_to %}
-                                  <div class="right"><a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a> <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"></div>  
+                                  <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
+                                  <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}&nbsp;</a> 
                               {% endif %}
-                              </div>
-                          </div>
+                         </div>
                       {% endfor %}
                   </div>
                   <div id="tabs-{{ project.pk }}-deleted" class="tab-content">
                       {% for issue in project.recently_deleted_issues %}
-                          <div
-                          {% if forloop.counter|divisibleby:2 %}
-                              class="issue even"
-                          {% else %}
-                              class="issue odd"
-                          {% endif %}
-                          >
-                              <div class="left">{{ issue }}</div>
-                          </div>
+                          <div class="issue clear">{{ issue }}</div>
                       {% endfor %}
                   </div>
                 </div>

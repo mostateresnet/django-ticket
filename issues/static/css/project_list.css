@@ -40,7 +40,6 @@ span.header-in-tabs{
     padding-top: 1px;
 }
 
-}
 
 .statistic
 {
@@ -52,10 +51,17 @@ span.header-in-tabs{
     max-width: 200px;
 }
 
+.alone_right
+{
+    margin-left: 5px;
+    width: 20%;
+    min-width: 100px;
+}
+
 #new_project
 {
-    padding: 2px 2px 2px 2px;
-    margin: 2px 2px 2px 2px;
+    padding: 4px;
+    margin: 2px;
     border-radius: 4px;
     background-color: #2B2B2B;
     border: 1px solid #BBBBBB;
@@ -65,6 +71,18 @@ span.header-in-tabs{
     color: red;
 }
 
-.odd { }
-.even { }
+.profile_issues
+{
+    width: 75%;
+    min-width: 500px;
+}
+
+.issue:nth-last-of-type(2n)	
+{ 
+    background-color: #444;
+}
+
+.issue {
+    overflow: auto;
+}
 
