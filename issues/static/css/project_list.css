@@ -57,9 +57,14 @@ span.header-in-tabs{
     padding: 2px 2px 2px 2px;
     margin: 2px 2px 2px 2px;
     border-radius: 4px;
-    background-color: #E7EEF1;
+    background-color: #2B2B2B;
     border: 1px solid #BBBBBB;
 }
 
 #form_error{
     color: red;
+}
+
+.odd { }
+.even { }
+

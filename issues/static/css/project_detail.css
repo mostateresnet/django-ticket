@@ -11,30 +11,6 @@
     margin-right: 0.2em;
 }
 
-.issue .bug {
-    background-color: #F53131;
-    border-color: #C42727;
-    color: white;sh
-}
-
-.issue .feature {
-    background-color: #C0FF4A;
-    border-color: #99CC3B;
-    color: black;
-}
-
-.issue .cosmetic {
-    background-color: #C748DB;
-    border-color: #9F39AF;
-    color: white;
-}
-
-.issue .other {
-    background-color: #538CA6;
-    border-color: #427085;
-    color: white;
-}
-
 .issue .type { }
 
 .button {
@@ -69,7 +45,6 @@ ul.issue-list {
     border-bottom: solid 1px #ccc;
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    background-color: white;
     height: auto; /*32*/
 }
 
@@ -187,7 +162,6 @@ ul.issue-list {
     margin: 2px 2px 2px 2px;
     width: 28%;
     border-radius: 4px;
-    background-color: #E7EEF1;
     border: 1px solid #BBBBBB;
 }
 
@@ -199,7 +173,6 @@ ul.issue-list {
     border:1px solid #666;
     text-align:center;
     cursor:pointer;
-    background-color: #DDDDDD;
 }
 
 .issue-button:hover{
@@ -235,7 +208,6 @@ ul.issue-list {
     border-radius: 4px;
     padding: 4px 4px 4px 4px;
     margin: 2px 2px 2px 2px;
-    background-color: #E7EEF1;
     border: 1px solid #BBBBBB
 }
 
@@ -270,16 +242,13 @@ ul.issue-list {
 
 .tag_line
 {
-  border:1px solid #666;
   margin: 1px 1px 1px 1px;
   display: block;
-  background-color: #EEEEEE;
 }
 
 
 .tag_editor
 {
-   background-color: #AAAAAA;
    border:1px solid #666;
    padding: 4px;
 }
