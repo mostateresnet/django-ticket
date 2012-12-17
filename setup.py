@@ -1,13 +1,13 @@
-#Copyright (c) Django Software Foundation and individual contributors.
-#All rights reserved.
+# Copyright (c) Django Software Foundation and individual contributors.
+# All rights reserved.
 #
-#Redistribution and use in source and binary forms, with or without modification,
-#are permitted provided that the following conditions are met:
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
 #
-#    1. Redistributions of source code must retain the above copyright notice, 
+#    1. Redistributions of source code must retain the above copyright notice,
 #       this list of conditions and the following disclaimer.
-#    
-#    2. Redistributions in binary form must reproduce the above copyright 
+#
+#    2. Redistributions in binary form must reproduce the above copyright
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
 #
@@ -15,16 +15,16 @@
 #       to endorse or promote products derived from this software without
 #       specific prior written permission.
 #
-#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-#ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-#WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-#DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-#ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 #(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-#LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-#ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+# ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 #(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-#SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from distutils.core import setup
 from distutils.command.install_data import install_data
 from distutils.command.install import INSTALL_SCHEMES
@@ -47,6 +47,7 @@ if "install" in sys.argv:
             overlay_warning = True
             break
 
+
 class osx_install_data(install_data):
     # On MacOS, the platform-specific lib dir is /System/Library/Framework/Python/.../
     # which is wrong. Python 2.5 supplied with MacOS 10.5 has an Apple-specific fix
@@ -64,6 +65,7 @@ if sys.platform == "darwin":
     cmdclasses = {'install_data': osx_install_data}
 else:
     cmdclasses = {'install_data': install_data}
+
 
 def fullsplit(path, result=None):
     """
@@ -96,7 +98,8 @@ module_dir = 'issues'
 for dirpath, dirnames, filenames in os.walk(module_dir):
     # Ignore dirnames that start with '.'
     for i, dirname in enumerate(dirnames):
-        if dirname.startswith('.'): del dirnames[i]
+        if dirname.startswith('.'):
+            del dirnames[i]
     if '__init__.py' in filenames:
         packages.append('.'.join(fullsplit(dirpath)))
     elif filenames:
@@ -109,17 +112,17 @@ if len(sys.argv) > 1 and sys.argv[1] == 'bdist_wininst':
         file_info[0] = '\\PURELIB\\%s' % file_info[0]
 
 setup(
-    name = "django-ticket",
-    version = '1.0.0',
-    url = 'http://github.com/mostateresnet/django-ticket',
-    author = 'Missouri State University, ResNet',
-    author_email = 'resnet@missouristate.edu',
-    description = 'Issue tracker using django',
-    download_url = 'https://github.com/mostateresnet/django-ticket/zipball/master',
-    packages = packages,
-    cmdclass = cmdclasses,
-    data_files = data_files,
-    classifiers = [
+    name="django-ticket",
+    version='1.0.0',
+    url='http://github.com/mostateresnet/django-ticket',
+    author='Missouri State University, ResNet',
+    author_email='resnet@missouristate.edu',
+    description='Issue tracker using django',
+    download_url='https://github.com/mostateresnet/django-ticket/zipball/master',
+    packages=packages,
+    cmdclass=cmdclasses,
+    data_files=data_files,
+    classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 2.7",
         "Development Status :: 4 - Beta",
@@ -132,4 +135,3 @@ setup(
         "Topic :: Software Development :: Bug Tracking",
     ],
 )
-

@@ -1,7 +1,9 @@
-import urllib, hashlib
+import urllib
+import hashlib
 from django import template
 
 register = template.Library()
+
 
 @register.filter
 def gravatar(email, size=32):
@@ -13,4 +15,3 @@ def gravatar(email, size=32):
         'size': str(size)
     })
     return url
-

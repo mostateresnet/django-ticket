@@ -1,4 +1,5 @@
-import datetime, json
+import datetime
+import json
 from django import forms
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -14,15 +15,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
-
 class ProjectListView(ListView):
     queryset = Project.objects.all()
-    
+
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
         context['users'] = UserMethods.objects.filter(is_active=True)
         context['project_form'] = ProjectForm()
         return context
+
 
 class UserListView(ListView):
     queryset = Project.objects.all()
@@ -31,27 +32,24 @@ class UserListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
 
-            
         if 'user_id' in self.kwargs:
             context['user_data'] = UserMethods.objects.get(pk=self.kwargs['user_id'])
 
-    #UserMethods.objects.filter(pk=self.kwargs['user_id'])[0]
-
+    # UserMethods.objects.filter(pk=self.kwargs['user_id'])[0]
 
         return context
-        
 
-        
+
 class ProjectNewView(CreateView):
     model = Project
     template_name = "issues/project_detail.html"
-    
+
     def form_valid(self, form):
         project = form.save()
-        return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url() }), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')
 
     def form_invalid(self, form):
-        return HttpResponse(json.dumps({'status': 'error', 'message': form.errors.as_text() }), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'error', 'message': form.errors.as_text()}), mimetype='application/json')
 
 
 class ProjectDetailView(DetailView):
@@ -62,7 +60,7 @@ class ProjectDetailView(DetailView):
         names = super(ProjectDetailView, self).get_template_names()
         names.insert(0, "issues/%s/project_detail.html" % (project.slug))
         return names
-        
+
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
@@ -77,12 +75,14 @@ class ProjectDetailView(DetailView):
         context['tags'] = self.object.get_tags()
         return context
 
+
 class TagCreateView(CreateView):
     model = Tag
 
     def form_valid(self, form):
         pk_id = form.save().pk
         return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+
 
 class TagUpdateView(UpdateView):
     model = Tag
@@ -96,8 +96,6 @@ class TagUpdateView(UpdateView):
         return HttpResponse(json.dumps({'status': 'error', 'id': pk_id}), mimetype='application/json')
 
 
-        
-    
 class IssueDetailView(UpdateView):
     model = Issue
 
@@ -116,14 +114,14 @@ class IssueDetailView(UpdateView):
             kwargs = super(IssueDetailView, self).get_form_kwargs()
             kwargs.update(self.object.form_kwargs())
             return kwargs
-        
+
     def form_valid(self, form):
         project = form.save()
-        return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url() }), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')
 
     def form_invalid(self, form):
         print dir(form.errors)
-        return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors }), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
 
 def issue_detail(request, slug, id):
@@ -133,6 +131,7 @@ def issue_detail(request, slug, id):
     issue.save()
     return HttpResponse("success")
 
+
 def sort_issue(request, slug):
     project = Project.objects.get(slug=slug)
     for id, priority in request.POST.items():
@@ -141,12 +140,13 @@ def sort_issue(request, slug):
         issue.save()
     return HttpResponse("success")
 
+
 @login_required
 def new_issue(request, slug):
     project = Project.objects.get(slug=slug)
     form = IssueForm(request.POST)
     if form.is_valid():
-        issue = form.save(commit=False)        
+        issue = form.save(commit=False)
         issue.priority = 0
         issue.creator = request.user
         issue.closed_by_revision = u''
@@ -158,6 +158,7 @@ def new_issue(request, slug):
         return HttpResponse("failure")
     return HttpResponseReload(request)
 
+
 def days_apart(start_date, end_date):
     """ Return the number of days apart between two datetimes
 
@@ -167,6 +168,7 @@ def days_apart(start_date, end_date):
     4
     """
     return (end_date.date() - start_date.date()).days
+
 
 def day_range(start_date, end_date):
     """ Given two dates, generate (date, day#) pairs for all the days in the
@@ -178,12 +180,14 @@ def day_range(start_date, end_date):
     [(datetime.date(2011, 9, 29), 0), (datetime.date(2011, 9, 30), 1), (datetime.dat
     e(2011, 10, 1), 2), (datetime.date(2011, 10, 2), 3)]
     """
-    for day in range(days_apart(start_date,end_date)+1):
+    for day in range(days_apart(start_date, end_date) + 1):
         date = start_date.date() + datetime.timedelta(days=day)
         yield date, day
 
+
 def is_business_day(date):
     return date.weekday() <= 4
+
 
 def business_day_range(start_date, end_date):
     """ Given two dates, generate (date, day#) pairs for all the business days in
@@ -198,6 +202,7 @@ def business_day_range(start_date, end_date):
     for date, day in day_range(start_date, end_date):
         if is_business_day(date):
             yield date, day
+
 
 def business_weeks(start_date, end_date):
     """ Given two dates, generate (date1, date2, ...) for all contiguous business days in
@@ -217,20 +222,23 @@ def business_weeks(start_date, end_date):
     if week:
         yield tuple(week)
 
+
 def days_of_work(issues):
     """Given a queryset of issues, return the number of days it is estimated
     to complete all of them."""
-    return float(sum(i or 1 for i in issues.values_list('days_estimate',flat=True)))
+    return float(sum(i or 1 for i in issues.values_list('days_estimate', flat=True)))
+
 
 def work_left(issues, date):
     """Given a queryset of issues, return how many days of work is
     estimated to complete all of them excluding completed issues on or before
     a given date"""
     one_day = datetime.timedelta(days=1)
-    return days_of_work(issues.exclude(Q(close_date__isnull=True)|Q(close_date__gt=date+one_day)))
+    return days_of_work(issues.exclude(Q(close_date__isnull=True) | Q(close_date__gt=date + one_day)))
+
 
 class BurndownChartView(DetailView):
-    model=Milestone
+    model = Milestone
 
     def get_template_names(self):
         return ["issues/%s/burndown.svg" % self.object.project.slug, "issues/burndown.svg"]
@@ -241,51 +249,51 @@ class BurndownChartView(DetailView):
         issues = milestone.issue_set.all()
         one_day = datetime.timedelta(days=1)
         try:
-            start_date = issues.filter(close_date__isnull=False).order_by('close_date')[0].close_date-one_day
+            start_date = issues.filter(close_date__isnull=False).order_by('close_date')[0].close_date - one_day
         except IndexError:
             start_date = datetime.datetime.now()
 
         end_date = milestone.deadline
         now = datetime.datetime.now()
-        width = len(list(day_range(start_date, end_date)))-1
+        width = len(list(day_range(start_date, end_date))) - 1
         height = days_of_work(issues)
-        grid_w = 500/width
-        grid_h = 500/height
+        grid_w = 500 / width
+        grid_h = 500 / height
         today_width = days_apart(start_date, now)
-        start_height = work_left(issues, start_date-one_day)
+        start_height = work_left(issues, start_date - one_day)
         points = []
         for date, day in day_range(start_date, min(end_date, now)):
             point = (day, work_left(issues, date))
             points.append(point)
         # optimal "green" line
         try:
-            optimal_slope = height/float(len(list(business_day_range(start_date+one_day, end_date))))
+            optimal_slope = height / float(len(list(business_day_range(start_date + one_day, end_date))))
         except ZeroDivisionError:
             optimal_slope = 1.0
         optimal_line_points = []
         current_y = 0
-        optimal_line_points.append((0,0))
-        for date, day in day_range(start_date+one_day, end_date):
+        optimal_line_points.append((0, 0))
+        for date, day in day_range(start_date + one_day, end_date):
             if is_business_day(date):
                 current_y += optimal_slope
-            point = (day+1, current_y)
+            point = (day + 1, current_y)
             optimal_line_points.append(point)
-        context['optimal_line_points'] = [(x*grid_w,y*grid_h) for x,y in optimal_line_points]
-        context['points'] = [(x*grid_w,y*grid_h) for x,y in points]
+        context['optimal_line_points'] = [(x * grid_w, y * grid_h) for x, y in optimal_line_points]
+        context['points'] = [(x * grid_w, y * grid_h) for x, y in points]
         if today_width != 0:
-            slope =  float(work_left(issues, now-one_day))/today_width
+            slope = float(work_left(issues, now - one_day)) / today_width
         else:
             slope = 1
         if slope == 0:
             slope = 1
         context['projected'] = {
-            'p1': {'x':0,'y':0},
-            'p2': {'x': float(height)/float(slope)*grid_w, 'y': height*grid_h }
+            'p1': {'x': 0, 'y': 0},
+            'p2': {'x': float(height) / float(slope) * grid_w, 'y': height * grid_h}
         }
         # maximum x value
-        context['width'] = width*grid_w
+        context['width'] = width * grid_w
         # maximum y value
-        context['height'] = height*grid_h
+        context['height'] = height * grid_h
         # date of first closed issues
         context['start_date'] = start_date.date()
         # date that milestone ends
@@ -293,13 +301,13 @@ class BurndownChartView(DetailView):
         # today's date
         context['today_date'] = datetime.datetime.now().date()
         # x value for today's date
-        context['today_width'] = today_width*grid_w
+        context['today_width'] = today_width * grid_w
         # list of x values for each day
-        context['day_widths'] = [(x+1)*grid_w for x in range(width)]
+        context['day_widths'] = [(x + 1) * grid_w for x in range(width)]
         # list of y values for each issue
-        context['day_heights'] = [(y+1)*grid_h for y in range(int(height))]
+        context['day_heights'] = [(y + 1) * grid_h for y in range(int(height))]
         # width of svg with padding
-        context['svg_width'] = (width+10)*grid_w
+        context['svg_width'] = (width + 10) * grid_w
         # height of svg with padding.
-        context['svg_height'] = (height+10)*grid_h
+        context['svg_height'] = (height + 10) * grid_h
         return context
