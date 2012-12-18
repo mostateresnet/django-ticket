@@ -1,10 +1,7 @@
 {% extends "issues/base.html" %}
 {% load gravatar %}
 
-{% block title %}
-    {{ block.super }}
-    Issues for {{ object }}
-{% endblock %}
+{% block title %}Issues for {{ object }}{% endblock %}
 
 {% block css %}
     {{ block.super }}
