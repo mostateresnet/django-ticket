@@ -10,6 +10,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     background-color: #000;
+    /* The wonderful background texture can be obtained from: http://subtlepatterns.com/navy/ */
     background-image: url( '../img/background.png' );
 }
 
