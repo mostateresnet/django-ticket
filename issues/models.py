@@ -146,7 +146,7 @@ class UserMethods(User):
         return self.issue_set.filter(status='IP')
 
     def completed_issues(self):
-        return self.issue_set.filter(status='CP').order_by('-close_date')[:10]
+        return self.issue_set.filter(status='CP').order_by('-close_date')[:5]
 
     def last_completed(self):
         completed = self.issue_set.filter(status='CP').order_by('-close_date')
