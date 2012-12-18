@@ -18,8 +18,28 @@ span.header-in-tabs{
     padding-right:5px;
 }
 
+.content-border{
+    border: 1px solid #444;
+    border-radius: 0px 5px 5px 5px;
+    padding: 10px;
+}
+
+#project-issues{
+
+}
+
+#project-sort{
+
+}
+
 .project{
-    padding-bottom: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.user{
+    padding: 5px;
+    margin-bottom: 5px;
 }
 
 .tabs{
@@ -33,13 +53,31 @@ span.header-in-tabs{
     font-size:9pt;
 }
 
-.tab{
-    padding-bottom: 1px;
-    padding-right: 3px;
-    padding-left: 3px;
-    padding-top: 1px;
+.active{
+    background-color: #444;
 }
 
+.project-tab{
+    width: 90px;
+}
+
+.user-tab{
+    width: 70px;
+}
+
+.tab{
+    text-align: center;
+    border: 1px solid #444;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    display: inline-block;
+    border-bottom: none;
+}
+
+.tab:hover{
+    background-color: #444;
+    cursor: pointer;
+}
 
 .statistic
 {
@@ -60,11 +98,9 @@ span.header-in-tabs{
 
 #new_project
 {
+    width: 550px;
     padding: 4px;
     margin: 2px;
-    border-radius: 4px;
-    background-color: #2B2B2B;
-    border: 1px solid #BBBBBB;
 }
 
 #form_error{
@@ -79,10 +115,45 @@ span.header-in-tabs{
 
 .issue:nth-last-of-type(2n)	
 { 
-    background-color: #444;
+    background-color: #242424;
 }
 
 .issue {
     overflow: auto;
+    margin-left: 1em;
+    margin-right: 1em;
+    color: #999999;
 }
 
+h4{
+    margin: 0px;
+    font-size: 14px;
+}
+.hr{
+    border-top: 1px solid #444;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.sortable { 
+    list-style-type: none; 
+    margin: 5px; 
+    padding: 0; 
+    width: 60%; 
+}
+
+.sortable li { 
+    margin: 0 3px 3px 3px; 
+    padding: 0.4em; 
+    padding-left: 1.5em; 
+    font-size: 1.4em; 
+    height: 18px; 
+}
+
+.sortable li span { 
+    position: absolute; 
+    margin-left: -1.3em; 
+}

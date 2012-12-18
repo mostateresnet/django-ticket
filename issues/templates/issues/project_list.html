@@ -15,11 +15,9 @@
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script>
-    $(document).ready(function() {
-
-    });
     $(function() {
-        $( '.tabs' ).tabs({ collapsible: true });
+        $( ".sortable" ).sortable();
+        $( ".sortable" ).disableSelection();
     });
     </script>
 {% endblock %}
@@ -27,138 +25,114 @@
 {% block content %}
     {{ block.super }}
     <section id="projects" class='left'>
-        <h3 class="header">Projects
-        <button type="button" class="right" id="new_project_button">New Project</button>
-        </h3>
-
-                {% include 'issues/project_new.html' %}
-        <div class="project-list">
+        <h3 class="header">Projects</h3>
+        <div id="tab-buttons" class="tab-buttons">
+            <div id="projects-in-progress" class="project-tab tab in-progress active">In-Progress</div>
+            <div id="projects-assigned" class="project-tab tab assigned">Assigned</div>
+            <div id="projects-unassigned" class="project-tab tab unassigned">Unassigned</div>
+            <div id="projects-needs-review" class="project-tab tab needs-review">Needs Review</div>
+            <div id="projects-completed" class="project-tab tab completed">Completed</div>
+            <div id="projects-deleted" class="project-tab tab deleted">Deleted</div>
+            <div id="projects-projects" class="project-tab tab projects">Manage</div>
+        </div>
+        <div id="project-issues" class="content-border">
         {% for project in object_list %}
-            <div id='{{ project|slugify }}' class="project">
-                <div id="tabs-{{ project.pk }}" class="tabs">
-                  <ul>
-                    <li><a href="#tabs-{{ project.pk }}-inprogress" class="tab">In Progress</a></li>                            
-                    <li><a href="#tabs-{{ project.pk }}-assigned" class="tab">Assigned</a></li>
-                    <li><a href="#tabs-{{ project.pk }}-unassigned" class="tab">Unassigned</a></li>
-                    <li><a href="#tabs-{{ project.pk }}-completed" class="tab">Completed</a></li>
-                    <li><a href="#tabs-{{ project.pk }}-deleted" class="tab">Deleted</a></li>
-                    <span class="header-in-tabs right">{{ project.as_a }}</a><span class='small'> ({{ project.issue_set.all.count }})</span></span>
-                  </ul>
-                  <div id="tabs-{{ project.pk }}-assigned" class="tab-content">
-                      {% for issue in project.assigned_issues %}
-                          <div class="issue clear">{{ issue }}
-                              <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
-                              <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
-                          </div>
-                      {% endfor %}
-                  </div>
-                  <div id="tabs-{{ project.pk }}-inprogress" class="tab-content">
-                      {% for issue in project.in_progress_issues %}
-                          <div class="issue clear">{{ issue }}
-                              <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
-                              <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
-                          </div>
-                      {% endfor %}
-                  </div>
-                  <div id="tabs-{{ project.pk }}-unassigned" class="tab-content">
-                      {% for issue in project.unassigned_issues %}
-                          <div class="issue clear">{{ issue }}</div>
-                      {% endfor %}
-                  </div>
-                  <div id="tabs-{{ project.pk }}-completed" class="tab-content">
-                      {% for issue in project.recently_completed_issues %}
-                          <div class="issue clear">{{ issue }}
-                              {% if issue.assigned_to %}
-                                  <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
-                                  <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}&nbsp;</a> 
-                              {% endif %}
-                         </div>
-                      {% endfor %}
-                  </div>
-                  <div id="tabs-{{ project.pk }}-deleted" class="tab-content">
-                      {% for issue in project.recently_deleted_issues %}
-                          <div class="issue clear">{{ issue }}</div>
-                      {% endfor %}
-                  </div>
+            <div class="project">
+                <h4>{{ project.as_a }}</h4>
+                <div id="project-issue-list">
+                    {% for issue in project.in_progress_issues %}
+                        <div class="issue project-issue in-progress clear">
+                            {{ issue }} 
+                            <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                            <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                        </div>
+                    {% endfor %}
+                    {% for issue in project.assigned_issues %}
+                        <div class="issue project-issue assigned clear hidden">
+                            {{ issue }} 
+                            <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                            <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                        </div>
+                    {% endfor %}
+                    {% for issue in project.unassigned_issues %}
+                        <div class="issue project-issue unassigned hidden">{{ issue }}</div>
+                    {% endfor %}
+                    {% for issue in project.recently_completed_issues %}
+                        <div class="issue project-issue completed clear hidden">
+                            {{ issue }}
+                            {% if issue.assigned_to %}
+                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% for issue in project.recently_deleted_issues %}
+                        <div class="issue project-issue deleted hidden">{{ issue }}</div>
+                    {% endfor %}
                 </div>
             </div>
+            {% if not forloop.last %}
+                <div class="hr"></div>
+            {% endif %}
         {% endfor %}
+        </div>
+        <div id="project-sort" class="content-border hidden">
+            {% include 'issues/project_new.html' %}
+            <button type="button" class="right" id="new_project_button">New Project</button>
+            <ul id="sortable-projects" class="sortable">
+                {% for project in object_list %}
+                    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ project }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </section>
     
-    <section id="users" class='left'>
-        <h3 class="header">
+    <section id="users" class='right'>
+        <h3>
             Users
-            <span class="small right"><a href="">New User</a></span>
         </h3>
-        {% for user in users %}
-        <div class="project">
-            <div id="tabs-{{ user.pk }}" class="tabs">
-                <ul>
-                    <span class="right header-in-tabs"> 
-                       <img src= "{{ issue.assigned_to.email|gravatar }}" class="gravatar_small"> <a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a>
-                    </span>
-                    <li><a href="#tabs-{{ user.pk }}-inprogress" class="tab">In Progress</a></li>
-                    <li><a href="#tabs-{{ user.pk }}-assigned" class="tab">Assigned</a></li>
-                    <li><a href="#tabs-{{ user.pk }}-completed" class="tab">Completed</a></li>
-                </ul>
-                <div id="tabs-{{ user.pk }}-inprogress" class="tab-content">
-                    {% for issue in user.inprogress_issues %}
-                        <div
-                        {% if forloop.counter|divisibleby:2 %}
-                            class="issue even"
-                        {% else %}
-                            class="issue odd"
-                        {% endif %}
-                        >
-                        <div class="left">
-                            {{ issue }}
-                        </div>
-                        <div class="right">
-                            {{ issue.project.as_a }}</a>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div id="tabs-{{ user.pk }}-assigned" class="tab-content">
-                    {% for issue in user.assigned_issues %}
-                        <div
-                        {% if forloop.counter|divisibleby:2 %}
-                            class="issue even"
-                        {% else %}
-                            class="issue odd"
-                        {% endif %}
-                        >
-                        <div class="left">
-                            {{ issue }}
-                        </div>
-                        <div class="right">
-                            {{ issue.project.as_a }}</a>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div id="tabs-{{ user.pk }}-completed" class="tab-content">
-                    {% for issue in user.completed_issues|slice:":10" %}
-                        <div
-                        {% if forloop.counter|divisibleby:2 %}
-                            class="issue even"
-                        {% else %}
-                            class="issue odd"
-                        {% endif %}
-                        >
-                        <div class="left">
-                            {{ issue }}
-                        </div>
-                        <div class="right">
-                            {{ issue.project.as_a }}</a>
-                        </div>
-                    </div>
-                    {% endfor %}                         
-                </div>
-            </div>
+        <div id="tab-buttons" class="tab-buttons">
+            <div id="users-in-progress" class="user-tab tab in-progress active">In-Progress</div>
+            <div id="users-assigned" class="user-tab tab assigned">Assigned</div>
+            <div id="users-needs-review" class="user-tab tab needs-review" style="width: 90px;">Needs Review</div>
+            <div id="users-completed" class="user-tab tab completed">Completed</div>
+            <div id="users-reorder" class="user-tab tab reorder">Manage</div>
         </div>
-        {% endfor %}
+        <div id="user-issues" class="content-border">
+            {% for user in users %}
+                <div class="user">
+                    <img src= "{{ user.email|gravatar }}" class="gravatar_small left"><h4><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a></h4> 
+                    <div id="user-issue-list">
+                        {% for issue in user.inprogress_issues %}
+                            <div class="issue user-issue in-progress clear">
+                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            </div>
+                        {% endfor %}
+                        {% for issue in user.assigned_issues %}
+                            <div class="issue user-issue assigned clear hidden">
+                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            </div>
+                        {% endfor %}
+                        {% for issue in user.completed_issues %}
+                            <div class="issue user-issue completed clear hidden">
+                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if not forloop.last %}
+                    <div class="hr"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div id="user-sort" class="content-border hidden">
+            <span class="small right"><a href="">New User</a></span>
+            <ul id="sortable-users" class="sortable">
+                {% for user in users %}
+                    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ user.first_name }} {{ user.last_name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     </section>
     
 
