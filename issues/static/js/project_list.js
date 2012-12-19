@@ -80,7 +80,30 @@ $(function()
             });
         }        
     });
-    
+    $(".collapse_issue, .expand_issue").click(function(e)
+    {
+        var degrees = 0;
+
+        if ($(this).hasClass("collapse_issue"))
+        { degrees = -90; }
+
+        var child_list = $(this).siblings('.collapse-issue-list');               
+        child_list.slideToggle();
+        $(this).toggleClass("collapse_issue");
+        $(this).toggleClass("expand_issue");
+
+           $(this).css({
+          '-webkit-transform' : 'rotate('+degrees+'deg)',
+             '-moz-transform' : 'rotate('+degrees+'deg)',  
+              '-ms-transform' : 'rotate('+degrees+'deg)',  
+               '-o-transform' : 'rotate('+degrees+'deg)',  
+                  'transform' : 'rotate('+degrees+'deg)',  
+                       'zoom' : 1
+            });
+
+
+    });
+
     $(".user-tab").click(function(e)
     {
         //get the clicked id

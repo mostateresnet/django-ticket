@@ -39,11 +39,29 @@
         {% for project in object_list %}
             {% if project.status == "AC" %}
                 <div class="project">
-                    <h4>{{ project.as_a }}</h4>
-                    <div id="project-issue-list">
+                    <img class="collapse_issue node left" src="{{ STATIC_URL}}img/collapse.png" /><h4 class="left">{{ project.as_a }}</h4>
+                    <div class="project-issue-list collapse-issue-list clear">
                         {% for issue in project.in_progress_issues|slice:":10" %}
                             <div class="issue project-issue in-progress clear">
                                 {{ issue }} 
+                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                            </div>
+                        {% endfor %}
+                        {% for issue in project.assigned_issues|slice:":10" %}
+                            <div class="issue project-issue assigned clear hidden">
+                                {{ issue }} 
+                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                            </div>
+                        {% endfor %}
+                        {% for issue in project.unassigned_issues|slice:":10" %}
+                            <div class="issue project-issue unassigned hidden">{{ issue }}</div>
+                        {% endfor %}
+                        {% for issue in project.recently_completed_issues|slice:":10" %}
+                            <div class="issue project-issue completed clear hidden">
+                                {{ issue }}
+                                {% if issue.assigned_to %}
                                 <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                             </div>
@@ -73,7 +91,7 @@
                     </div>
                 </div>
                 {% if not forloop.last %}
-                    <div class="hr"></div>
+                    <div class="hr clear"></div>
                 {% endif %}
             {% endif %}
         {% endfor %}
@@ -113,8 +131,10 @@
         <div id="user-issues" class="content-border">
             {% for user in users %}
                 <div class="user">
-                    <img src= "{{ user.email|gravatar }}" class="gravatar_small left"><h4><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a></h4> 
-                    <div id="user-issue-list">
+                    <img class="collapse_issue node left" src="{{ STATIC_URL}}img/collapse.png" />
+                    <img src= "{{ user.email|gravatar }}" class="gravatar_small left">&nbsp;
+                    <h4><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a></h4> 
+                    <div class="user-issue-list collapse-issue-list clear">
                         {% for issue in user.inprogress_issues %}
                             <div class="issue user-issue in-progress clear">
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
@@ -145,7 +165,5 @@
                 {% endfor %}
             </ul>
         </div>
-    </section>
-    
-
+    </section>   
 {% endblock %}

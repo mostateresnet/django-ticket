@@ -39,6 +39,19 @@ span.header-in-tabs{
     padding: 10px;
 }
 
+.node
+{
+    margin-right: 5px;
+    -webkit-transition: all 500ms ease-in-out;
+    -moz-transition: all 500ms ease-in-out;
+    -o-transition: all 500ms ease-in-out;
+    -ms-transition: all 500ms ease-in-out;
+}
+
+.project-issue-list
+{
+  white-space: nowrap;
+}
 #project-issues{
 
 }
@@ -123,7 +136,7 @@ span.header-in-tabs{
 
 .issue {
     overflow: auto;
-    margin-left: 1em;
+    margin-left: 2em;
     margin-right: 1em;
     color: #999999;
 }
