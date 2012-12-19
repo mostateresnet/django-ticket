@@ -40,24 +40,24 @@
             <div class="project">
                 <h4>{{ project.as_a }}</h4>
                 <div id="project-issue-list">
-                    {% for issue in project.in_progress_issues %}
+                    {% for issue in project.in_progress_issues|slice:":10" %}
                         <div class="issue project-issue in-progress clear">
                             {{ issue }} 
                             <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
                             <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                         </div>
                     {% endfor %}
-                    {% for issue in project.assigned_issues %}
+                    {% for issue in project.assigned_issues|slice:":10" %}
                         <div class="issue project-issue assigned clear hidden">
                             {{ issue }} 
                             <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
                             <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                         </div>
                     {% endfor %}
-                    {% for issue in project.unassigned_issues %}
+                    {% for issue in project.unassigned_issues|slice:":10" %}
                         <div class="issue project-issue unassigned hidden">{{ issue }}</div>
                     {% endfor %}
-                    {% for issue in project.recently_completed_issues %}
+                    {% for issue in project.recently_completed_issues|slice:":10" %}
                         <div class="issue project-issue completed clear hidden">
                             {{ issue }}
                             {% if issue.assigned_to %}
@@ -66,7 +66,7 @@
                             {% endif %}
                         </div>
                     {% endfor %}
-                    {% for issue in project.recently_deleted_issues %}
+                    {% for issue in project.recently_deleted_issues|slice:":10" %}
                         <div class="issue project-issue deleted hidden">{{ issue }}</div>
                     {% endfor %}
                 </div>
@@ -113,7 +113,7 @@
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                             </div>
                         {% endfor %}
-                        {% for issue in user.completed_issues %}
+                        {% for issue in user.completed_issues|slice:":5" %}
                             <div class="issue user-issue completed clear hidden">
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                             </div>

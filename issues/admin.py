@@ -1,4 +1,4 @@
-from issues.models import *
+from issues.models import Issue, Milestone, Tag, Project
 from django.contrib import admin
 
 

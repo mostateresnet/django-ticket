@@ -1,10 +1,7 @@
 {% extends "issues/base.html" %}
 {% load gravatar %}
 
-{% block title %}
-    {{ block.super }}
-    Projects
-{% endblock %}
+{% block title %}User Profile{% endblock %}
 
 {% block css %}
     {{ block.super }}
@@ -30,7 +27,7 @@
 {% block content %}
     {{ block.super }}
 
-        <div class="data_segment right alone_right">
+    <section id="users_stats" class="right">
             <div class="header">
                 
                 <div class="header-title"><img class = "gravatar_medium" src="{{ user.email|gravatar }}"/> {{ user_data.first_name }}</div>            
@@ -43,74 +40,43 @@
             <p><label class = "statistic">Last Project: </label><label>{{ user_data.last_completed.project.as_a }}</label></p>
             <p><label class = "statistic">Last Completed: </label><p class = "small_text_wrap">{{ user_data.last_completed|truncatechars:256 }}</p></p>
             <label></label>
+  </section>
+
+    <section id="users_profile" class="left">
+        <div id="tab-buttons" class="tab-buttons">
+            <div id="users-in-progress" class="user-tab tab in-progress active">In-Progress</div>
+            <div id="users-assigned" class="user-tab tab assigned">Assigned</div>
+            <div id="users-needs-review" class="user-tab tab needs-review" style="width: 90px;">Needs Review</div>
+            <div id="users-completed" class="user-tab tab completed">Completed</div>
+            <div id="users-reorder" class="user-tab tab reorder">Manage</div>
         </div>
+        <div id="user-issues" class="content-border">
 
-<div id="wrapper" class="left profile_issues">  
-    <div id="tabs-{{ user.pk }}" class="tabs">
-
-        <ul>
-            <li id="developer-in-tabs"><img class = "gravatar_small" src="{{ user.email|gravatar }}"/> {{ user_data.first_name }}</li>
-            <li><a href="#tabs-{{ user.pk }}-inprogress" class="tab">In Progress</a></li>
-            <li><a href="#tabs-{{ user.pk }}-assigned" class="tab">Assigned</a></li>
-            <li><a href="#tabs-{{ user.pk }}-completed" class="tab">Completed</a></li>
-        </ul>
-
-
-        <div id="tabs-{{ user.pk }}-inprogress" class="tab-content">
-            {% for issue in user_data.inprogress_issues %}
-                <div
-                {% if forloop.counter|divisibleby:2 %}
-                    class="issue even"
-                {% else %}
-                    class="issue odd"
+                <div class="user">
+                    <div id="user-issue-list">
+                        {% for issue in user_data.inprogress_issues %}
+                            <div class="issue user-issue in-progress clear">
+                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            </div>
+                        {% endfor %}
+                        {% for issue in user_data.assigned_issues %}
+                            <div class="issue user-issue assigned clear hidden">
+                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            </div>
+                        {% endfor %}
+                        {% for issue in user_data.completed_issues %}
+                            <div class="issue user-issue completed clear hidden">
+                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if not forloop.last %}
+                    <div class="hr"></div>
                 {% endif %}
-                >
-                <div class="issue-left">
-                    {{ issue }}
-                </div>
-                <div class="issue-right">
-                    {{ issue.project.as_a }}</a>
-                </div>
-            </div>
-            {% endfor %}
+
         </div>
-        <div id="tabs-{{ user.pk }}-assigned" class="tab-content">
-            {% for issue in user_data.assigned_issues %}
-                <div
-                {% if forloop.counter|divisibleby:2 %}
-                    class="issue even"
-                {% else %}
-                    class="issue odd"
-                {% endif %}
-                >
-                <div class="issue-left">
-                    {{ issue }}
-                </div>
-                <div class="issue-right">
-                    {{ issue.project.as_a }}</a>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        <div id="tabs-{{ user.pk }}-completed" class="tab-content">
-            {% for issue in user_data.completed_issues %}
-                <div
-                {% if forloop.counter|divisibleby:2 %}
-                    class="issue even"
-                {% else %}
-                    class="issue odd"
-                {% endif %}
-                >
-                <div class="issue-left">
-                    {{ issue }}
-                </div>
-                <div class="issue-right">
-                    {{ issue.project.as_a }}</a>
-                </div>
-            </div>
-            {% endfor %}                         
-        </div>
-    </div>
-</div>
+
+    </section>
     
 {% endblock %}

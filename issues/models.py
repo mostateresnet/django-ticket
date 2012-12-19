@@ -41,16 +41,16 @@ class Project(models.Model):
         return ('project_detail', (), {'slug': self.slug})
 
     def recently_completed_issues(self):
-        return self.issue_set.filter(status='CP').order_by('-close_date')[:10]
+        return self.issue_set.filter(status='CP').order_by('-close_date')
 
     def unassigned_issues(self):
-        return self.issue_set.filter(status="UA").order_by('-pk')[:10]
+        return self.issue_set.filter(status="UA").order_by('-pk')
 
     def assigned_issues(self):
         return self.issue_set.filter(status="AS")
 
     def recently_deleted_issues(self):
-        return self.issue_set.filter(status="DL").order_by('-close_date')[:10]
+        return self.issue_set.filter(status="DL").order_by('-close_date')
 
     def in_progress_issues(self):
         return self.issue_set.filter(status="IP")
@@ -146,7 +146,7 @@ class UserMethods(User):
         return self.issue_set.filter(status='IP')
 
     def completed_issues(self):
-        return self.issue_set.filter(status='CP').order_by('-close_date')[:5]
+        return self.issue_set.filter(status='CP').order_by('-close_date')
 
     def last_completed(self):
         completed = self.issue_set.filter(status='CP').order_by('-close_date')

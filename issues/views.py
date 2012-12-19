@@ -125,7 +125,7 @@ class IssueDetailView(UpdateView):
 
 
 def issue_detail(request, slug, id):
-    project = Project.objects.get(slug=slug)
+#    project = Project.objects.get(slug=slug)
     issue = Issue.objects.get(id=id)
     issue.closed_by_revision = int(request.POST['revision'])
     issue.save()

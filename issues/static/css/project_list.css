@@ -5,6 +5,21 @@
     border-radius: 5px;
 }
 
+#users_profile{
+    padding: 1%;
+    border-radius: 5px;
+    width: 75%;
+    min-width: 500px;
+}
+
+#users_stats{
+    margin-left: 1%;
+    padding: 1%;
+    border-radius: 5px;
+    width: 20%;
+    min-width: 100px;
+}
+
 #projects{
     width: 58%;
     margin-right: 1%;
@@ -89,13 +104,6 @@ span.header-in-tabs{
     max-width: 200px;
 }
 
-.alone_right
-{
-    margin-left: 5px;
-    width: 20%;
-    min-width: 100px;
-}
-
 #new_project
 {
     width: 550px;
@@ -107,11 +115,6 @@ span.header-in-tabs{
     color: red;
 }
 
-.profile_issues
-{
-    width: 75%;
-    min-width: 500px;
-}
 
 .issue:nth-last-of-type(2n)	
 { 
@@ -157,3 +160,4 @@ h4{
     position: absolute; 
     margin-left: -1.3em; 
 }
+

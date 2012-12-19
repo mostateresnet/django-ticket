@@ -8,7 +8,10 @@
     {% if issue.days_estimate %}
         <p class ="left issue_status">Days Estimate: <span class="emphasis">{{ issue.days_estimate }}</span></p>
     {% endif %}
-    <label class ="right issue-button issue_edit" href="url">Edit</label>    
+
+    {% if issue.status != 'DL' and issue.status != 'CP' %}
+        <label class ="right issue-button issue_edit" href="">Edit</label>    
+    {% endif %}
     <label id="{{ issue.pk }}-work-on" class="right issue-button issue_work_on">Work On</label>    
     <label id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</label>    
 
