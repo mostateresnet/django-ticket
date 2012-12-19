@@ -134,7 +134,7 @@
                 <div class="user">
                     <img class="collapse_issue node left" src="{{ STATIC_URL}}img/collapse.png" />
                     <img src= "{{ user.email|gravatar }}" class="gravatar_small left">&nbsp;
-                    <h4><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a></h4> 
+                    <h4 class="left"><a href="{% url user_profile_view user_id=user.pk %}">{{ user.first_name }}</a></h4> 
                     <div class="user-issue-list collapse-issue-list clear">
                         {% for issue in user.inprogress_issues %}
                             <div class="issue user-issue in-progress clear">
