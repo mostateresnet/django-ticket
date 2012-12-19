@@ -64,6 +64,7 @@
                                 {% if issue.assigned_to %}
                                 <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                                {% endif %}                            
                             </div>
                         {% endfor %}
                         {% for issue in project.assigned_issues|slice:":10" %}
