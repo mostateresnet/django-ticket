@@ -72,9 +72,9 @@
                 <span class="assigned-to">
                     {% if issue.assigned_to %}
                         {% if issue.assigned_to.get_full_name %}
-                            {{ issue.assigned_to.get_full_name }}
+                            <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.get_full_name }}</a>
                         {% else %}
-                            {{ issue.assigned_to }}
+                            <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
                         {% endif %}
                       <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32>
                       {% if issue.status == 'IP' %}

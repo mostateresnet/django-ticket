@@ -54,6 +54,10 @@ ul.issue-list {
     color: #999;
 }
 
+.issue a{
+    color: #999;
+}
+
 .issue .close-button {
     color: white;
     text-decoration: none;
