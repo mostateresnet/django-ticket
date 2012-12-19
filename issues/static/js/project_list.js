@@ -2,12 +2,14 @@ $(function()
 {
     $( '#new_project_button').click(function(e)
     {
-        $('#new_project').slideDown();      
+        $('#new_project').slideDown();    
+        $(this).slideUp();
     });
 
     $( '#new_project_cancel_button').click(function(e)
     {
-        $('#new_project').slideUp();      
+        $('#new_project').slideUp();
+        $('#new_project_button').slideDown();
     });
 
     $( "#new-project" ).submit(function(event)
