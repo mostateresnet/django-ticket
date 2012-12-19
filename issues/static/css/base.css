@@ -61,6 +61,12 @@ header a{
     text-decoration:none;
 }
 
+input, textarea, select, button{
+    background-color: #292929;
+    color: #999;
+    border-color: #383838;
+}
+
 #container{
     margin-top: 10px;
     padding: 10px;
