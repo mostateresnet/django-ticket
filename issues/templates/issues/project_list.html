@@ -37,42 +37,44 @@
         </div>
         <div id="project-issues" class="content-border">
         {% for project in object_list %}
-            <div class="project">
-                <h4>{{ project.as_a }}</h4>
-                <div id="project-issue-list">
-                    {% for issue in project.in_progress_issues|slice:":10" %}
-                        <div class="issue project-issue in-progress clear">
-                            {{ issue }} 
-                            <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
-                            <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
-                        </div>
-                    {% endfor %}
-                    {% for issue in project.assigned_issues|slice:":10" %}
-                        <div class="issue project-issue assigned clear hidden">
-                            {{ issue }} 
-                            <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
-                            <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
-                        </div>
-                    {% endfor %}
-                    {% for issue in project.unassigned_issues|slice:":10" %}
-                        <div class="issue project-issue unassigned hidden">{{ issue }}</div>
-                    {% endfor %}
-                    {% for issue in project.recently_completed_issues|slice:":10" %}
-                        <div class="issue project-issue completed clear hidden">
-                            {{ issue }}
-                            {% if issue.assigned_to %}
+            {% if project.status == "AC" %}
+                <div class="project">
+                    <h4>{{ project.as_a }}</h4>
+                    <div id="project-issue-list">
+                        {% for issue in project.in_progress_issues|slice:":10" %}
+                            <div class="issue project-issue in-progress clear">
+                                {{ issue }} 
                                 <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                    {% for issue in project.recently_deleted_issues|slice:":10" %}
-                        <div class="issue project-issue deleted hidden">{{ issue }}</div>
-                    {% endfor %}
+                            </div>
+                        {% endfor %}
+                        {% for issue in project.assigned_issues|slice:":10" %}
+                            <div class="issue project-issue assigned clear hidden">
+                                {{ issue }} 
+                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                            </div>
+                        {% endfor %}
+                        {% for issue in project.unassigned_issues|slice:":10" %}
+                            <div class="issue project-issue unassigned hidden">{{ issue }}</div>
+                        {% endfor %}
+                        {% for issue in project.recently_completed_issues|slice:":10" %}
+                            <div class="issue project-issue completed clear hidden">
+                                {{ issue }}
+                                {% if issue.assigned_to %}
+                                    <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                    <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        {% for issue in project.recently_deleted_issues|slice:":10" %}
+                            <div class="issue project-issue deleted hidden">{{ issue }}</div>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            {% if not forloop.last %}
-                <div class="hr"></div>
+                {% if not forloop.last %}
+                    <div class="hr"></div>
+                {% endif %}
             {% endif %}
         {% endfor %}
         </div>
@@ -81,9 +83,19 @@
             <button type="button" class="right" id="new_project_button">New Project</button>
             <ul id="sortable-projects" class="sortable">
                 {% for project in object_list %}
-                    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ project }}</li>
+                    {% if project.status == "AC" %}
+                        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ project }}</li>
+                    {% endif %}
                 {% endfor %}
             </ul>
+            <div id="other-projects">
+                <h4>Other Projects</h4>
+                {% for project in object_list %}
+                    {% if project.status != "AC" %}
+                        <div class="other-project">{{ project.as_a }}<div class="right">{{ project.get_status_display }}</div></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </section>
     

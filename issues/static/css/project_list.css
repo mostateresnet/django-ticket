@@ -132,6 +132,7 @@ h4{
     margin: 0px;
     font-size: 14px;
 }
+
 .hr{
     border-top: 1px solid #444;
     width: 200px;
@@ -146,6 +147,16 @@ h4{
     margin: 5px; 
     padding: 0; 
     width: 60%; 
+}
+
+#other-projects{
+    width: 400px;
+    padding: 5px;
+}
+
+.other-project:nth-last-of-type(2n)	
+{ 
+    background-color: #242424;
 }
 
 .sortable li { 
