@@ -19,13 +19,14 @@ section, header{
     border-radius: 5px;
 }
 
-a, h3{
+h4 a, h3{
     color:#DDD;
 }
 
 a{
     text-decoration:none;
     border-width:0;
+    color: #999;
 }
 
 a:hover{
@@ -37,7 +38,7 @@ h1,h2,h3{
 }
 
 h3{
-    font-size:24pt;
+    font-size:18pt;
     margin:0;
     padding:5px;
     font-weight:200;

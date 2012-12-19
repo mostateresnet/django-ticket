@@ -15,9 +15,6 @@
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script>
-    $(document).ready(function() {
-
-    });
     $(function() {
         $( 'div[id^="tabs"]' ).tabs({ collapsible: true });
     });
@@ -40,7 +37,7 @@
             <p><label class = "statistic">Last Project: </label><label>{{ user_data.last_completed.project.as_a }}</label></p>
             <p><label class = "statistic">Last Completed: </label><p class = "small_text_wrap">{{ user_data.last_completed|truncatechars:256 }}</p></p>
             <label></label>
-  </section>
+    </section>
 
     <section id="users_profile" class="left">
         <div id="tab-buttons" class="tab-buttons">
@@ -51,30 +48,25 @@
             <div id="users-reorder" class="user-tab tab reorder">Manage</div>
         </div>
         <div id="user-issues" class="content-border">
-
-                <div class="user">
-                    <div id="user-issue-list">
-                        {% for issue in user_data.inprogress_issues %}
-                            <div class="issue user-issue in-progress clear">
-                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
-                            </div>
-                        {% endfor %}
-                        {% for issue in user_data.assigned_issues %}
-                            <div class="issue user-issue assigned clear hidden">
-                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
-                            </div>
-                        {% endfor %}
-                        {% for issue in user_data.completed_issues %}
-                            <div class="issue user-issue completed clear hidden">
-                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
-                            </div>
-                        {% endfor %}
-                    </div>
+            <div class="user">
+                <div id="user-issue-list">
+                    {% for issue in user_data.inprogress_issues %}
+                        <div class="issue user-issue in-progress clear">
+                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                        </div>
+                    {% endfor %}
+                    {% for issue in user_data.assigned_issues %}
+                        <div class="issue user-issue assigned clear hidden">
+                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                        </div>
+                    {% endfor %}
+                    {% for issue in user_data.completed_issues %}
+                        <div class="issue user-issue completed clear hidden">
+                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                        </div>
+                    {% endfor %}
                 </div>
-                {% if not forloop.last %}
-                    <div class="hr"></div>
-                {% endif %}
-
+            </div>
         </div>
 
     </section>

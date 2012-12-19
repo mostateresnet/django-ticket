@@ -134,6 +134,13 @@ span.header-in-tabs{
     background-color: #242424;
 }
 
+.issue:hover
+{
+    background-color: #444444;
+    color: #DDD;
+
+}
+
 .issue {
     overflow: auto;
     margin-left: 2em;
