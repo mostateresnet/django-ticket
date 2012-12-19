@@ -14,8 +14,16 @@ class Tag(models.Model):
 
 
 class Project(models.Model):
+    STATUS_CHOICES = (
+        ('AC', 'Active'),
+        ('IN', 'Inactive'),
+        ('FZ', 'Frozen'),
+        ('CP', 'Completed'),
+    )
+
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
+    status = models.CharField(max_length="64", default='AC', choices=STATUS_CHOICES)
 
     def __unicode__(self):
         return self.name

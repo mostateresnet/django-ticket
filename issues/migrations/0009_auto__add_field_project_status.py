@@ -8,13 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding unique constraint on 'Project', fields ['slug']
-        db.create_unique('issues_project', ['slug'])
+        # Adding field 'Project.status'
+        db.add_column('issues_project', 'status',
+                      self.gf('django.db.models.fields.CharField')(default='AC', max_length='64'),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Project', fields ['slug']
-        db.delete_unique('issues_project', ['slug'])
+        # Deleting field 'Project.status'
+        db.delete_column('issues_project', 'status')
 
 
     models = {
@@ -63,7 +65,7 @@ class Migration(SchemaMigration):
             'days_estimate': ('django.db.models.fields.DecimalField', [], {'null': 'True', 'max_digits': '65', 'decimal_places': '5', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'issue_group': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['issues.IssueGroup']", 'null': 'True', 'blank': 'True'}),            
+            'issue_group': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['issues.IssueGroup']", 'null': 'True', 'blank': 'True'}),
             'milestone': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['issues.Milestone']", 'null': 'True', 'blank': 'True'}),
             'notes': ('django.db.models.fields.CharField', [], {'max_length': "'1000'", 'null': 'True', 'blank': 'True'}),
             'priority': ('django.db.models.fields.IntegerField', [], {'default': '-1'}),
@@ -72,7 +74,7 @@ class Migration(SchemaMigration):
             'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['issues.Tag']", 'symmetrical': 'False', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '1000'})
         },
-       'issues.issuegroup': {
+        'issues.issuegroup': {
             'Meta': {'object_name': 'IssueGroup'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['issues.Issue']"})
@@ -87,7 +89,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Project'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'})
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '50'}),
+            'status': ('django.db.models.fields.CharField', [], {'default': "'AC'", 'max_length': "'64'"})
         },
         'issues.tag': {
             'Meta': {'object_name': 'Tag'},
