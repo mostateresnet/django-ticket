@@ -154,10 +154,9 @@ def new_issue(request, slug):
         issue.status = 'UA'
         issue.save()
         form.save_m2m()
+        return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')
     else:
-        return HttpResponse("failure")
-    return HttpResponseReload(request)
-
+        return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
 def days_apart(start_date, end_date):
     """ Return the number of days apart between two datetimes

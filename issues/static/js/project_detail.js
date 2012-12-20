@@ -194,8 +194,10 @@ $(function() {
         });
         
         serial_data += append_str;
-        $.post($this.attr('action'), serial_data, function(data){
+        $.post($this.attr('action'), serial_data, function(data)
+        {
             $this.find("p.errors").toggleClass("errors", false)
+
             if (data.status == "error")
             {
                 if(pk_id)
@@ -205,9 +207,16 @@ $(function() {
                         $("#id_"+pk_id+"-"+key).closest("p").toggleClass("errors", true)
                     }
                 }
+                else
+                {
+                    for (var key in data.errors)
+                    {
+                        $("#id_"+key).closest("p").toggleClass("errors", true)
+                    }
+                }
                 return false;
             }
-            else if (data.status == "success")
+            else
             {
                 window.location.reload(true);
             }
