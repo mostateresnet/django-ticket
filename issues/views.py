@@ -151,7 +151,12 @@ def new_issue(request, slug):
         issue.creator = request.user
         issue.closed_by_revision = u''
         issue.project = project
-        issue.status = 'UA'
+
+        if (issue.assigned_to):
+            issue.status = 'AS'
+        else:
+            issue.status = 'UA'
+
         issue.save()
         form.save_m2m()
         return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')

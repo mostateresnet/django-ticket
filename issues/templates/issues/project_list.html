@@ -66,26 +66,7 @@
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                                 {% endif %}                            
                             </div>
-                        {% endfor %}
-                        {% for issue in project.assigned_issues|slice:":10" %}
-                            <div class="issue project-issue assigned clear hidden">
-                                {{ issue }} 
-                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
-                                <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
-                            </div>
-                        {% endfor %}
-                        {% for issue in project.unassigned_issues|slice:":10" %}
-                            <div class="issue project-issue unassigned hidden">{{ issue }}</div>
-                        {% endfor %}
-                        {% for issue in project.recently_completed_issues|slice:":10" %}
-                            <div class="issue project-issue completed clear hidden">
-                                {{ issue }}
-                                {% if issue.assigned_to %}
-                                    <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
-                                    <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+                        {% endfor %}                        
                         {% for issue in project.recently_deleted_issues|slice:":10" %}
                             <div class="issue project-issue deleted hidden">{{ issue }}</div>
                         {% endfor %}
