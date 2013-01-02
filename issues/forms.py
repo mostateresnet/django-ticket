@@ -19,6 +19,11 @@ class IssueStatusForm(ModelForm):
     class Meta:
         model = Issue
         fields = ('status',)
+        
+class IssueCloseForm(ModelForm):
+    class Meta:
+        model = Issue
+        fields = ('status', 'approved_by')
 
 
 class ProjectForm(ModelForm):

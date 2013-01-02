@@ -345,7 +345,7 @@ $(function() {
             $.ajax({
                 url: "/"+project_slug+"/"+issueid,
                 type: "post",
-                data: "status=CP",
+                data: "status=CP&approved_by="+current_user,
                 error: function () { alert("error"); },
             });
            window.location.reload(true);

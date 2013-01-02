@@ -83,6 +83,7 @@ class Issue(models.Model):
     priority = models.IntegerField(default=-1, blank=False, null=False)
     creator = models.ForeignKey(User, related_name="+")
     assigned_to = models.ForeignKey(User, blank=True, null=True)
+    approved_by = models.ForeignKey(User, blank=True, null=True, related_name="issue_approved_by")
     close_date = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey(Project, null=True)
     days_estimate = models.DecimalField(
@@ -104,6 +105,7 @@ class Issue(models.Model):
                 self.priority = -1
                 self.assigned_to = None
             elif self.status == 'CP' and old.status != 'CP':
+                print "%"*80
                 self.close_date = datetime.datetime.now()
             elif self.assigned_to is None and old.assigned_to is not None:
                 self.status = "UA"

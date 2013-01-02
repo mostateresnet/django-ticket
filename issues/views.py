@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from annoying.utils import HttpResponseReload
-from issues.forms import IssueForm, IssueStatusForm, ProjectForm
+from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -99,7 +99,9 @@ class TagUpdateView(UpdateView):
 class IssueDetailView(UpdateView):
     model = Issue
 
-    def get_form_class(self):       
+    def get_form_class(self):
+        if 'approved_by' in self.request.POST:
+            return IssueCloseForm
         if 'status' in self.request.POST:
             return IssueStatusForm
         else:

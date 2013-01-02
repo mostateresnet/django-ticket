@@ -23,6 +23,7 @@
     <script type="text/javascript">
         var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/tag_line.html' %}{% endspaceless %}{% endfilter %}");
         var project_slug = "{{ project.slug }}";
+        var current_user = "{{ user.pk }}";
     </script>
 
 {% endblock %}
