@@ -263,7 +263,7 @@ $(function() {
     });
     $( ".handle" ).disableSelection();
     $( ".issue_complete" ).click(function(event){
-        var revision = window.prompt("Closed by which revision?","");
+        var revision = window.confirm("Complete this issue?");
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^close-(\d+)$/)[1]);
@@ -292,5 +292,23 @@ $(function() {
             },
             error: function () { alert("error"); },
         });
+    });
+    $( ".issue_add_commit" ).click(function(event){
+        var revision = window.prompt("Enter the revision number below:","");
+        if (revision) {
+            var id = event.currentTarget.id;
+            var issue_id = parseInt(id.match(/^add-commit-(\d+)$/)[1]);
+            var url = window.location.pathname + "createcommit";
+            
+            $.ajax({
+                url: window.location.pathname + "createcommit/",
+                type: "post",
+                data: {'revision': revision, 'issue': issue_id,},
+                success: function() { 
+                    window.location.reload(true);
+                },
+                error: function () { alert("error"); },
+            });
+        }
     });
 });

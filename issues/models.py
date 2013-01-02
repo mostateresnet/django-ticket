@@ -62,9 +62,9 @@ class Project(models.Model):
 
     def in_progress_issues(self):
         return self.issue_set.filter(status="IP")
-        
+
     def needs_review_issues(self):
-        return self.issue_set.filter(status="NR").order_by('close_date');
+        return self.issue_set.filter(status="NR").order_by('close_date')
 
 
 class Issue(models.Model):
@@ -104,7 +104,7 @@ class Issue(models.Model):
                 self.close_date = datetime.datetime.now()
                 self.priority = -1
                 self.assigned_to = None
-            elif self.assigned_to is None and old.assigned_to != None:
+            elif self.assigned_to is None and old.assigned_to is not None:
                 self.status = "UA"
             elif self.assigned_to != old.assigned_to:
                 self.status = "AS"
@@ -148,6 +148,14 @@ class Issue(models.Model):
         return self.title
 
 
+class Commit(models.Model):
+    revision = models.CharField(max_length=40)
+    issue = models.ForeignKey(Issue)
+
+    def __unicode__(self):
+        return self.revision
+
+
 class IssueGroup(models.Model):
     parent = models.ForeignKey('Issue')
 
@@ -169,7 +177,7 @@ class UserMethods(User):
             return completed[0]
         else:
             return None
-            
+
     def needs_review_issues(self):
         return self.issue_set.filter(status='NR').order_by('close_date')
 

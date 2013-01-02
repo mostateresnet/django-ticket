@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.base import TemplateView
-from issues.models import Project, Issue, Milestone, Tag, UserMethods
+from issues.models import Project, Issue, Milestone, Tag, UserMethods, Commit
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
@@ -124,6 +124,14 @@ class IssueDetailView(UpdateView):
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
 
+class CommitCreateView(CreateView):
+    model = Commit
+
+    def form_valid(self, form):
+        pk_id = form.save().pk
+        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+
+
 def issue_detail(request, slug, id):
 #    project = Project.objects.get(slug=slug)
     issue = Issue.objects.get(id=id)
@@ -162,6 +170,7 @@ def new_issue(request, slug):
         return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')
     else:
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
+
 
 def days_apart(start_date, end_date):
     """ Return the number of days apart between two datetimes

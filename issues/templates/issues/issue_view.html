@@ -13,22 +13,34 @@
         <button class ="right issue-button issue_edit" href="">Edit</button>    
     {% endif %}
     <button id="{{ issue.pk }}-work-on" class="right issue-button issue_work_on">Work On</button>    
-    <button id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</button>    
+    <button id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</button>
+    <button id="add-commit-{{ issue.pk }}" class="right issue-button issue_add_commit">Add Commit</button>  
 
     {% if issue.description or issue.notes%}
-    <p class ="clear issue_description">
+    <div class ="clear issue_description">
         {% if issue.description %}
-            <span class="field-header">Description</span><br />
-            {{ issue.description|linebreaksbr }}
+            <div>
+                <span class="field-header">Description</span><br />
+                {{ issue.description|linebreaksbr }}
+            </div>
         {% endif %}
         {% if issue.notes %}
-            {% if issue.description %}
-                <br />
-            {% endif %}
-            <span class="field-header">Notes</span><br />
+            <div>
+                <span class="field-header">Notes</span><br />
+            </div>
             {{ issue.notes|linebreaksbr }}
         {% endif %}
-    </p>
+        {% if issue.commit_set.all %}
+            <div>
+                <span class="field-header">Commits</span><br />
+                <ul>
+                {% for commit in issue.commit_set.all %}
+                    <li>{{ commit }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
     {% endif %}
 
 </div> 
