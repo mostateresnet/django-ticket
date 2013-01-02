@@ -332,3 +332,8 @@ ul.issue-list {
 .errors input{
     background-color: red;
 }
+
+.needs-review
+{
+    background-color: #292929;
+}

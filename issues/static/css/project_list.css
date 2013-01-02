@@ -117,9 +117,10 @@ span.header-in-tabs{
     max-width: 200px;
 }
 
+
 #new_project
 {
-    width: 550px;
+    width: 100%;
     padding: 4px;
     margin: 2px;
 }

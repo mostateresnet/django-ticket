@@ -40,6 +40,10 @@ $(function() {
         function() { $(this).siblings('.details_drop').slideToggle(); } );      
     });
 
+    $( ".issue-nr-title").click(function(e){
+        $(this).siblings('.details_drop').slideToggle();
+    });
+
     $( ".issue_edit").click(function(e){
         $(this).closest('.details_drop').slideUp(
         function() { $(this).closest('.details_drop').siblings('.edit_drop').slideDown(); } );      
@@ -284,7 +288,7 @@ $(function() {
         var n=target.id.split("-");
         var issueid=n[0];
         $.ajax({
-            url: ""+window.location.pathname+issueid,
+            url: "/"+project_slug+"/"+issueid,
             type: "post",
             data: "status=IP",
             success: function() { 
@@ -310,5 +314,33 @@ $(function() {
                 error: function () { alert("error"); },
             });
         }
+    });
+
+    $( ".issue_reject").click(function(e)
+     {
+        var target = event.target;
+        var n=target.id.split("-");
+        var issueid=n[0];
+        $.ajax({
+            url: "/"+project_slug+"/"+issueid,
+            type: "post",
+            data: "status=AS",
+            error: function () { alert("error"); },
+        });
+       window.location.reload(true);
+    });
+
+    $( ".issue_approve").click(function(e)
+     {
+        var target = event.target;
+        var n=target.id.split("-");
+        var issueid=n[0];
+        $.ajax({
+            url: "/"+project_slug+"/"+issueid,
+            type: "post",
+            data: "status=CP",
+            error: function () { alert("error"); },
+        });
+       window.location.reload(true);
     });
 });
