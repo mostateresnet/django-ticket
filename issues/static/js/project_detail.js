@@ -317,29 +317,38 @@ $(function() {
 
     $( ".issue_reject").click(function(e)
      {
-        var target = event.target;
-        var n=target.id.split("-");
-        var issueid=n[0];
-        $.ajax({
-            url: "/"+project_slug+"/"+issueid,
-            type: "post",
-            data: "status=AS",
-            error: function () { alert("error"); },
-        });
-       window.location.reload(true);
+        var confirm = window.confirm("Reject this issue?");
+        if (confirm)
+        {
+            var target = event.target;
+            var n=target.id.split("-");
+            var issueid=n[0];
+            
+            $.ajax({
+                url: "/"+project_slug+"/"+issueid,
+                type: "post",
+                data: "status=AS",
+                error: function () { alert("error"); },
+            });
+           window.location.reload(true);
+        }
     });
 
     $( ".issue_approve").click(function(e)
      {
-        var target = event.target;
-        var n=target.id.split("-");
-        var issueid=n[0];
-        $.ajax({
-            url: "/"+project_slug+"/"+issueid,
-            type: "post",
-            data: "status=CP",
-            error: function () { alert("error"); },
-        });
-       window.location.reload(true);
+        var confirm = window.confirm("Approve this issue?");
+        if (confirm)
+        {
+            var target = event.target;
+            var n=target.id.split("-");
+            var issueid=n[0];
+            $.ajax({
+                url: "/"+project_slug+"/"+issueid,
+                type: "post",
+                data: "status=CP",
+                error: function () { alert("error"); },
+            });
+           window.location.reload(true);
+        }
     });
 });
