@@ -21,7 +21,7 @@
         <button id="{{ issue.pk }}-approve" class="right issue-button issue_approve">Approve</button>
         <button id="{{ issue.pk }}-reject" class="right issue-button issue_reject">Reject</button>  
     {% endif %}
-    {% if issue.description or issue.notes%}
+    {% if issue.description or issue.notes or issue.commit_set.all %}
     <div class ="clear issue_description">
         {% if issue.description %}
             <div>

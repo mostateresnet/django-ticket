@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from annoying.utils import HttpResponseReload
-from issues.forms import IssueForm, IssueCloseForm, IssueStatusForm, ProjectForm
+from issues.forms import IssueForm, IssueStatusForm, ProjectForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -99,16 +99,14 @@ class TagUpdateView(UpdateView):
 class IssueDetailView(UpdateView):
     model = Issue
 
-    def get_form_class(self):
-        if 'closed_by_revision' in self.request.POST:
-            return IssueCloseForm
-        elif 'status' in self.request.POST:
+    def get_form_class(self):       
+        if 'status' in self.request.POST:
             return IssueStatusForm
         else:
             return self.object.form_class()
 
     def get_form_kwargs(self):
-        if 'closed_by_revision' in self.request.POST or 'status' in self.request.POST:
+        if 'status' in self.request.POST:
             return super(IssueDetailView, self).get_form_kwargs()
         else:
             kwargs = super(IssueDetailView, self).get_form_kwargs()
@@ -135,7 +133,6 @@ class CommitCreateView(CreateView):
 def issue_detail(request, slug, id):
 #    project = Project.objects.get(slug=slug)
     issue = Issue.objects.get(id=id)
-    issue.closed_by_revision = int(request.POST['revision'])
     issue.save()
     return HttpResponse("success")
 
@@ -157,7 +154,6 @@ def new_issue(request, slug):
         issue = form.save(commit=False)
         issue.priority = 0
         issue.creator = request.user
-        issue.closed_by_revision = u''
         issue.project = project
 
         if (issue.assigned_to):

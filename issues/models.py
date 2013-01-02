@@ -32,14 +32,14 @@ class Project(models.Model):
         return SafeString('<a href="%s">%s</a>' % (self.get_absolute_url(), self.__unicode__()))
 
     def open_issues(self):
-        return Issue.objects.filter(project=self).filter(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True)).exclude(status='DL').exclude(status='NR').exclude(status='CP')
+        return Issue.objects.filter(project=self).exclude(status='DL').exclude(status='NR').exclude(status='CP')
 
     def get_tags(self):
         # we should filter by project...
         return Tag.objects.all()  # filter(project=self)
 
     def closed_issues(self):
-        return Issue.objects.filter(project=self).exclude(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True)).order_by('-close_date')
+        return Issue.objects.filter(project=self, ).order_by('-close_date')
 
     def filtered_issues(self, status_filter):
         return Issue.objects.filter(project=self, status=status_filter)
@@ -83,7 +83,6 @@ class Issue(models.Model):
     priority = models.IntegerField(default=-1, blank=False, null=False)
     creator = models.ForeignKey(User, related_name="+")
     assigned_to = models.ForeignKey(User, blank=True, null=True)
-    closed_by_revision = models.CharField(max_length=1000, blank=True, null=True)
     close_date = models.DateTimeField(blank=True, null=True)
     project = models.ForeignKey(Project, null=True)
     days_estimate = models.DecimalField(
@@ -95,7 +94,7 @@ class Issue(models.Model):
     issue_group = models.ForeignKey('IssueGroup', blank=True, null=True)
 
     class Meta:
-        ordering = ['project', 'closed_by_revision', '-priority']
+        ordering = ['project', '-priority']
 
     def save(self, *args, **kwargs):
         try:
@@ -104,13 +103,12 @@ class Issue(models.Model):
                 self.close_date = datetime.datetime.now()
                 self.priority = -1
                 self.assigned_to = None
+            elif self.status == 'CP' and old.status != 'CP':
+                self.close_date = datetime.datetime.now()
             elif self.assigned_to is None and old.assigned_to is not None:
                 self.status = "UA"
             elif self.assigned_to != old.assigned_to:
                 self.status = "AS"
-            if not old.closed_by_revision and self.closed_by_revision:
-                self.close_date = datetime.datetime.now()
-                self.status = "NR"
         except Issue.DoesNotExist:
             pass
         super(Issue, self).save(*args, **kwargs)
@@ -118,7 +116,6 @@ class Issue(models.Model):
     def close(self, revision, when=None):
         if not when:
             when = datetime.datetime.now().date()
-        self.closed_by_revision = int(revision)
         self.close_date = when
         self.save()
 
