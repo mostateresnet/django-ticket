@@ -302,10 +302,9 @@ $(function() {
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^add-commit-(\d+)$/)[1]);
-            var url = window.location.pathname + "createcommit";
             
             $.ajax({
-                url: window.location.pathname + "createcommit/",
+                url:  "/"+project_slug+"/"+"createcommit/",
                 type: "post",
                 data: {'revision': revision, 'issue': issue_id,},
                 success: function() { 
