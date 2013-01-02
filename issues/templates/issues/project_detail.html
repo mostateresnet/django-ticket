@@ -56,31 +56,33 @@
             <ul class="issue-list">
 
                 {% for issue in project.needs_review_issues %}
-                 <li id="issue-nr-{{ issue.pk }}" class="issue needs-review">
-                    <span class="assigned-to">
-                        {% if issue.assigned_to %}
-                            {% if issue.assigned_to.get_full_name %}
-                                <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.get_full_name }}</a>
+                    {% if issue.assigned_to != user %}
+                     <li id="issue-nr-{{ issue.pk }}" class="issue needs-review">
+                        <span class="assigned-to">
+                            {% if issue.assigned_to %}
+                                {% if issue.assigned_to.get_full_name %}
+                                    <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.get_full_name }}</a>
+                                {% else %}
+                                    <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
+                                {% endif %}
+                              <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32>
                             {% else %}
-                                <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
+                                &nbsp;
                             {% endif %}
-                          <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32>
-                        {% else %}
-                            &nbsp;
-                        {% endif %}
-                    </span>
+                        </span>
 
-                        <span class="issue-nr-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
-                      
-                        <div class = "tag_list">
-                          {% for tag in issue.tags.all %}
-                            <div class = "tag tag_{{ tag.pk }}">{{ tag.label }}</div>
-                          {% endfor %}
-                        </div>
+                            <span class="issue-nr-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
+                          
+                            <div class = "tag_list">
+                              {% for tag in issue.tags.all %}
+                                <div class = "tag tag_{{ tag.pk }}">{{ tag.label }}</div>
+                              {% endfor %}
+                            </div>
 
-                            {% include 'issues/issue_view.html' %}
-                      <div style = "clear: both;"></div>
-                    </li>
+                                {% include 'issues/issue_view.html' %}
+                          <div style = "clear: both;"></div>
+                        </li>
+                    {% endif %}
                 {% endfor %}
 
             </ul>
