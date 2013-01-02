@@ -62,6 +62,9 @@ class Project(models.Model):
 
     def in_progress_issues(self):
         return self.issue_set.filter(status="IP")
+        
+    def needs_review_issues(self):
+        return self.issue_set.filter(status="NR").order_by('close_date');
 
 
 class Issue(models.Model):
@@ -71,6 +74,7 @@ class Issue(models.Model):
         ('IP', 'In Progress'),
         ('UA', 'Unassigned'),
         ('CP', 'Completed'),
+        ('NR', 'Needs Review'),
         ('DL', 'Deleted'),
     )
 
@@ -96,15 +100,17 @@ class Issue(models.Model):
     def save(self, *args, **kwargs):
         try:
             old = Issue.objects.get(pk=self.pk)
-            if self.status == 'DL':
+            if self.status == 'DL' and old.status != 'DL':
                 self.close_date = datetime.datetime.now()
-            elif self.assigned_to is None:
+                self.priority = -1
+                self.assigned_to = None
+            elif self.assigned_to is None and old.assigned_to != None:
                 self.status = "UA"
             elif self.assigned_to != old.assigned_to:
                 self.status = "AS"
             if not old.closed_by_revision and self.closed_by_revision:
                 self.close_date = datetime.datetime.now()
-                self.status = "CP"
+                self.status = "NR"
         except Issue.DoesNotExist:
             pass
         super(Issue, self).save(*args, **kwargs)
@@ -163,6 +169,9 @@ class UserMethods(User):
             return completed[0]
         else:
             return None
+            
+    def needs_review_issues(self):
+        return self.issue_set.filter(status='NR').order_by('close_date')
 
     class Meta:
         proxy = True

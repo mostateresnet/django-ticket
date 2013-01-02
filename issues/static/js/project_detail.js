@@ -271,7 +271,7 @@ $(function() {
             
             $.post(
                 url,
-                {'closed_by_revision': revision, 'status':'CP',},
+                {'closed_by_revision': revision, 'status':'NR',},
                 function(data, textStatus, jqXHR) {
                     if (textStatus == "success"){
                         $( '#issue-'+issue_id ).remove();

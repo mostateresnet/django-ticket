@@ -55,6 +55,13 @@
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                             </div>
                         {% endfor %}
+                        {% for issue in project.needs_review_issues %}
+                            <div class="issue project-issue needs-review clear hidden">
+                                {{ issue }} 
+                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                            </div>
+                        {% endfor %}
                         {% for issue in project.unassigned_issues|slice:":10" %}
                             <div class="issue project-issue unassigned hidden">{{ issue }}</div>
                         {% endfor %}
@@ -129,6 +136,11 @@
                         {% endfor %}
                         {% for issue in user.completed_issues|slice:":5" %}
                             <div class="issue user-issue completed clear hidden">
+                                {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            </div>
+                        {% endfor %}
+                        {% for issue in user.needs_review_issues %}
+                            <div class="issue user-issue needs-review clear hidden">
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                             </div>
                         {% endfor %}
