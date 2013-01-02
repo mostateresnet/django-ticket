@@ -32,7 +32,7 @@ class Project(models.Model):
         return SafeString('<a href="%s">%s</a>' % (self.get_absolute_url(), self.__unicode__()))
 
     def open_issues(self):
-        return Issue.objects.filter(project=self).filter(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True)).exclude(status='DL')
+        return Issue.objects.filter(project=self).filter(Q(closed_by_revision=u'') or Q(closed_by_revision__isnull=True)).exclude(status='DL').exclude(status='NR').exclude(status='CP')
 
     def get_tags(self):
         # we should filter by project...
