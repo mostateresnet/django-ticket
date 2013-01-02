@@ -33,7 +33,11 @@
     {% csrf_token %}
     
     <section id="project-detail">
+        {% if project.git_url %}
+            <a class="right" href="{{ project.git_url }}" target="_blank">View on GitHub</a>
+        {% endif %}
         <h3>{{ object }}</h3>
+
         <button type = "button" id="new-issue-button"> Add Issue </button>
 
 

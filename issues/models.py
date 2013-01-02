@@ -24,6 +24,7 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50, unique=True)
     status = models.CharField(max_length="64", default='AC', choices=STATUS_CHOICES)
+    git_url = models.CharField(max_length=1024, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
