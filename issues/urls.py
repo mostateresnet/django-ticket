@@ -16,4 +16,5 @@ urlpatterns = patterns('',
                        url(r'^(?P<slug>[\w-]+)/tags/$', TagCreateView.as_view(), name="tag_create_view"),
                        url(r'^(?P<slug>[\w-]+)/tags/(?P<pk>\d+)$', TagUpdateView.as_view(), name="tag_update_view"),
                        url(r'^(?P<slug>[\w-]+)/createcommit/$', CommitCreateView.as_view(), name="commit_create_view"),
+                       url(r'^(?P<slug>[\w-]+)/createnote/$', NoteCreateView.as_view(), name="note_create_view"),
                        )

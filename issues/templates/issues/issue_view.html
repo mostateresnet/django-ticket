@@ -21,7 +21,9 @@
         <button id="{{ issue.pk }}-approve" class="right issue-button issue_approve">Approve</button>
         <button id="{{ issue.pk }}-reject" class="right issue-button issue_reject">Reject</button>  
     {% endif %}
-    {% if issue.description or issue.notes or issue.commit_set.all %}
+    <button id="add-note-{{ issue.pk }}" class="right issue-button issue_add_note">Add Note</button>                  
+
+    {% if issue.description or issue.note_set.all or issue.commit_set.all %}
     <div class ="clear issue_description">
         {% if issue.description %}
             <div>
@@ -34,9 +36,8 @@
                 <span class="field-header">Notes</span><br />
             </div>
             {% for note in issue.note_set.all %}
-                <div>{{ note.creator }} on {{ note.created }} {{ note.label|linebreaksbr }}</div>
+                <div>{{ note.creator.get_full_name }} on {{ note.created|date:"DATE_FORMAT" }} </br>&emsp; {{ note.label|linebreaksbr }}</div>
             {% endfor %}
-
         {% endif %}
 
         

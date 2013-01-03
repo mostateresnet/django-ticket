@@ -314,6 +314,25 @@ $(function() {
             });
         }
     });
+    //DRY these out?!
+    $( ".issue_add_note" ).click(function(event)
+    {
+        var note = window.prompt("Note:","");
+        if (note) {
+            var id = event.currentTarget.id;
+            var issue_id = parseInt(id.match(/^add-note-(\d+)$/)[1]);
+            
+            $.ajax({
+                url:  "/"+project_slug+"/"+"createnote/",
+                type: "post",
+                data: {'label': note, 'issue': issue_id, 'creator': current_user},
+                success: function() { 
+                    window.location.reload(true);
+                },
+                error: function () { alert("error"); },
+            });
+        }
+    });
 
     $( ".issue_reject").click(function(e)
      {

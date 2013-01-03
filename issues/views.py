@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.base import TemplateView
-from issues.models import Project, Issue, Milestone, Tag, UserMethods, Commit
+from issues.models import Project, Issue, Milestone, Tag, UserMethods, Commit, Note
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
@@ -140,6 +140,13 @@ class IssueDetailView(UpdateView):
 
 class CommitCreateView(CreateView):
     model = Commit
+
+    def form_valid(self, form):
+        pk_id = form.save().pk
+        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+
+class NoteCreateView(CreateView):
+    model = Note
 
     def form_valid(self, form):
         pk_id = form.save().pk
