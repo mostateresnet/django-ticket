@@ -115,7 +115,7 @@
             <div id="users-assigned" class="user-tab tab assigned">Assigned</div>
             <div id="users-needs-review" class="user-tab tab needs-review" style="width: 90px;">Needs Review</div>
             <div id="users-completed" class="user-tab tab completed">Completed</div>
-            <div id="users-reorder" class="user-tab tab reorder">Manage</div>
+            <!-- <div id="users-reorder" class="user-tab tab reorder">Manage</div> -->
         </div>
         <div id="user-issues" class="content-border">
             {% for user in users %}
@@ -151,6 +151,7 @@
                 {% endif %}
             {% endfor %}
         </div>
+        <!--
         <div id="user-sort" class="content-border hidden">
             <span class="small right"><a href="">New User</a></span>
             <ul id="sortable-users" class="sortable">
@@ -159,5 +160,6 @@
                 {% endfor %}
             </ul>
         </div>
+        -->
     </section>   
 {% endblock %}
