@@ -27,14 +27,13 @@ $(function()
         update: function( event, ui) {
             var id = (this).id
             var sortedIDs = $("#"+id).sortable("toArray");
-            alert(sortedIDs);
             if (id == "sortable-projects")
             {
             $.ajax({
                 url: "/project_sort/",
                 type: "POST",
                 data: {'sorted_ids':sortedIDs,},
-                success: function () { alert("success"); },
+                success: function () {},
                 error: function () { alert("error"); },
             });
             }
