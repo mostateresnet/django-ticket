@@ -115,17 +115,18 @@
                 {% endif %}
                 <span class="assigned-to">
                     {% if issue.assigned_to %}
-                        {% if issue.assigned_to.get_full_name %}
-                            <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.get_full_name }}</a>
-                        {% else %}
-                            <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
-                        {% endif %}
-                      <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32>
-                      {% if issue.status == 'IP' %}
-                        <span class="clock">
-                            <img src="{{ STATIC_URL }}img/clock.gif" width=32 height=32/> 
-                        </span>
-                        {% endif %}
+                        <div style="position: relative; left:0; top:0">
+                            {% if issue.assigned_to.get_full_name %}
+                                <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.get_full_name }}</a>
+                            {% else %}
+                                <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
+                            {% endif %}
+                            {% if issue.status == 'IP' %}
+                                <img src="{{ STATIC_URL }}img/clock.gif" width=32 height=32 style="background: url({{ issue.assigned_to.email|gravatar }})"/> 
+                            {% else %}
+                                <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32 />
+                            {% endif %}
+                        </div>
                     {% else %}
                         &nbsp;
                     {% endif %}
