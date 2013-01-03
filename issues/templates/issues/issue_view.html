@@ -23,7 +23,9 @@
     {% endif %}
     <button id="add-note-{{ issue.pk }}" class="right issue-button issue_add_note">Add Note</button>                  
 
-    {% if issue.description or issue.note_set.all or issue.commit_set.all %}
+    {% with commits=issue.commit_set.all notes=issue.note_set.all %}
+    
+    {% if issue.description or notes or commits %}
     <div class ="clear issue_description">
         {% if issue.description %}
             <div>
@@ -31,21 +33,21 @@
                 {{ issue.description|linebreaksbr }}
             </div>
         {% endif %}
-        {% if issue.note_set.all %}
+        {% if notes %}
             <div>
                 <span class="field-header">Notes</span><br />
             </div>
-            {% for note in issue.note_set.all %}
+            {% for note in notes %}
                 <div>{{ note.creator.get_full_name }} on {{ note.created|date:"DATE_FORMAT" }} </br>&emsp; {{ note.label|linebreaksbr }}</div>
             {% endfor %}
         {% endif %}
 
         
-        {% if issue.commit_set.all %}
+        {% if commits %}
             <div>
                 <span class="field-header">Commits</span><br />
                 <ul>
-                {% for commit in issue.commit_set.all %}
+                {% for commit in commits %}
                     {% if issue.project.scm_owner and issue.project.scm_repo %}
                         {% if issue.project.scm_type = 'GH' %}
                          <li><a href="https://github.com/{{ issue.project.scm_owner }}/{{ issue.project.scm_repo }}/commit/{{ commit }}" target="_blank">{{ commit }}</a> &emsp; on {{ commit.created }}</li>
@@ -61,6 +63,7 @@
         {% endif %}
     </div>
     {% endif %}
+    {% endwith %}
 
 </div> 
 
