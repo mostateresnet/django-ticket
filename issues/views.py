@@ -52,17 +52,18 @@ class ProjectNewView(CreateView):
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'status': 'error', 'message': form.errors.as_text()}), mimetype='application/json')
 
+
 class ProjectSortView(UpdateView):
     @transaction.commit_on_success
     def post(self, args):
         sorted_ids = self.request.POST.getlist('sorted_ids[]')
-        i=1
+        i = 1
         for id in sorted_ids:
-            p=Project.objects.get(pk=id)
+            p = Project.objects.get(pk=id)
             print p
-            p.priority=i
+            p.priority = i
             p.save()
-            i+=1
+            i += 1
         return HttpResponse("success")
 
 
@@ -144,6 +145,7 @@ class CommitCreateView(CreateView):
     def form_valid(self, form):
         pk_id = form.save().pk
         return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+
 
 class NoteCreateView(CreateView):
     model = Note

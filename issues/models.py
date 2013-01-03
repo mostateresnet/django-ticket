@@ -12,6 +12,7 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.label
 
+
 class Project(models.Model):
     STATUS_CHOICES = (
         ('AC', 'Active'),
@@ -35,7 +36,7 @@ class Project(models.Model):
 
     class Meta:
         ordering = ['priority']
-    
+
     def __unicode__(self):
         return self.name
 
@@ -76,12 +77,12 @@ class Project(models.Model):
 
     def needs_review_issues(self):
         return self.issue_set.filter(status="NR").order_by('close_date')
-        
+
     def save(self, *args, **kwargs):
         if self.status == "AC":
             if self.pk is None or Project.objects.get(pk=self.pk).status != "AC":
                 active_projects = Project.objects.filter(status="AC").count()
-                self.priority=active_projects+1
+                self.priority = active_projects + 1
         else:
             self.priority = -1
         super(Project, self).save(*args, **kwargs)
@@ -114,7 +115,6 @@ class Issue(models.Model):
     issue_group = models.ForeignKey('IssueGroup', blank=True, null=True)
     created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
 
-
     class Meta:
         ordering = ['project', '-priority']
 
@@ -126,7 +126,7 @@ class Issue(models.Model):
                 self.priority = -1
                 self.assigned_to = None
             elif self.status == 'CP' and old.status != 'CP':
-                print "%"*80
+                print "%" * 80
                 self.close_date = datetime.datetime.now()
             elif self.assigned_to is None and old.assigned_to is not None:
                 self.status = "UA"
@@ -217,6 +217,7 @@ class Milestone(models.Model):
     def __unicode__(self):
         return str(self.deadline.date())
 
+
 class Note(models.Model):
     label = models.CharField(max_length=1000)
     created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
@@ -225,4 +226,3 @@ class Note(models.Model):
 
     def __unicode__(self):
         return self.label
-
