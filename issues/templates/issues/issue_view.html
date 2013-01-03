@@ -29,12 +29,17 @@
                 {{ issue.description|linebreaksbr }}
             </div>
         {% endif %}
-        {% if issue.notes %}
+        {% if issue.note_set.all %}
             <div>
                 <span class="field-header">Notes</span><br />
             </div>
-            {{ issue.notes|linebreaksbr }}
+            {% for note in issue.note_set.all %}
+                <div>{{ note.creator }} on {{ note.created }} {{ note.label|linebreaksbr }}</div>
+            {% endfor %}
+
         {% endif %}
+
+        
         {% if issue.commit_set.all %}
             <div>
                 <span class="field-header">Commits</span><br />

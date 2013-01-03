@@ -12,7 +12,6 @@ class Tag(models.Model):
     def __unicode__(self):
         return self.label
 
-
 class Project(models.Model):
     STATUS_CHOICES = (
         ('AC', 'Active'),
@@ -31,7 +30,7 @@ class Project(models.Model):
     status = models.CharField(max_length="64", default='AC', choices=STATUS_CHOICES)
     scm_owner = models.CharField(max_length=64, null=True, blank=True)
     scm_repo = models.CharField(max_length=64, null=True, blank=True)
-    scm_type = models.CharField(max_length="64", default='GH', choices=SCM_CHOICES)
+    scm_type = models.CharField(max_length="64", default='GH', choices=SCM_CHOICES, null=True, blank=True)
     priority = models.IntegerField(default=-1, blank=False, null=False)
 
     def __unicode__(self):
@@ -100,7 +99,6 @@ class Issue(models.Model):
     milestone = models.ForeignKey('Milestone', null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
-    notes = models.CharField(max_length="1000", blank=True, null=True)
     issue_group = models.ForeignKey('IssueGroup', blank=True, null=True)
     created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
 
@@ -206,3 +204,13 @@ class Milestone(models.Model):
 
     def __unicode__(self):
         return str(self.deadline.date())
+
+class Note(models.Model):
+    label = models.CharField(max_length=1000)
+    created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
+    issue = models.ForeignKey('Issue', blank=True, null=True)
+    creator = models.ForeignKey(User, related_name="+")
+
+    def __unicode__(self):
+        return self.label
+

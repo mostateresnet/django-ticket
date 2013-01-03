@@ -1,4 +1,4 @@
-from issues.models import Issue, Milestone, Tag, Project, Commit
+from issues.models import Issue, Milestone, Tag, Project, Commit, Note
 from django.contrib import admin
 
 
@@ -30,3 +30,4 @@ class TagsAdmin(admin.ModelAdmin):
 admin.site.register(Tag, TagsAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Commit)
+admin.site.register(Note)
