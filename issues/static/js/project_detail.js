@@ -317,41 +317,52 @@ $(function() {
     //DRY these out?!
     $( ".issue_add_note" ).click(function(event)
     {
-        var note = window.prompt("Note:","");
-        if (note) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^add-note-(\d+)$/)[1]);
-            
-            $.ajax({
-                url:  "/"+project_slug+"/"+"createnote/",
-                type: "post",
-                data: {'label': note, 'issue': issue_id, 'creator': current_user},
-                success: function() { 
-                    window.location.reload(true);
-                },
-                error: function () { alert("error"); },
-            });
-        }
+
+            postNote('', issue_id, true);
     });
 
     $( ".issue_reject").click(function(e)
      {
-        var confirm = window.confirm("Reject this issue?");
-        if (confirm)
-        {
             var target = event.target;
             var n=target.id.split("-");
             var issueid=n[0];
-            
+
+           if (postNote('REJECTED: ', issueid, false))
+           {
             $.ajax({
                 url: "/"+project_slug+"/"+issueid,
                 type: "post",
                 data: "status=AS",
                 error: function () { alert("error"); },
             });
-           window.location.reload(true);
-        }
+
+            window.location.reload(true);
+           }
+
     });
+
+    function postNote(prepend, issue_id, reload)
+    {
+        var note = window.prompt("Add Note:","");
+        if (note) 
+        {           
+            $.ajax({
+                url:  "/"+project_slug+"/"+"createnote/",
+                type: "post",
+                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user},
+                success: function() 
+                {
+                    if (reload == true) 
+                    { window.location.reload(true); }
+                },
+                error: function () { alert("error"); },
+            });
+            return true;
+        }
+        return false;
+    }
 
     $( ".issue_approve").click(function(e)
      {
