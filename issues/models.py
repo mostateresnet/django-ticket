@@ -32,6 +32,7 @@ class Project(models.Model):
     scm_owner = models.CharField(max_length=64, null=True, blank=True)
     scm_repo = models.CharField(max_length=64, null=True, blank=True)
     scm_type = models.CharField(max_length="64", default='GH', choices=SCM_CHOICES)
+    priority = models.IntegerField(default=-1, blank=False, null=False)
 
     def __unicode__(self):
         return self.name
