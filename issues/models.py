@@ -33,6 +33,9 @@ class Project(models.Model):
     scm_type = models.CharField(max_length="64", default='GH', choices=SCM_CHOICES, null=True, blank=True)
     priority = models.IntegerField(default=-1, blank=False, null=False)
 
+    class Meta:
+        ordering = ['priority']
+    
     def __unicode__(self):
         return self.name
 
@@ -73,6 +76,15 @@ class Project(models.Model):
 
     def needs_review_issues(self):
         return self.issue_set.filter(status="NR").order_by('close_date')
+        
+    def save(self, *args, **kwargs):
+        if self.status == "AC":
+            if self.pk is None or Project.objects.get(pk=self.pk).status != "AC":
+                active_projects = Project.objects.filter(status="AC").count()
+                self.priority=active_projects+1
+        else:
+            self.priority = -1
+        super(Project, self).save(*args, **kwargs)
 
 
 class Issue(models.Model):

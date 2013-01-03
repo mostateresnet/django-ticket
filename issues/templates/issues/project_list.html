@@ -16,14 +16,14 @@
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script>
     $(function() {
-        $( ".sortable" ).sortable();
-        $( ".sortable" ).disableSelection();
+
     });
     </script>
 {% endblock %}
 
 {% block content %}
     {{ block.super }}
+    {% csrf_token %}
     <section id="projects" class='left'>
         <h3 class="header">Projects</h3>
         <div id="tab-buttons" class="tab-buttons">
@@ -91,7 +91,7 @@
             <ul id="sortable-projects" class="sortable">
                 {% for project in object_list %}
                     {% if project.status == "AC" %}
-                        <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ project }}</li>
+                        <li class="ui-state-default" id="{{ project.pk }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ project }}</li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -155,7 +155,7 @@
             <span class="small right"><a href="">New User</a></span>
             <ul id="sortable-users" class="sortable">
                 {% for user in users %}
-                    <li class="ui-state-default"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ user.first_name }} {{ user.last_name }}</li>
+                    <li class="ui-state-default" id="{{ user.pk }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ user.first_name }} {{ user.last_name }}</li>
                 {% endfor %}
             </ul>
         </div>

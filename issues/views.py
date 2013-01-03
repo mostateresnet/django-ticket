@@ -9,6 +9,7 @@ from issues.models import Project, Issue, Milestone, Tag, UserMethods, Commit
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
+from django.db import transaction
 from annoying.utils import HttpResponseReload
 from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm
 from django.contrib.auth.decorators import login_required
@@ -50,6 +51,19 @@ class ProjectNewView(CreateView):
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'status': 'error', 'message': form.errors.as_text()}), mimetype='application/json')
+
+class ProjectSortView(UpdateView):
+    @transaction.commit_on_success
+    def post(self, args):
+        sorted_ids = self.request.POST.getlist('sorted_ids[]')
+        i=1
+        for id in sorted_ids:
+            p=Project.objects.get(pk=id)
+            print p
+            p.priority=i
+            p.save()
+            i+=1
+        return HttpResponse("success")
 
 
 class ProjectDetailView(DetailView):

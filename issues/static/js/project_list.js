@@ -1,5 +1,51 @@
 $(function() 
 {
+    // Prevents CSRF for AJAX
+    $('html').ajaxSend(function(event, xhr, settings) {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+            // Only send the token to relative URLs i.e. locally.
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+    });
+    
+    $( ".sortable" ).sortable({
+        update: function( event, ui) {
+            var id = (this).id
+            var sortedIDs = $("#"+id).sortable("toArray");
+            alert(sortedIDs);
+            if (id == "sortable-projects")
+            {
+            $.ajax({
+                url: "/project_sort/",
+                type: "POST",
+                data: {'sorted_ids':sortedIDs,},
+                success: function () { alert("success"); },
+                error: function () { alert("error"); },
+            });
+            }
+            else if (id == "sortable-users")
+            {
+            
+            }
+        }
+    });
+    $( ".sortable" ).disableSelection();
+    
     $( '#new_project_button').click(function(e)
     {
         $('#new_project').slideDown();    
