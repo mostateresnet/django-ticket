@@ -42,9 +42,9 @@
                 {% for commit in issue.commit_set.all %}
                     {% if issue.project.scm_owner and issue.project.scm_repo %}
                         {% if issue.project.scm_type = 'GH' %}
-                         <li><a href="https://github.com/{{ issue.project.scm_owner }}/{{ issue.project.scm_repo }}/commit/{{ commit }}" target="_blank">{{ commit }}</a></li>
+                         <li><a href="https://github.com/{{ issue.project.scm_owner }}/{{ issue.project.scm_repo }}/commit/{{ commit }}" target="_blank">{{ commit }}</a> &emsp; on {{ commit.created }}</li>
                         {% elif issue.project.scm_type = 'BB' %}
-                         <li><a href="https://bitbucket.org/{{ issue.project.scm_owner }}/{{ issue.project.scm_repo }}/commits/{{ commit }}" target="_blank">{{ commit }}</a></li>
+                         <li><a href="https://bitbucket.org/{{ issue.project.scm_owner }}/{{ issue.project.scm_repo }}/commits/{{ commit }}" target="_blank">{{ commit }}</a> &emsp; on {{ commit.created }}</li>
                         {% endif %}
                     {% else %}
                         <li>{{ commit }}</li>

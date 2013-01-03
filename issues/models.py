@@ -102,6 +102,8 @@ class Issue(models.Model):
     status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
     notes = models.CharField(max_length="1000", blank=True, null=True)
     issue_group = models.ForeignKey('IssueGroup', blank=True, null=True)
+    created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
+
 
     class Meta:
         ordering = ['project', '-priority']
@@ -159,6 +161,7 @@ class Issue(models.Model):
 class Commit(models.Model):
     revision = models.CharField(max_length=40)
     issue = models.ForeignKey(Issue)
+    created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
 
     def __unicode__(self):
         return self.revision
