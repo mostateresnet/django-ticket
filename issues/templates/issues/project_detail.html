@@ -33,8 +33,12 @@
     {% csrf_token %}
     
     <section id="project-detail">
-        {% if project.git_url %}
-            <a class="right" href="{{ project.git_url }}" target="_blank">View on GitHub</a>
+        {% if project.scm_owner and project.scm_repo %}
+            {% if project.scm_type = 'GH' %}
+                <a class="right" href="https://github.com/{{ project.scm_owner }}/{{ project.scm_repo }}" target="_blank">View on GitHub</a>
+            {% elif project.scm_type = 'BB' %}
+                <a class="right" href="https://bitbucket.org/{{ project.scm_owner }}/{{ project.scm_repo }}" target="_blank">View on BitBucket</a>
+            {% endif %}
         {% endif %}
         <h3>{{ object }}</h3>
 
