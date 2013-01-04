@@ -58,6 +58,11 @@
                             {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                         </div>
                     {% endfor %}
+                    {% for issue in user_data.needs_review_issues %}
+                        <div class="issue user-issue needs-review clear hidden">
+                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

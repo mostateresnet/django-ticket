@@ -203,7 +203,7 @@ class UserMethods(User):
             return None
 
     def needs_review_issues(self):
-        return self.issue_set.filter(status='NR').order_by('close_date')
+        return self.issue_set.filter(status='NR')
 
     class Meta:
         proxy = True
