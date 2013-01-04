@@ -206,14 +206,14 @@ class UserMethods(User):
 
 class Milestone(models.Model):
     project = models.ForeignKey(Project)
-    deadline = models.DateTimeField(default=now)
+    deadline = models.DateField(default=now)
 
     @models.permalink
     def get_chart_url(self):
         return ('burndown_chart', (), {'slug': self.project.slug, 'pk': self.pk})
 
     def __unicode__(self):
-        return str(self.deadline.date())
+        return str(self.deadline)
 
 
 class Note(models.Model):
