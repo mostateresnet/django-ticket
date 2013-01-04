@@ -6,6 +6,7 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/project_list.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/tab_lists.css" />
 {% endblock %}
 
 {% block js %}
@@ -15,9 +16,7 @@
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script>
-    $(function() {
-
-    });
+        PROJECT_SORT_URL = '{% url project_sort %}';
     </script>
 {% endblock %}
 
@@ -40,7 +39,7 @@
             {% if project.status == "AC" %}
                 <div class="project">
                     <img class="collapse_issue node left" src="{{ STATIC_URL}}img/collapse.png" /><h4 class="left">{{ project.as_a }}</h4>
-                    <div class="project-issue-list collapse-issue-list clear">
+                    <div class="nojump collapse-issue-list clear">
                         {% for issue in project.in_progress_issues|slice:":10" %}
                             <div class="issue project-issue in-progress clear">
                                 {{ issue }} 

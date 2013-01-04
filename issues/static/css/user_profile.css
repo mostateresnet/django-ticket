@@ -1,193 +1,22 @@
-#users{
-    width: 36%;
-    margin-left: 1%;
+#users_profile, #users_stats
+{
     padding: 1%;
     border-radius: 5px;
 }
 
-#users_profile{
-    padding: 1%;
-    border-radius: 5px;
+#users_profile
+{
     width: 75%;
     min-width: 500px;
 }
 
-#users_stats{
+#users_stats
+{
     margin-left: 1%;
-    padding: 1%;
-    border-radius: 5px;
     width: 20%;
     min-width: 100px;
 }
 
-#projects{
-    width: 58%;
-    margin-right: 1%;
-    padding: 1%;
-    border-radius: 5px;
-}
-
-span.header-in-tabs{
-    font-size:15pt;
-    padding-top:-5px;
-    padding-right:5px;
-}
-
-.content-border{
-    border: 1px solid #444;
-    border-radius: 0px 5px 5px 5px;
-    padding: 10px;
-}
-
-.node
-{
-    margin-right: 5px;
-    -webkit-transition: all 500ms ease-in-out;
-    -moz-transition: all 500ms ease-in-out;
-    -o-transition: all 500ms ease-in-out;
-    -ms-transition: all 500ms ease-in-out;
-}
-
-.project-issue-list
-{
-  white-space: nowrap;
-}
-#project-issues{
-
-}
-
-#project-sort{
-
-}
-
-.project{
-    padding: 5px;
-    margin-bottom: 5px;
-}
-
-.user{
-    padding: 5px;
-    margin-bottom: 5px;
-}
-
-.tabs{
-    padding: 0px;
-    border-radius: 3px;
-    border:none;
-    width:100%;
-}
-
-.tabs ul a{
-    font-size:9pt;
-}
-
-.active{
-    background-color: #444;
-}
-
-.project-tab{
-    width: 90px;
-}
-
-.user-tab{
-    width: 70px;
-}
-
-.tab{
-    text-align: center;
-    border: 1px solid #444;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
-    display: inline-block;
-    border-bottom: none;
-}
-
-.tab:hover{
-    background-color: #444;
-    cursor: pointer;
-}
-
-.statistic
-{
-   font-weight:bold;
-}
-
-.small_text_wrap
-{
-    max-width: 200px;
-}
-
-
-#new_project
-{
-    width: 100%;
-    padding: 4px;
-    margin: 2px;
-}
-
-#form_error{
-    color: red;
-}
-
-
-.issue:nth-last-of-type(2n)	
-{ 
-    background-color: #242424;
-}
-
-.issue:hover
-{
-    background-color: #444444;
-    color: #DDD;
-
-}
-
-.issue {
-    overflow: auto;
-    margin-left: 2em;
-    margin-right: 1em;
-    color: #999999;
-}
-
-h4{
-    margin: 0px;
-    font-size: 14px;
-}
-
-.hr{
-    border-top: 1px solid #444;
-    width: 200px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-.sortable { 
-    list-style-type: none; 
-    margin: 5px; 
-    padding: 0; 
-}
-
-#other-projects{
-    width: 400px;
-    padding: 5px;
-}
-
-.other-project:nth-last-of-type(2n)	
-{ 
-    background-color: #242424;
-}
-
-.sortable li { 
-    margin: 0 3px 3px 3px; 
-    padding: 0.4em; 
-    padding-left: 1.5em; 
-    font-size: 1.4em; 
-}
-
-.sortable li span { 
-    position: absolute; 
-    margin-left: -1.3em; 
-}
+.statistic { font-weight:bold; }
+.small_text_wrap { max-width: 200px; }
 

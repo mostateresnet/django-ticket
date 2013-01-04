@@ -30,7 +30,7 @@ $(function()
             if (id == "sortable-projects")
             {
             $.ajax({
-                url: "/project_sort/",
+                url: PROJECT_SORT_URL,
                 type: "POST",
                 data: {'sorted_ids':sortedIDs,},
                 success: function () {},
