@@ -57,12 +57,12 @@ class ProjectSortView(UpdateView):
     @transaction.commit_on_success
     def post(self, *args, **kwargs):
         sorted_ids = self.request.POST.getlist('sorted_ids[]')
-        i = 1
+        i = len(sorted_ids)
         for id in sorted_ids:
             p = Project.objects.get(pk=id)
             p.priority = i
             p.save()
-            i += 1
+            i -= 1
         return HttpResponse("success")
 
 

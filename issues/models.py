@@ -35,7 +35,7 @@ class Project(models.Model):
     priority = models.IntegerField(default=-1, blank=False, null=False)
 
     class Meta:
-        ordering = ['priority']
+        ordering = ['-priority']
 
     def __unicode__(self):
         return self.name
@@ -79,11 +79,7 @@ class Project(models.Model):
         return self.issue_set.filter(status="NR").order_by('close_date')
 
     def save(self, *args, **kwargs):
-        if self.status == "AC":
-            if self.pk is None or Project.objects.get(pk=self.pk).status != "AC":
-                active_projects = Project.objects.filter(status="AC").count()
-                self.priority = active_projects + 1
-        else:
+        if self.status != "AC":
             self.priority = -1
         super(Project, self).save(*args, **kwargs)
 
