@@ -1,3 +1,4 @@
+{% load gravatar %}
 <!DOCTYPE html>
 <html>
     {% block head %}
@@ -20,8 +21,19 @@
           <section id="container">
             <header>
                 <h1><a href="{% url project_list %}">Issues</a></h1>
-                <span>{{ user }}</span>
+                <span class = "user_title">
+                    Logged in as: 
+                    {% if user.pk %}
+                    <a href="{% url user_profile_view user_id=user.pk %}">{{ user.get_full_name }}</a>
+                    <img src= "{{ user.email|gravatar }}" class = "gravatar_medium">
+                    {% else %}
+                    {{ user }}
+                    <img src= "{{ nothing|gravatar }}" class = "gravatar_medium">
+                    {% endif %}
+                </span>
             </header>
+            <div class='clear' style="display: inline;"></div>
+
             {% block content %}{% endblock %}
             <div class='clear'></div>
           </section>

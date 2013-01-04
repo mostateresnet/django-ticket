@@ -104,6 +104,15 @@ input, textarea, select, button{
     height: 32px;
 }
 
+.user_title
+{
+
+    right: 0;
+    margin-right: 32px;
+    position: absolute;
+    top: 36px;
+}
+
 .nojump { white-space: nowrap; }
 .left { float: left; }
 .right { float: right; }
