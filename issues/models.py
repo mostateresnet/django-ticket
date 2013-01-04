@@ -191,7 +191,6 @@ class UserMethods(User):
 
     def last_completed(self):
         completed = self.issue_set.filter(status='CP').order_by('-close_date')
-        print completed.count()
         if (completed.count() > 0):
             return completed[0]
         else:

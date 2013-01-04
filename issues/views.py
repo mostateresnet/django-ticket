@@ -147,7 +147,6 @@ class IssueDetailView(UpdateView):
         return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')
 
     def form_invalid(self, form):
-        print dir(form.errors)
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
 
