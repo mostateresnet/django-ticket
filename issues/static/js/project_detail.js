@@ -241,7 +241,7 @@ $(function() {
         var targetid = event.target.id;
         var n=targetid.split("-");
         var issueid=n[0];
-        var url = window.location.pathname + issueid
+        var url = UPDATE_ISSUE_URL + issueid;
         if( confirm("Are you sure you want to delete this issue?") )
         {
             $.post(
@@ -283,12 +283,13 @@ $(function() {
                 });
         }
     });
+
     $( ".issue_work_on").click(function(e){
         var target = event.target;
         var n=target.id.split("-");
         var issueid=n[0];
         $.ajax({
-            url: "/"+project_slug+"/"+issueid,
+            url: UPDATE_ISSUE_URL + issueid, 
             type: "post",
             data: "status=IP",
             success: function() { 
@@ -304,7 +305,7 @@ $(function() {
             var issue_id = parseInt(id.match(/^add-commit-(\d+)$/)[1]);
             
             $.ajax({
-                url:  "/"+project_slug+"/"+"createcommit/",
+                url: CREATE_COMMIT_URL,
                 type: "post",
                 data: {'revision': revision, 'issue': issue_id,},
                 success: function() { 
@@ -332,7 +333,7 @@ $(function() {
            if (postNote('REJECTED: ', issueid, false))
            {
             $.ajax({
-                url: "/"+project_slug+"/"+issueid,
+                url: UPDATE_ISSUE_URL + issueid, 
                 type: "post",
                 data: "status=AS",
                 error: function () { alert("error"); },
@@ -349,7 +350,7 @@ $(function() {
         if (note) 
         {           
             $.ajax({
-                url:  "/"+project_slug+"/"+"createnote/",
+                url:  CREATE_NOTE_URL,
                 type: "post",
                 data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user},
                 success: function() 
@@ -373,7 +374,7 @@ $(function() {
             var n=target.id.split("-");
             var issueid=n[0];
             $.ajax({
-                url: "/"+project_slug+"/"+issueid,
+                url: UPDATE_ISSUE_URL + issueid, 
                 type: "post",
                 data: "status=CP&approved_by="+current_user,
                 error: function () { alert("error"); },

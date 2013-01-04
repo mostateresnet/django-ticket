@@ -24,6 +24,9 @@
         var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/tag_line.html' %}{% endspaceless %}{% endfilter %}");
         var project_slug = "{{ project.slug }}";
         var current_user = "{{ user.pk }}";
+        UPDATE_ISSUE_URL = '{% url project_detail project.slug %}';
+        CREATE_NOTE_URL = '{% url note_create_view project.slug %}';
+        CREATE_COMMIT_URL = '{% url commit_create_view project.slug %}';
     </script>
 
 {% endblock %}
