@@ -196,6 +196,20 @@ $(function() {
             else
             { append_str += "&tags=" + chk_id;  }
         });
+		
+		//processing for milestone here
+		var milestone_date;
+		if (pk_id) //if it is an edit
+		{
+			milestone_date = $("#id_"+pk_id+"-milestone").val();
+			serial_data += "&milestone_date="+milestone_date
+		}
+		else //if it is a new issue
+		{
+			
+		}
+		
+		
         
         serial_data += append_str;
         $.post($this.attr('action'), serial_data, function(data)
@@ -382,4 +396,43 @@ $(function() {
            window.location.reload(true);
         }
     });
+	
+	var date = new Date();
+    var months = new Array();
+    months[0] = "01";
+    months[1] = "02";
+    months[2] = "03";
+    months[3] = "04";
+    months[4] = "05";
+    months[5] = "06";
+    months[6] = "07";
+    months[7] = "08";
+    months[8] = "09";
+    months[9] = "10";
+    months[10] = "11";
+    months[11] = "12";
+	
+	//initializes all datepickers
+	$( ".milestone-datepicker").datepicker({ 
+		dateFormat: 'yy-mm-dd',
+        minDate: '0',
+		beforeShowDay: function(date) {
+			var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+            d=String(d);
+            if (d.length ==1)
+            {
+                d="0"+d            
+            }
+			for (i = 0; i < milestone_dates.length; i++) {
+				if($.inArray(y + '-' + months[m] + '-' + d,milestone_dates) != -1) {
+					//return [false];
+					return [true, 'ui-state-active', ''];
+				}
+			}
+			return [true];
+
+		}
+	});
+	
+	
 });

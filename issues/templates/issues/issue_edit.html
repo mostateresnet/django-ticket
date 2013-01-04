@@ -9,7 +9,12 @@
                 </div>
                 <div class = "right new_issue_right">
                     <p>{{ form.assigned_to.label_tag }}:{{ form.assigned_to }}</p>
-                    <p>{{ form.milestone.label_tag }}:{{ form.milestone }}</p> 
+                    <p>{{ form.milestone.label_tag }}:
+                    <input type="text" name="{{ issue.id }}-milestone" id="id_{{ issue.id }}-milestone" class="milestone-datepicker" 
+                    {% if issue.milestone %}
+                        value={{ issue.milestone }}
+                    {% endif %}
+                    /></p> 
                     <p>{{ form.days_estimate.label_tag }}:{{ form.days_estimate }}</p> 
                     <label class = "left">{{ form.tags.label_tag }}:</label>
                    <div class = "tag_editor clear" data-count="{{ tags.count }}">

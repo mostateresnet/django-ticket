@@ -78,6 +78,9 @@ class Project(models.Model):
     def needs_review_issues(self):
         return self.issue_set.filter(status="NR").order_by('close_date')
 
+    def future_milestones(self):
+        return self.milestone_set.filter(deadline__gte=now())
+
     def save(self, *args, **kwargs):
         if self.status != "AC":
             self.priority = -1

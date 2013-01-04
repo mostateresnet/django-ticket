@@ -126,6 +126,16 @@ class TagUpdateView(UpdateView):
 class IssueDetailView(UpdateView):
     model = Issue
 
+    def post(self, *args, **kwargs):
+        milestone_date = self.request.POST['milestone_date']
+        date = datetime.datetime.strptime(self.request.POST['milestone_date'], '%Y-%m-%d').date()
+        p = Project.objects.get(slug=kwargs['slug'])
+        m = Milestone.objects.get_or_create(project=p, deadline=date)[0]
+        post_data = self.request.POST.copy()
+        post_data[kwargs['pk'] + '-milestone'] = m.pk
+        self.request.POST = post_data
+        return super(IssueDetailView, self).post(*args, **kwargs)
+
     def get_form_class(self):
         if 'approved_by' in self.request.POST:
             return IssueCloseForm
