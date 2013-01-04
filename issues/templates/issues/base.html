@@ -20,8 +20,7 @@
         <!-- The wonderful background texture can be obtained from: http://subtlepatterns.com/navy/ -->
           <section id="container">
             <header>
-                <h1><a href="{% url project_list %}">Issues</a></h1>
-                <span class = "user_title">
+				<span class = "right">
                     Logged in as: 
                     {% if user.pk %}
                     <a href="{% url user_profile_view user_id=user.pk %}">{{ user.get_full_name }}</a>
@@ -31,8 +30,9 @@
                     <img src= "{{ nothing|gravatar }}" class = "gravatar_medium">
                     {% endif %}
                 </span>
+                <h1><a href="{% url project_list %}">Issues</a></h1>
+
             </header>
-            <div class='clear' style="display: inline;"></div>
 
             {% block content %}{% endblock %}
             <div class='clear'></div>
