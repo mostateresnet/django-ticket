@@ -102,6 +102,7 @@ class Issue(models.Model):
     title = models.CharField(max_length=1000)
     description = models.TextField(blank=True, null=True)
     priority = models.IntegerField(default=-1, blank=False, null=False)
+    user_priority = models.IntegerField(default=-1, blank=False, null=False)
     creator = models.ForeignKey(User, related_name="+")
     assigned_to = models.ForeignKey(User, blank=True, null=True)
     approved_by = models.ForeignKey(User, blank=True, null=True, related_name="issue_approved_by")
@@ -121,6 +122,8 @@ class Issue(models.Model):
     def save(self, *args, **kwargs):
         try:
             old = Issue.objects.get(pk=self.pk)
+            if self.status != "AS":
+                self.user_priority = -1
             if self.status == 'DL' and old.status != 'DL':
                 self.close_date = datetime.datetime.now()
                 self.priority = -1
@@ -183,7 +186,7 @@ class IssueGroup(models.Model):
 
 class UserMethods(User):
     def assigned_issues(self):
-        return self.issue_set.filter(status='AS')
+        return self.issue_set.filter(status='AS').order_by('-user_priority')
 
     def inprogress_issues(self):
         return self.issue_set.filter(status='IP')

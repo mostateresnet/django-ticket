@@ -5,19 +5,17 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/project_list.css" />
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/user_profile.css" />
+
 {% endblock %}
 
 {% block js %}
     {{ block.super }}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/project_list.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/user_profile.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script>
-    $(function() {
-        $( 'div[id^="tabs"]' ).tabs({ collapsible: true });
-    });
+        var issue_sort_url = "{% url user_sort_issue_view user.pk %}";
     </script>
 {% endblock %}
 
@@ -55,11 +53,6 @@
                             {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                         </div>
                     {% endfor %}
-                    {% for issue in user_data.assigned_issues %}
-                        <div class="issue user-issue assigned clear hidden">
-                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
-                        </div>
-                    {% endfor %}
                     {% for issue in user_data.completed_issues %}
                         <div class="issue user-issue completed clear hidden">
                             {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
@@ -67,6 +60,13 @@
                     {% endfor %}
                 </div>
             </div>
+        </div>
+        <div id="sortable-assigned-issues" class="hidden content-border">
+            <ul id="sortable-issues" class="sortable">
+                {% for issue in user_data.assigned_issues %}
+                        <li class="ui-state-default" id="{{ issue.pk }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ issue }}<div class="right"> {{ issue.project.as_a }}</div></li>
+                {% endfor %}
+            </ul>
         </div>
 
     </section>

@@ -55,15 +55,27 @@ class ProjectNewView(CreateView):
 
 class ProjectSortView(UpdateView):
     @transaction.commit_on_success
-    def post(self, args):
+    def post(self, *args, **kwargs):
         sorted_ids = self.request.POST.getlist('sorted_ids[]')
         i = 1
         for id in sorted_ids:
             p = Project.objects.get(pk=id)
-            print p
             p.priority = i
             p.save()
             i += 1
+        return HttpResponse("success")
+
+
+class UserSortIssueView(UpdateView):
+    @transaction.commit_on_success
+    def post(self, *args, **kwargs):
+        sorted_ids = self.request.POST.getlist('sorted_ids[]')
+        i = len(sorted_ids)
+        for id in sorted_ids:
+            issue = Issue.objects.get(pk=id)
+            issue.user_priority = i
+            issue.save()
+            i -= 1
         return HttpResponse("success")
 
 
