@@ -1,6 +1,6 @@
-import datetime
 from django.db import models
 from django.db.models import Q
+from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
 
@@ -110,7 +110,7 @@ class Issue(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
     issue_group = models.ForeignKey('IssueGroup', blank=True, null=True)
-    created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
+    created = models.DateTimeField(default=now)
 
     class Meta:
         ordering = ['project', '-priority']
@@ -121,12 +121,11 @@ class Issue(models.Model):
             if self.status != "AS":
                 self.user_priority = -1
             if self.status == 'DL' and old.status != 'DL':
-                self.close_date = datetime.datetime.now()
+                self.close_date = now()
                 self.priority = -1
                 self.assigned_to = None
             elif self.status == 'CP' and old.status != 'CP':
-                print "%" * 80
-                self.close_date = datetime.datetime.now()
+                self.close_date = now()
             elif self.assigned_to is None and old.assigned_to is not None:
                 self.status = "UA"
             elif self.assigned_to != old.assigned_to:
@@ -137,7 +136,7 @@ class Issue(models.Model):
 
     def close(self, revision, when=None):
         if not when:
-            when = datetime.datetime.now().date()
+            when = now().date()
         self.close_date = when
         self.save()
 
@@ -170,7 +169,7 @@ class Issue(models.Model):
 class Commit(models.Model):
     revision = models.CharField(max_length=40)
     issue = models.ForeignKey(Issue)
-    created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
+    created = models.DateTimeField(default=now)
 
     def __unicode__(self):
         return self.revision
@@ -207,7 +206,7 @@ class UserMethods(User):
 
 class Milestone(models.Model):
     project = models.ForeignKey(Project)
-    deadline = models.DateTimeField(default=datetime.datetime.now)
+    deadline = models.DateTimeField(default=now)
 
     @models.permalink
     def get_chart_url(self):
@@ -219,7 +218,7 @@ class Milestone(models.Model):
 
 class Note(models.Model):
     label = models.CharField(max_length=1000)
-    created = models.DateTimeField(default=datetime.datetime.now, auto_now_add=True)
+    created = models.DateTimeField(default=now)
     issue = models.ForeignKey('Issue', blank=True, null=True)
     creator = models.ForeignKey(User, related_name="+")
 

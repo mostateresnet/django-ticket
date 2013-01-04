@@ -1,5 +1,6 @@
 # encoding: utf-8
 import datetime
+from django.utils.timezone import now
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -90,7 +91,7 @@ class Migration(SchemaMigration):
         },
         'issues.milestone': {
             'Meta': {'object_name': 'Milestone'},
-            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'deadline': ('django.db.models.fields.DateTimeField', [], {'default': 'now'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'project': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['issues.Project']"})
         },
