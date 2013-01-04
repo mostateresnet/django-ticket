@@ -89,7 +89,8 @@ class Migration(SchemaMigration):
             'project': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['issues.Project']", 'null': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'max_length': "'64'", 'null': 'True', 'blank': 'True'}),
             'tags': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['issues.Tag']", 'symmetrical': 'False', 'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '1000'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '1000'}),
+            'user_priority': ('django.db.models.fields.IntegerField', [], {'default': '-1'})
         },
         'issues.issuegroup': {
             'Meta': {'object_name': 'IssueGroup'},
@@ -111,7 +112,7 @@ class Migration(SchemaMigration):
             'label': ('django.db.models.fields.CharField', [], {'max_length': '1000'})
         },
         'issues.project': {
-            'Meta': {'ordering': "['priority']", 'object_name': 'Project'},
+            'Meta': {'ordering': "['-priority']", 'object_name': 'Project'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'priority': ('django.db.models.fields.IntegerField', [], {'default': '-1'}),
