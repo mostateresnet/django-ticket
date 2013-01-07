@@ -1,5 +1,9 @@
-from django.conf.urls.defaults import *
-from issues.views import *
+# pylint: disable-msg=E1120
+from django.conf.urls.defaults import patterns, url
+
+from issues.views import (ProjectListView, ProjectNewView, ProjectSortView,
+                          UserListView, UserSortIssueView, ProjectDetailView, IssueDetailView,
+                          BurndownChartView, TagCreateView, TagUpdateView, CommitCreateView, NoteCreateView, sort_issue, new_issue)
 
 
 urlpatterns = patterns('',

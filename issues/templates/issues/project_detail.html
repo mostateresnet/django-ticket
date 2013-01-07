@@ -24,10 +24,11 @@
         var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/tag_line.html' %}{% endspaceless %}{% endfilter %}");
         var project_slug = "{{ project.slug }}";
         var current_user = "{{ user.pk }}";
-        UPDATE_ISSUE_URL = '{% url project_detail project.slug %}';
-        CREATE_NOTE_URL = '{% url note_create_view project.slug %}';
+        var current_user_name = "{{ user.get_full_name }}";
+        UPDATE_ISSUE_URL  = '{% url project_detail project.slug %}';
+        CREATE_NOTE_URL   = '{% url note_create_view project.slug %}';
         CREATE_COMMIT_URL = '{% url commit_create_view project.slug %}';
-        
+
         var milestone_dates = [
         {% for milestone in project.future_milestones %}
             "{{ milestone }}",
@@ -42,12 +43,8 @@
     {% csrf_token %}
     
     <section id="project-detail">
-        {% if project.scm_owner and project.scm_repo %}
-            {% if project.scm_type = 'GH' %}
-                <a class="right" href="https://github.com/{{ project.scm_owner }}/{{ project.scm_repo }}" target="_blank">View on GitHub</a>
-            {% elif project.scm_type = 'BB' %}
-                <a class="right" href="https://bitbucket.org/{{ project.scm_owner }}/{{ project.scm_repo }}" target="_blank">View on BitBucket</a>
-            {% endif %}
+        {% if project.get_scm_url %}
+            <a class="right" href="{{ project.get_scm_url }}" target="_blank">View Source Project</a>
         {% endif %}
         <h3>{{ object }}</h3>
 

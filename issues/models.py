@@ -4,7 +4,6 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
 
-
 class Tag(models.Model):
     label = models.CharField(max_length=32)
     color = models.CharField(max_length=6)
@@ -80,6 +79,14 @@ class Project(models.Model):
 
     def future_milestones(self):
         return self.milestone_set.filter(deadline__gte=now())
+
+    def get_scm_url(self):
+        if self.scm_owner and self.scm_repo:
+            if self.scm_type == 'GH':
+                return "https://github.com/" + self.scm_owner + "/" + self.scm_repo
+            elif self.scm_type == 'BB':
+                return "https://bitbucket.org/" + self.scm_owner + "/" + self.scm_repo
+        return None
 
     def save(self, *args, **kwargs):
         if self.status != "AC":
@@ -172,7 +179,15 @@ class Issue(models.Model):
 class Commit(models.Model):
     revision = models.CharField(max_length=40)
     issue = models.ForeignKey(Issue)
-    created = models.DateTimeField(default=now)
+    created = models.DateTimeField(default=now, auto_now_add=True)
+
+    def get_url(self):
+        if self.issue.project.scm_owner and self.issue.project.scm_repo:
+            if self.issue.project.scm_type == 'GH':
+                return "https://github.com/" + self.issue.project.scm_owner + "/" + self.issue.project.scm_repo + "/commit/" + self.revision
+            elif self.issue.project.scm_type == 'BB':
+                return "https://bitbucket.org/" + self.issue.project.scm_owner + "/" + self.issue.project.scm_repo + "/commits/" + self.revision
+        return None
 
     def __unicode__(self):
         return self.revision
@@ -220,7 +235,7 @@ class Milestone(models.Model):
 
 class Note(models.Model):
     label = models.CharField(max_length=1000)
-    created = models.DateTimeField(default=now)
+    created = models.DateTimeField(default=now, auto_now_add=True)
     issue = models.ForeignKey('Issue', blank=True, null=True)
     creator = models.ForeignKey(User, related_name="+")
 

@@ -12,6 +12,19 @@ var colors =
     '440044', '5A005A', '6F006F', '770077', '880088', 'AA00AA', 'CC00CC', 'EE00EE', 'FF00FF'
 ];
 
+    function getFormatedNow()
+    {            
+        var nowDate = new Date();               
+        var days = ('0' + nowDate.getDate()).slice(-2);
+        var dateFormat = (nowDate.getMonth()+1) + "/" + days + "/" + nowDate.getFullYear();
+        var ampm = (nowDate.getHours() >= 12)? "p.m." : "a.m.";
+        var hours = (nowDate.getHours() > 12)? nowDate.getHours()-12 : nowDate.getHours();
+        if (hours == 0) { hours = 12; }
+        var minutes = ('0' + nowDate.getMinutes()).slice(-2);
+        // Returns date/time formated as 1/02/03 4:05 p.m.
+        return dateFormat + " " + hours + ":" + minutes + " " + ampm;
+    }
+
 $('html').ajaxSend(function(event, xhr, settings) {
     function getCookie(name) {
         var cookieValue = null;
@@ -322,20 +335,28 @@ $(function() {
                 url: CREATE_COMMIT_URL,
                 type: "post",
                 data: {'revision': revision, 'issue': issue_id,},
-                success: function() { 
-                    window.location.reload(true);
+                success: function() 
+                {             
+                    $("#commit-header-" + issue_id).removeClass("hidden");
+
+                    //FIXME: Need to add SCM hyperlink.
+                    var newCommit = $("<li>" + revision + " &emsp; on " + getFormatedNow() + "</li>");
+
+                    $("#commit-list-" + issue_id).append(newCommit);
                 },
                 error: function () { alert("error"); },
             });
+
+  
         }
     });
-    //DRY these out?!
+
     $( ".issue_add_note" ).click(function(event)
     {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^add-note-(\d+)$/)[1]);
 
-            postNote('', issue_id, true);
+            postNote('', issue_id);
     });
 
     $( ".issue_reject").click(function(e)
@@ -344,7 +365,7 @@ $(function() {
             var n=target.id.split("-");
             var issueid=n[0];
 
-           if (postNote('REJECTED: ', issueid, false))
+           if (postNote('REJECTED: ', issueid))
            {
             $.ajax({
                 url: UPDATE_ISSUE_URL + issueid, 
@@ -358,7 +379,7 @@ $(function() {
 
     });
 
-    function postNote(prepend, issue_id, reload)
+    function postNote(prepend, issue_id)
     {
         var note = window.prompt("Add Note:","");
         if (note) 
@@ -369,8 +390,12 @@ $(function() {
                 data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user},
                 success: function() 
                 {
-                    if (reload == true) 
-                    { window.location.reload(true); }
+                    $("#note-header-" + issue_id).removeClass("hidden");
+
+                    var newNote = $("<div> " + current_user_name + " on " + getFormatedNow() + 
+                    "</br>&emsp;"  + prepend + note + "</div>");
+
+                    $("#note-list-" + issue_id).append(newNote);
                 },
                 error: function () { alert("error"); },
             });
@@ -393,6 +418,7 @@ $(function() {
                 data: "status=CP&approved_by="+current_user,
                 error: function () { alert("error"); },
             });
+
            window.location.reload(true);
         }
     });
@@ -404,7 +430,7 @@ $(function() {
 		dateFormat: 'yy-mm-dd',
         minDate: '0',
 		beforeShowDay: function(date) {
-			var m = ('0' + (date.getMonth()+1)).slice(-2);
+            var m = ('0' + (date.getMonth()+1)).slice(-2);
             var d = date.getDate(), y = date.getFullYear();
             d=String(d);
             if (d.length ==1)
@@ -421,6 +447,5 @@ $(function() {
 
 		}
 	});
-	
 	
 });
