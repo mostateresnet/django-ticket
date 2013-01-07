@@ -13,6 +13,7 @@ class Tag(models.Model):
 
 
 class Project(models.Model):
+
     STATUS_CHOICES = (
         ('AC', 'Active'),
         ('IN', 'Inactive'),
@@ -119,7 +120,7 @@ class Issue(models.Model):
     milestone = models.ForeignKey('Milestone', null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
-    issue_group = models.ForeignKey('IssueGroup', blank=True, null=True)
+    parent = models.ForeignKey('Issue', blank=True, null=True)
     created = models.DateTimeField(default=now)
 
     class Meta:
@@ -154,6 +155,9 @@ class Issue(models.Model):
         from issues.forms import IssueForm
         return IssueForm
 
+    def get_subissues(self):
+        return Issue.objects.filter(parent=self).order_by('priority')
+
     def form_kwargs(self):
         return dict(instance=self, prefix=str(self.pk))
 
@@ -167,6 +171,10 @@ class Issue(models.Model):
         form_kwargs = self.form_kwargs()
         form_kwargs.update(kwargs)
         return IssueCloseForm(**form_kwargs)
+
+    @property
+    def has_children(self):
+        return Issue.objects.filter(parent=self).count() > 0
 
     @models.permalink
     def get_absolute_url(self):
@@ -191,10 +199,6 @@ class Commit(models.Model):
 
     def __unicode__(self):
         return self.revision
-
-
-class IssueGroup(models.Model):
-    parent = models.ForeignKey('Issue')
 
 
 class UserMethods(User):
