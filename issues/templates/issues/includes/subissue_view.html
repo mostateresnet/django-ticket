@@ -1,5 +1,3 @@
-
-
 <div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}"> 
     <p class ="left issue_status">Created by: <span class="emphasis">{{ issue.creator }}</span></p> 
     {% if issue.milestone %}
@@ -63,37 +61,4 @@
         </div>
         {% endif %}
     {% endwith %}
-    
-    {% if issue.has_children %}
-      <h2>Subissues</h2>
-      <div class='subissues'>
-	<ul class='issue-list'>
-	  {% for subissue in issue.get_subissues %}
-	    <li id="issue-{{ issue.pk }}"
-		{% if subissue.assigned_to %}
-		  {% if subissue.assigned_to == user and subissue.status = 'IP'%}
-		    class="issue in-progress"
-		    {% elif subissue.assigned_to == user and subissue.status = 'AS' %}
-		    class="issue assigned"
-		  {% else %}
-		    class="issue unassigned"
-		  {% endif %}
-		{% else %}
-		  class="issue unassigned"
-		{% endif %}
-		>
-                 {% include 'issues/includes/issue_detail.html' with issue=subissue %}
-	         {% include 'issues/includes/subissue_view.html' with issue=subissue %}
-		 {% include 'issues/issue_edit.html' %}
-		 <div style = "clear: both;"></div>
-	    </li>
-	  {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-
-</div> 
-
-
-
-
+</div>
