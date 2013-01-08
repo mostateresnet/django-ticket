@@ -21,7 +21,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/project_detail.js"></script>
 
     <script type="text/javascript">
-        var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/tag_line.html' %}{% endspaceless %}{% endfilter %}");
+        var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/includes/tag_line.html' %}{% endspaceless %}{% endfilter %}");
         var project_slug = "{{ project.slug }}";
         var current_user = "{{ user.pk }}";
         var current_user_name = "{{ user.get_full_name }}";
@@ -65,8 +65,8 @@
         </div>
 
         
-        {% include 'issues/issue_new.html' %}
-        {% include 'issues/color_selector.html' %}
+        {% include 'issues/includes/issue_new.html' %}
+        {% include 'issues/includes/color_selector.html' %}
         <div class="needs-review-issues">
             <ul class="issue-list">
 
@@ -94,7 +94,7 @@
                               {% endfor %}
                             </div>
 
-                                {% include 'issues/issue_view.html' %}
+                                {% include 'issues/includes/issue_view.html' %}
                           <div style = "clear: both;"></div>
                         </li>
                     {% endif %}
@@ -117,10 +117,9 @@
 		class="issue unassigned"
 	      {% endif %}
 	      >
-
 	      {% include 'issues/includes/issue_detail.html' %}
-	      {% include 'issues/issue_view.html' %}
-	      {% include 'issues/issue_edit.html' %}
+	      {% include 'issues/includes/issue_view.html' %}
+	      {% include 'issues/includes/issue_edit.html' %}
 	      <div style = "clear: both;"></div>
 	  </li>
         {% endfor %}

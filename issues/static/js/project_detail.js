@@ -49,8 +49,8 @@ $('html').ajaxSend(function(event, xhr, settings) {
 
 $(function() {
     $( ".issue-title").click(function(e){
-        $(this).siblings('.edit_drop').slideUp(
-        function() { $(this).siblings('.details_drop').slideToggle(); } );      
+        $(this).siblings('.edit_drop').slideUp(function() 
+        { $(this).siblings('.details_drop').slideToggle(); });
     });
 
     $( ".issue-nr-title").click(function(e){
@@ -334,12 +334,15 @@ $(function() {
                 url: CREATE_COMMIT_URL,
                 type: "post",
                 data: {'revision': revision, 'issue': issue_id,},
-                success: function() 
+                success: function(data) 
                 {             
                     $("#commit-header-" + issue_id).removeClass("hidden");
 
-                    //FIXME: Need to add SCM hyperlink.
-                    var newCommit = $("<li>" + revision + " &emsp; on " + getFormatedNow() + "</li>");
+                    var newCommit;
+                    if ('url' in data)
+                    { newCommit = $("<li> <a href=\"" + data['url'] + "\">" + revision + "</a> &emsp; on " + getFormatedNow() + "</li>"); }                    
+                    else 
+                    { newCommit = $("<li>" + revision + " &emsp; on " + getFormatedNow() + "</li>"); }
 
                     $("#commit-list-" + issue_id).append(newCommit);
                 },

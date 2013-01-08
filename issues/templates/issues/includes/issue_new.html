@@ -12,7 +12,7 @@
             <p>{{ issue_form.tags.label_tag }}:</p>
            <div class = "tag_editor clear" data-count="{{ tags.count }}">            
                 {% for tag in tags %}
-                        {% include 'issues/tag_line.html' %}
+                        {% include 'issues/includes/tag_line.html' %}
                 {% endfor %}
                 <div class = "clear add_tag_area" style = "display: inline-block">
                     <input type="text" class="new_tag_input"/><button type="button" class = "new_tag right">Add</button>

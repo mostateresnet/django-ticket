@@ -20,9 +20,9 @@
                    <div class = "tag_editor clear" data-count="{{ tags.count }}">
                         {% for tag in tags %}
                             {% if tag in issue.tags.all %}
-                                {% include 'issues/tag_line.html' with checked='True' %}
+                                {% include 'issues/includes/tag_line.html' with checked='True' %}
                             {% else %}
-                                {% include 'issues/tag_line.html' %}
+                                {% include 'issues/includes/tag_line.html' %}
                             {% endif %}
                         {% endfor %}
                         <div class = "clear add_tag_area" style = "display: inline-block">

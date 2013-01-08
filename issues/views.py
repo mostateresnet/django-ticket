@@ -164,10 +164,9 @@ class IssueDetailView(UpdateView):
 
 class CommitCreateView(CreateView):
     model = Commit
-
     def form_valid(self, form):
-        pk_id = form.save().pk
-        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+        commit = form.save()
+        return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url() }), mimetype='application/json')
 
 
 class NoteCreateView(CreateView):
