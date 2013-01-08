@@ -75,9 +75,8 @@ $(function() {
                 var issue_id = parseInt(id.match(/^issue-(\d+)$/)[1]);
                 issue_priority[issue_id] = (issues.length - index - 1);
             });
-            var url = window.location.pathname + "sort"
             $.post(
-                url,
+                SORT_ISSUE_URL,
                 issue_priority,
                 function(data, textStatus, jqXHR) {
                     if (data != "success"){
