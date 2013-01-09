@@ -136,12 +136,14 @@ class Issue(models.Model):
                 self.close_date = now()
                 self.priority = -1
                 self.assigned_to = None
+                self.parent = None
             elif self.status == 'CP' and old.status != 'CP':
                 self.close_date = now()
             elif self.assigned_to is None and old.assigned_to is not None:
                 self.status = "UA"
             elif self.assigned_to != old.assigned_to:
                 self.status = "AS"
+
         except Issue.DoesNotExist:
             pass
         super(Issue, self).save(*args, **kwargs)
@@ -176,6 +178,14 @@ class Issue(models.Model):
     @property
     def has_children(self):
         return Issue.objects.filter(parent=self).count() > 0
+
+    @property
+    def completed_children_count(self):
+        return Issue.objects.filter(parent=self, status='CP').count()
+
+    @property
+    def children_count(self):
+        return Issue.objects.filter(parent=self).count()
 
     @models.permalink
     def get_absolute_url(self):
