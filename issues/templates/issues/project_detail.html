@@ -1,5 +1,6 @@
 {% extends "issues/base.html" %}
 {% load gravatar %}
+{% load assigned_css_class %}
 
 {% block title %}Issues for {{ object }}{% endblock %}
 
@@ -104,23 +105,11 @@
         </div>
         <ul class="issue-list">
         {% for issue in issues %}
-	  <li id="issue-{{ issue.pk }}"
-	      {% if issue.assigned_to %}
-		{% if issue.assigned_to == user and issue.status = 'IP'%}
-		  class="issue in-progress"
-		  {% elif issue.assigned_to == user and issue.status = 'AS' %}
-		  class="issue assigned"
-		{% else %}
-		  class="issue unassigned"
-		{% endif %}
-	      {% else %}
-		class="issue unassigned"
-	      {% endif %}
-	      >
+	  <li id="issue-{{ issue.pk }}" class="issue {% assigned_css_class issue.assigned_to.pk user.pk issue.status %}">
 	      {% include 'issues/includes/issue_detail.html' %}
 	      {% include 'issues/includes/issue_view.html' %}
 	      {% include 'issues/includes/issue_edit.html' %}
-	      <div style = "clear: both;"></div>
+	      <div class="clear"></div>
 	  </li>
         {% endfor %}
         </ul>

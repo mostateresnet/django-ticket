@@ -1,22 +1,11 @@
+{% load assigned_css_class %}
 <div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}"> 
 {% include 'issues/includes/__issue_view.html' %}
 {% if issue.has_children %}
     <div class='subissues'>
     <ul class='issue-list'>
         {% for subissue in issue.get_subissues %}
-        <li id="issue-{{ issue.pk }}"
-            {% if subissue.assigned_to %}
-                {% if subissue.assigned_to == user and subissue.status = 'IP'%}
-                class="issue in-progress"
-                {% elif subissue.assigned_to == user and subissue.status = 'AS' %}
-                class="issue assigned"
-                {% else %}
-                class="issue unassigned"
-                {% endif %}
-            {% else %}
-                class="issue unassigned"
-            {% endif %}
-            >
+        <li id="issue-{{ subissue.pk }}" class="issue {% assigned_css_class subissue.assigned_to.pk user.pk subissue.status %}">
             {% include 'issues/includes/issue_detail.html' with issue=subissue  %}
             <div class="hidden clear details_drop" id="issue-details-{{ subissue.pk }}"> 
                 {% include 'issues/includes/__issue_view.html' with issue=subissue %}
