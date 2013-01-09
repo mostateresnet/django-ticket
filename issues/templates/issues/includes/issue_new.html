@@ -4,12 +4,23 @@
         <div class = "left new_issue_left">
             <p>{{ issue_form.title.label_tag }}:{{ issue_form.title }}</p>        
             <p>{{ issue_form.description.label_tag }}:{{ issue_form.description }}</p>
+            <div>
+                <label>Parent Issue:</label>
+                <select id="parent_selector_new">
+                  <option value="NONE" selected >None</option>
+                   {% for parent in open_issues %}
+                      <option value="{{ parent.pk }}" >{{ parent }}</option>
+                   {% endfor %}
+                </select>
+            </div>
         </div>
+
         <div class = "right new_issue_right">
             <p>{{ issue_form.assigned_to.label_tag }}:{{ issue_form.assigned_to }}</p>
             <p>{{ issue_form.milestone.label_tag }}:<input type="text" name="milestone" id="id_milestone" class="milestone-datepicker" /></p> 
             <p>{{ issue_form.days_estimate.label_tag }}:{{ issue_form.days_estimate }}</p>      
             <p>{{ issue_form.tags.label_tag }}:</p>
+
            <div class = "tag_editor clear" data-count="{{ tags.count }}">            
                 {% for tag in tags %}
                         {% include 'issues/includes/tag_line.html' %}

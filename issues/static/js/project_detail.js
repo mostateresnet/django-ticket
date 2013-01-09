@@ -211,18 +211,24 @@ $(function() {
 		
 		//processing for milestone here
 		var milestone_date;
+        var parent_issue;
 		if (pk_id) //if it is an edit
 		{
 			milestone_date = $("#id_"+pk_id+"-milestone").val();
 			serial_data += "&milestone_date="+milestone_date
+            parent_issue = $("#parent_selector_" + pk_id).find('option:selected').val();
+            if (parent_issue != "NONE")
+            { append_str += "&" + pk_id + "-parent=" + parent_issue; }
+
 		}
 		else //if it is a new issue
 		{
-			
+            parent_issue = $("#parent_selector_new").find('option:selected').val();
+            if (parent_issue != "NONE")
+            { append_str += "&parent=" + parent_issue; }
+
 		}
-		
-		
-        
+		                  
         serial_data += append_str;
         $.post($this.attr('action'), serial_data, function(data)
         {

@@ -1,4 +1,4 @@
-<p class ="left issue_status">Created by: <span class="emphasis">{{ issue.creator }}</span></p> 
+<p class ="left issue_status">Created by: <span class="emphasis">{{ issue.creator.get_full_name }}</span></p> 
 {% if issue.milestone %}
     <p class ="left issue_status">Milestone: <span class="emphasis">{{ issue.milestone }}</span></p>
 {% endif %}

@@ -99,8 +99,13 @@ class ProjectDetailView(DetailView):
             context['issues'] = self.object.open_issues()
             context['filter'] = "OPEN"
 
+        context['open_issues'] = self.object.open_issues().filter(parent__isnull=True)
+
         context['issues'] = context['issues'].filter(parent__isnull=True)
         context['tags'] = self.object.get_tags()
+
+
+
         return context
 
 
@@ -144,6 +149,7 @@ class IssueDetailView(UpdateView):
         if 'status' in self.request.POST:
             return IssueStatusForm
         else:
+            print "THIS:" + str(self.object.form_class())
             return self.object.form_class()
 
     def get_form_kwargs(self):
@@ -164,9 +170,10 @@ class IssueDetailView(UpdateView):
 
 class CommitCreateView(CreateView):
     model = Commit
+
     def form_valid(self, form):
         commit = form.save()
-        return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url() }), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url()}), mimetype='application/json')
 
 
 class NoteCreateView(CreateView):
@@ -180,7 +187,7 @@ class NoteCreateView(CreateView):
 def issue_detail(request, slug, id):
 #    project = Project.objects.get(slug=slug)
     issue = Issue.objects.get(id=id)
-    issue.save()
+    issue.save()    
     return HttpResponse("success")
 
 

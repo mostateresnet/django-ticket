@@ -5,7 +5,18 @@
                 {% csrf_token %}
                 <div class = "left new_issue_left">
                     <p >{{ form.title.label_tag }}:{{ form.title }}</p>        
-                    <p>{{ form.description.label_tag }}:{{ form.description }}</p>
+                    <p>{{ form.description.label_tag }}:{{ form.description }}</p>    
+                    <div>
+                        <label>Parent Issue:</label>
+                        <select id="parent_selector_{{ issue.pk }}">    
+                          <option value="NONE" selected >None</option>
+                           {% for parent in open_issues %}
+                             {% if parent.pk != issue.pk %}
+                              <option value="{{ parent.pk }}" {% if issue.parent = parent %} selected {% endif %}>{{ parent }}</option>
+                             {% endif %}
+                           {% endfor %}
+                        </select>
+                    </div>
                 </div>
                 <div class = "right new_issue_right">
                     <p>{{ form.assigned_to.label_tag }}:{{ form.assigned_to }}</p>
