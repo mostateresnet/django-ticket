@@ -122,7 +122,6 @@ class Issue(models.Model):
     milestone = models.ForeignKey('Milestone', null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
-    parent = models.ForeignKey('Issue', blank=True, null=True)
     created = models.DateTimeField(default=now)
 
     class Meta:
@@ -137,7 +136,6 @@ class Issue(models.Model):
                 self.close_date = now()
                 self.priority = -1
                 self.assigned_to = None
-                self.parent = None
             elif self.status == 'CP' and old.status != 'CP':
                 self.close_date = now()
             elif self.assigned_to is None and old.assigned_to is not None:
@@ -159,9 +157,6 @@ class Issue(models.Model):
         from issues.forms import IssueForm
         return IssueForm
 
-    def get_subissues(self):
-        return Issue.objects.filter(parent=self).order_by('priority')
-
     def form_kwargs(self):
         return dict(instance=self, prefix=str(self.pk))
 
@@ -175,18 +170,6 @@ class Issue(models.Model):
         form_kwargs = self.form_kwargs()
         form_kwargs.update(kwargs)
         return IssueCloseForm(**form_kwargs)
-
-    @property
-    def has_children(self):
-        return Issue.objects.filter(parent=self).count() > 0
-
-    @property
-    def completed_children_count(self):
-        return Issue.objects.filter(parent=self, status='CP').count()
-
-    @property
-    def children_count(self):
-        return Issue.objects.filter(parent=self).count()
 
     @models.permalink
     def get_absolute_url(self):

@@ -12,7 +12,7 @@ class IssueForm(ModelForm):
 
     class Meta:
         model = Issue
-        fields = ('title', 'description', 'assigned_to', 'milestone', 'days_estimate', 'tags', 'parent')
+        fields = ('title', 'description', 'assigned_to', 'milestone', 'days_estimate', 'tags')
 
 
 class IssueStatusForm(ModelForm):

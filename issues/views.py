@@ -99,9 +99,6 @@ class ProjectDetailView(DetailView):
             context['issues'] = self.object.open_issues()
             context['filter'] = "OPEN"
 
-        context['open_issues'] = self.object.open_issues().filter(parent__isnull=True)
-
-        context['issues'] = context['issues'].filter(parent__isnull=True)
         context['tags'] = self.object.get_tags()
 
         return context

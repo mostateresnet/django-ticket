@@ -1,21 +1,60 @@
 {% load assigned_css_class %}
 <div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}"> 
-{% include 'issues/includes/__issue_view.html' %}
-{% if issue.has_children %}
-    <div class='subissues'>
-    <ul class='issue-list'>
-        {% for subissue in issue.get_subissues %}
-        <li id="issue-{{ subissue.pk }}" class="issue {% assigned_css_class subissue.assigned_to.pk user.pk subissue.status %}">
-            {% include 'issues/includes/issue_detail.html' with issue=subissue  %}
-            <div class="hidden clear details_drop" id="issue-details-{{ subissue.pk }}"> 
-                {% include 'issues/includes/__issue_view.html' with issue=subissue %}
-            </div>
-                {% include 'issues/includes/issue_edit.html' with issue=subissue %}
-            <div class="clear"></div>
-        </li>
-        {% endfor %}
-    </ul>
-    </div>
+<p class ="left issue_status">Created by: <span class="emphasis">{{ issue.creator.get_full_name }}</span></p> 
+{% if issue.milestone %}
+    <p class ="left issue_status">Milestone: <span class="emphasis">{{ issue.milestone }}</span></p>
 {% endif %}
+{% if issue.days_estimate %}
+    <p class ="left issue_status">Days Estimate: <span class="emphasis">{{ issue.days_estimate }}</span></p>
+{% endif %}
+
+{% if issue.status != 'DL' and issue.status != 'CP' and issue.status != 'NR' %}
+    <button class ="right issue-button issue_edit" href="">Edit</button>    
+{% endif %}
+
+{% if issue.status != 'NR' %}
+    <button id="{{ issue.pk }}-work-on" class="right issue-button issue_work_on">Work On</button>    
+    <button id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</button>   
+    <button id="add-commit-{{ issue.pk }}" class="right issue-button issue_add_commit">Add Commit</button>                  
+{% else %}
+    <button id="{{ issue.pk }}-approve" class="right issue-button issue_approve">Approve</button>
+    <button id="{{ issue.pk }}-reject" class="right issue-button issue_reject">Reject</button>  
+{% endif %}
+<button id="add-note-{{ issue.pk }}" class="right issue-button issue_add_note">Add Note</button>                  
+
+{% with commits=issue.commit_set.all notes=issue.note_set.all %}
+
+    {% if issue.description or notes or commits %}
+        <div class ="clear issue_description">
+        {% if issue.description %}
+            <div>
+                <span class="field-header">Description</span><br />
+                {{ issue.description|linebreaksbr }}
+            </div>
+        {% endif %}
+
+        <div id="note-list-{{ issue.pk }}">
+            <span id="note-header-{{ issue.pk }}" class="field-header {% if not notes %} hidden {% endif %}">Notes</span><br />
+            {% for note in notes %}
+                <div>{{ note.creator.get_full_name }} on {{ note.created|date:"SHORT_DATETIME_FORMAT" }} </br>&emsp; {{ note.label|linebreaksbr }}</div>
+            {% endfor %}
+        </div>
+    
+        <div>
+        <span id="commit-header-{{ issue.pk }}" class="field-header {% if not commits %} hidden {% endif %}">Commits</span><br />
+        <ul id = "commit-list-{{ issue.pk }}">
+            {% for commit in commits %}
+                {% if commit.get_url %}
+                 <li><a href="{{ commit.get_url }}" target="_blank">{{ commit }}</a> &emsp; on {{ commit.created|date:"SHORT_DATETIME_FORMAT" }}</li>
+                {% else %}
+                    <li>{{ commit }}</li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+{% endwith %}    
+
 
 </div>

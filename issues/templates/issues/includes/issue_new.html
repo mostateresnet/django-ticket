@@ -1,18 +1,9 @@
-<form id="new-issue" action="new" method="post">
+ <form id="new-issue" action="new" method="post">
     <div class = "new_issue_container">
         {% csrf_token %}
         <div class = "left new_issue_left">
             <p>{{ issue_form.title.label_tag }}:{{ issue_form.title }}</p>        
             <p>{{ issue_form.description.label_tag }}:{{ issue_form.description }}</p>
-            <div>
-                <label>Parent Issue:</label>
-                <select id="parent_selector_new">
-                  <option value="NONE" selected >None</option>
-                   {% for parent in open_issues %}
-                      <option value="{{ parent.pk }}" >{{ parent }}</option>
-                   {% endfor %}
-                </select>
-            </div>
         </div>
 
         <div class = "right new_issue_right">
