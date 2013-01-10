@@ -27,6 +27,16 @@
     padding: 0px;
 }
 
+#user-issues
+{
+    min-height: 200px;
+}
+
+#sortable-assigned-issues
+{
+    min-height: 200px;
+}
+
 .statistic { font-weight:bold; }
 .small_text_wrap { max-width: 200px; }
 

@@ -51,6 +51,21 @@ h4{
     padding: 5px;
 }
 
+#project-sort
+{
+    min-height: 200px;
+}
+
+#project-issues
+{
+    min-height: 200px;
+}
+
+#user-issues
+{
+    min-height: 200px;
+}
+
 .other-project:nth-last-of-type(2n)	
 { 
     background-color: #242424;
