@@ -17,6 +17,16 @@
     min-width: 100px;
 }
 
+#sortable-issues
+{
+    font-size: 10px;
+}
+
+.ui-state-default
+{
+    padding: 0px;
+}
+
 .statistic { font-weight:bold; }
 .small_text_wrap { max-width: 200px; }
 
