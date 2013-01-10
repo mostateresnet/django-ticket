@@ -215,7 +215,7 @@ $(function() {
 		if (pk_id) //if it is an edit
 		{
 			milestone_date = $("#id_"+pk_id+"-milestone").val();
-			serial_data += "&milestone_date="+milestone_date
+			serial_data += "&milestone_date="+milestone_date;
             parent_issue = $("#parent_selector_" + pk_id).find('option:selected').val();
             if (parent_issue != "NONE")
             { append_str += "&" + pk_id + "-parent=" + parent_issue; }
@@ -223,6 +223,8 @@ $(function() {
 		}
 		else //if it is a new issue
 		{
+            milestone_date = $("#id_milestone").val();
+			serial_data += "&milestone_date="+milestone_date
             parent_issue = $("#parent_selector_new").find('option:selected').val();
             if (parent_issue != "NONE")
             { append_str += "&parent=" + parent_issue; }

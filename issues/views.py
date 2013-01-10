@@ -104,8 +104,6 @@ class ProjectDetailView(DetailView):
         context['issues'] = context['issues'].filter(parent__isnull=True)
         context['tags'] = self.object.get_tags()
 
-
-
         return context
 
 
@@ -134,12 +132,9 @@ class IssueDetailView(UpdateView):
 
     def post(self, *args, **kwargs):
         if self.request.POST.get('milestone_date'):
-            milestone_date = self.request.POST['milestone_date']
-            date = datetime.datetime.strptime(self.request.POST['milestone_date'], '%Y-%m-%d').date()
-            p = Project.objects.get(slug=kwargs['slug'])
-            m = Milestone.objects.get_or_create(project=p, deadline=date)[0]
-            post_data = self.request.POST.copy()
-            post_data[kwargs['pk'] + '-milestone'] = m.pk
+            project = Project.objects.get(slug=kwargs['slug'])
+            # call method that modifies post data for our custom milestone handling
+            post_data = append_new_milestone(self.request.POST.copy(), project, kwargs['pk'])
             self.request.POST = post_data
         return super(IssueDetailView, self).post(*args, **kwargs)
 
@@ -187,7 +182,7 @@ class NoteCreateView(CreateView):
 def issue_detail(request, slug, id):
 #    project = Project.objects.get(slug=slug)
     issue = Issue.objects.get(id=id)
-    issue.save()    
+    issue.save()
     return HttpResponse("success")
 
 
@@ -203,6 +198,10 @@ def sort_issue(request, slug):
 @login_required
 def new_issue(request, slug):
     project = Project.objects.get(slug=slug)
+    if 'milestone_date' in request.POST:
+        # call method that modifies post data for our custom milestone handling
+        post_data = append_new_milestone(request.POST.copy(), project, None)
+        request.POST = post_data
     form = IssueForm(request.POST)
     if form.is_valid():
         issue = form.save(commit=False)
@@ -220,6 +219,19 @@ def new_issue(request, slug):
         return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')
     else:
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
+
+# method that modifies post data for our custom milestone handling
+
+
+def append_new_milestone(POST_copy, project, issue_id):
+    milestone_date = POST_copy['milestone_date']
+    date = datetime.datetime.strptime(POST_copy['milestone_date'], '%Y-%m-%d').date()
+    m = Milestone.objects.get_or_create(project=project, deadline=date)[0]
+    if issue_id:
+        POST_copy[issue_id + '-milestone'] = m.pk
+    else:
+        POST_copy['milestone'] = m.pk
+    return POST_copy
 
 
 def days_apart(start_date, end_date):
