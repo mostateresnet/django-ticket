@@ -338,6 +338,11 @@ ul.issue-list {
     background-color: #292929;
 }
 
+.note:nth-last-of-type(2n)
+{
+    background-color: #242424;
+}
+
 .ui-state-active{
     border: 1px solid #A51616 !important;
 }
