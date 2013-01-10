@@ -15,7 +15,7 @@
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script>
-        var issue_sort_url = "{% url user_sort_issue_view user.pk %}";
+        var issue_sort_url = "{% url user_sort_issue_view user_data.pk %}";
     </script>
 {% endblock %}
 
@@ -25,7 +25,7 @@
     <section id="users_stats" class="right">
             <div class="header">
                 
-                <div class="header-title"><img class = "gravatar_medium" src="{{ user.email|gravatar }}"/> {{ user_data.first_name }}</div>            
+                <div class="header-title"><img class = "gravatar_medium" src="{{ user_data.email|gravatar }}"/> {{ user_data.first_name }}</div>            
             </div>
 
             <p><label class = "statistic">In Progress: </label><label>{{ user_data.inprogress_issues.count }}</label></p>
