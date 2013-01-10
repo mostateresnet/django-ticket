@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
 import datetime
 
+
 class Tag(models.Model):
     label = models.CharField(max_length=32)
     color = models.CharField(max_length=6)
