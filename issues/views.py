@@ -202,7 +202,7 @@ def sort_issue(request, slug):
 @login_required
 def new_issue(request, slug):
     project = Project.objects.get(slug=slug)
-    if 'milestone_date' in request.POST:
+    if request.POST.get('milestone_date'):
         # call method that modifies post data for our custom milestone handling
         post_data = append_new_milestone(request.POST.copy(), project, None)
         request.POST = post_data
