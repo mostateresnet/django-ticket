@@ -12,24 +12,6 @@ var colors =
     '440044', '5A005A', '6F006F', '770077', '880088', 'AA00AA', 'CC00CC', 'EE00EE', 'FF00FF'
 ];
 
-    function getFormatedNow(nowDate, twenty_four_hour)
-    {            
-        var days = ('0' + nowDate.getDate()).slice(-2);
-        var month = ('0' + nowDate.getMonth()+1).slice(-2);
-        var dateFormat = month + "/" + days + "/" + nowDate.getFullYear();
-        var minutes = ('0' + nowDate.getMinutes()).slice(-2);
-        if (twenty_four_hour)
-        { return dateFormat + " " + nowDate.getHours() + ":" + minutes; }
-        else
-        { 
-            // Returns date/time formated as 1/02/03 4:05 p.m.
-            var ampm = (nowDate.getHours() >= 12)? "p.m." : "a.m.";
-            var hours = (nowDate.getHours() > 12)? nowDate.getHours()-12 : nowDate.getHours();
-            if (hours == 0) { hours = 12; }
-            return dateFormat + " " + hours + ":" + minutes + " " + ampm; 
-        }
-    }
-
 $('html').ajaxSend(function(event, xhr, settings) {
     function getCookie(name) {
         var cookieValue = null;
@@ -342,11 +324,10 @@ $(function() {
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^add-commit-(\d+)$/)[1]);
-            var nowDate = new Date();
             $.ajax({
                 url: CREATE_COMMIT_URL,
                 type: "post",
-                data: {'revision': revision, 'issue': issue_id, 'created': getFormatedNow(nowDate, true)},
+                data: {'revision': revision, 'issue': issue_id, 'created': "1/1/70 00:00" },
                 success: function(data) 
                 {       
                     if ('errors' in data)
@@ -358,9 +339,9 @@ $(function() {
 
                     var newCommit;
                     if ('url' in data)
-                    { newCommit = $("<li> <a href=\"" + data['url'] + "\">" + revision + "</a> &emsp; on " + getFormatedNow(nowDate, false) + "</li>"); }                    
+                    { newCommit = $("<li> <a href=\"" + data['url'] + "\">" + revision + "</a> &emsp; on " + data['datetime'] + "</li>"); }                    
                     else 
-                    { newCommit = $("<li>" + revision + " &emsp; on " + getFormatedNow(nowDate, false) + "</li>"); }
+                    { newCommit = $("<li>" + revision + " &emsp; on " + data['datetime'] + "</li>"); }
 
                     $("#commit-list-" + issue_id).append(newCommit);
                 },
@@ -404,11 +385,10 @@ $(function() {
         var note = window.prompt("Add Note:","");
         if (note) 
         {           
-            var nowDate = new Date();
             $.ajax({
                 url:  CREATE_NOTE_URL,
                 type: "post",
-                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user, 'created': getFormatedNow(nowDate, true) },
+                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user, 'created': "1/1/70 00:00" },
                 success: function(data) 
                 {
                     if ('errors' in data)
@@ -419,7 +399,7 @@ $(function() {
 
                     $("#note-header-" + issue_id).removeClass("hidden");
 
-                    var newNote = $("<div> " + current_user_name + " on " + getFormatedNow(nowDate, false) + 
+                    var newNote = $("<div> " + current_user_name + " on " + data['datetime'] + 
                     "</br>&emsp;"  + prepend + note + "</div>");
 
                     $("#note-list-" + issue_id).append(newNote);

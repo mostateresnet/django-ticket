@@ -38,3 +38,5 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = ('name', 'slug', 'priority', 'status')
+
+

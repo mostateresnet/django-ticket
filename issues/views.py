@@ -168,7 +168,7 @@ class CommitCreateView(CreateView):
 
     def form_valid(self, form):
         commit = form.save()
-        return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url()}), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url(),  'datetime': commit.created.strftime("%m/%d/%Y %r")}), mimetype='application/json')
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
@@ -177,8 +177,8 @@ class NoteCreateView(CreateView):
     model = Note
 
     def form_valid(self, form):
-        pk_id = form.save().pk
-        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+        note = form.save()
+        return HttpResponse(json.dumps({'status': 'success', 'id': note.pk, 'datetime': note.created.strftime("%m/%d/%Y %r") }), mimetype='application/json')
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
