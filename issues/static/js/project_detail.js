@@ -12,17 +12,22 @@ var colors =
     '440044', '5A005A', '6F006F', '770077', '880088', 'AA00AA', 'CC00CC', 'EE00EE', 'FF00FF'
 ];
 
-    function getFormatedNow()
+    function getFormatedNow(nowDate, twenty_four_hour)
     {            
-        var nowDate = new Date();               
         var days = ('0' + nowDate.getDate()).slice(-2);
-        var dateFormat = (nowDate.getMonth()+1) + "/" + days + "/" + nowDate.getFullYear();
-        var ampm = (nowDate.getHours() >= 12)? "p.m." : "a.m.";
-        var hours = (nowDate.getHours() > 12)? nowDate.getHours()-12 : nowDate.getHours();
-        if (hours == 0) { hours = 12; }
+        var month = ('0' + nowDate.getMonth()+1).slice(-2);
+        var dateFormat = month + "/" + days + "/" + nowDate.getFullYear();
         var minutes = ('0' + nowDate.getMinutes()).slice(-2);
-        // Returns date/time formated as 1/02/03 4:05 p.m.
-        return dateFormat + " " + hours + ":" + minutes + " " + ampm;
+        if (twenty_four_hour)
+        { return dateFormat + " " + nowDate.getHours() + ":" + minutes; }
+        else
+        { 
+            // Returns date/time formated as 1/02/03 4:05 p.m.
+            var ampm = (nowDate.getHours() >= 12)? "p.m." : "a.m.";
+            var hours = (nowDate.getHours() > 12)? nowDate.getHours()-12 : nowDate.getHours();
+            if (hours == 0) { hours = 12; }
+            return dateFormat + " " + hours + ":" + minutes + " " + ampm; 
+        }
     }
 
 $('html').ajaxSend(function(event, xhr, settings) {
@@ -337,20 +342,25 @@ $(function() {
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^add-commit-(\d+)$/)[1]);
-            
+            var nowDate = new Date();
             $.ajax({
                 url: CREATE_COMMIT_URL,
                 type: "post",
-                data: {'revision': revision, 'issue': issue_id,},
+                data: {'revision': revision, 'issue': issue_id, 'created': getFormatedNow(nowDate, true)},
                 success: function(data) 
-                {             
+                {       
+                    if ('errors' in data)
+                    {
+                        alert("error");
+                        return;
+                    }      
                     $("#commit-header-" + issue_id).removeClass("hidden");
 
                     var newCommit;
                     if ('url' in data)
-                    { newCommit = $("<li> <a href=\"" + data['url'] + "\">" + revision + "</a> &emsp; on " + getFormatedNow() + "</li>"); }                    
+                    { newCommit = $("<li> <a href=\"" + data['url'] + "\">" + revision + "</a> &emsp; on " + getFormatedNow(nowDate, false) + "</li>"); }                    
                     else 
-                    { newCommit = $("<li>" + revision + " &emsp; on " + getFormatedNow() + "</li>"); }
+                    { newCommit = $("<li>" + revision + " &emsp; on " + getFormatedNow(nowDate, false) + "</li>"); }
 
                     $("#commit-list-" + issue_id).append(newCommit);
                 },
@@ -394,15 +404,22 @@ $(function() {
         var note = window.prompt("Add Note:","");
         if (note) 
         {           
+            var nowDate = new Date();
             $.ajax({
                 url:  CREATE_NOTE_URL,
                 type: "post",
-                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user },
-                success: function() 
+                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user, 'created': getFormatedNow(nowDate, true) },
+                success: function(data) 
                 {
+                    if ('errors' in data)
+                    {
+                        alert("error");
+                        return false;
+                    }
+
                     $("#note-header-" + issue_id).removeClass("hidden");
 
-                    var newNote = $("<div> " + current_user_name + " on " + getFormatedNow() + 
+                    var newNote = $("<div> " + current_user_name + " on " + getFormatedNow(nowDate, false) + 
                     "</br>&emsp;"  + prepend + note + "</div>");
 
                     $("#note-list-" + issue_id).append(newNote);

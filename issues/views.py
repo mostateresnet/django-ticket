@@ -170,6 +170,8 @@ class CommitCreateView(CreateView):
         commit = form.save()
         return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url()}), mimetype='application/json')
 
+    def form_invalid(self, form):
+        return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
 class NoteCreateView(CreateView):
     model = Note
@@ -178,6 +180,8 @@ class NoteCreateView(CreateView):
         pk_id = form.save().pk
         return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
 
+    def form_invalid(self, form):
+        return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
 def issue_detail(request, slug, id):
 #    project = Project.objects.get(slug=slug)
