@@ -397,7 +397,7 @@ $(function() {
             $.ajax({
                 url:  CREATE_NOTE_URL,
                 type: "post",
-                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user},
+                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user },
                 success: function() 
                 {
                     $("#note-header-" + issue_id).removeClass("hidden");

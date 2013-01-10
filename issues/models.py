@@ -199,7 +199,7 @@ class Issue(models.Model):
 class Commit(models.Model):
     revision = models.CharField(max_length=40)
     issue = models.ForeignKey(Issue)
-    created = models.DateTimeField(default=now, auto_now_add=True)
+    created = models.DateTimeField(default=now)
 
     def get_url(self):
         if self.issue.project.scm_owner and self.issue.project.scm_repo:
@@ -251,7 +251,7 @@ class Milestone(models.Model):
 
 class Note(models.Model):
     label = models.CharField(max_length=1000)
-    created = models.DateTimeField(default=now, auto_now_add=True)
+    created = models.DateTimeField(default=now)
     issue = models.ForeignKey('Issue', blank=True, null=True)
     creator = models.ForeignKey(User, related_name="+")
 
