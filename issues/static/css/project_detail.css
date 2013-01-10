@@ -338,6 +338,11 @@ ul.issue-list {
     background-color: #292929;
 }
 
+.needs-review-issues
+{
+    padding-bottom: 10px;
+}
+
 .note:nth-last-of-type(2n)
 {
     background-color: #242424;
