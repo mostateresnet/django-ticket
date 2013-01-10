@@ -8,6 +8,7 @@ from django.utils.safestring import SafeString
 class Tag(models.Model):
     label = models.CharField(max_length=32)
     color = models.CharField(max_length=6)
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.label

@@ -8,33 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting model 'IssueGroup'
-        db.delete_table('issues_issuegroup')
-
-        # Deleting field 'Issue.issue_group'
-        db.delete_column('issues_issue', 'issue_group_id')
-
-        # Adding field 'Issue.parent'
-        db.add_column('issues_issue', 'parent',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issues.Issue'], null=True, blank=True),
+        # Adding field 'Tag.active'
+        db.add_column('issues_tag', 'active',
+                      self.gf('django.db.models.fields.BooleanField')(default=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Adding model 'IssueGroup'
-        db.create_table('issues_issuegroup', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issues.Issue'])),
-        ))
-        db.send_create_signal('issues', ['IssueGroup'])
-
-        # Adding field 'Issue.issue_group'
-        db.add_column('issues_issue', 'issue_group',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issues.IssueGroup'], null=True, blank=True),
-                      keep_default=False)
-
-        # Deleting field 'Issue.parent'
-        db.delete_column('issues_issue', 'parent_id')
+        # Deleting field 'Tag.active'
+        db.delete_column('issues_tag', 'active')
 
 
     models = {
@@ -115,7 +97,7 @@ class Migration(SchemaMigration):
             'label': ('django.db.models.fields.CharField', [], {'max_length': '1000'})
         },
         'issues.project': {
-            'Meta': {'ordering': "['priority']", 'object_name': 'Project'},
+            'Meta': {'ordering': "['-priority']", 'object_name': 'Project'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'priority': ('django.db.models.fields.IntegerField', [], {'default': '-1'}),
@@ -127,6 +109,7 @@ class Migration(SchemaMigration):
         },
         'issues.tag': {
             'Meta': {'object_name': 'Tag'},
+            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'color': ('django.db.models.fields.CharField', [], {'max_length': '6'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'label': ('django.db.models.fields.CharField', [], {'max_length': '32'})
