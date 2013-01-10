@@ -49,17 +49,17 @@
             <div class="user">
                 <div id="user-issue-list">
                     {% for issue in user_data.inprogress_issues %}
-                        <div class="issue user-issue in-progress clear">
+                        <div class="issue user-issue in-progress clear" title="{{ issue.description }}">
                             {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                         </div>
                     {% endfor %}
                     {% for issue in user_data.completed_issues %}
-                        <div class="issue user-issue completed clear hidden">
+                        <div class="issue user-issue completed clear hidden" title="{{ issue.description }}">
                             {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                         </div>
                     {% endfor %}
                     {% for issue in user_data.needs_review_issues %}
-                        <div class="issue user-issue needs-review clear hidden">
+                        <div class="issue user-issue needs-review clear hidden" title="{{ issue.description }}">
                             {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                         </div>
                     {% endfor %}
@@ -69,7 +69,7 @@
         <div id="sortable-assigned-issues" class="hidden content-border">
             <ul id="sortable-issues" class="sortable">
                 {% for issue in user_data.assigned_issues %}
-                        <li class="ui-state-default" id="{{ issue.pk }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ issue }}<div class="right"> {{ issue.project.as_a }}</div></li>
+                        <li class="ui-state-default" title="{{ issue.description }}" id="{{ issue.pk }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ issue }}<div class="right"> {{ issue.project.as_a }}</div></li>
                 {% endfor %}
             </ul>
         </div>
