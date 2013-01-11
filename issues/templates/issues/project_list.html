@@ -44,21 +44,21 @@
                         {% for issue in project.in_progress_issues|slice:":10" %}
                             <div class="issue project-issue in-progress clear" title="{{ issue.description }}">
                                 {{ issue }} 
-                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                             </div>
                         {% endfor %}
                         {% for issue in project.assigned_issues|slice:":10" %}
                             <div class="issue project-issue assigned clear hidden" title="{{ issue.description }}">
                                 {{ issue }} 
-                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                             </div>
                         {% endfor %}
                         {% for issue in project.needs_review_issues %}
                             <div class="issue project-issue needs-review clear hidden" title="{{ issue.description }}">
-                                {{ issue }} 
-                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                {{ issue }}                                 
+                                <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                             </div>
                         {% endfor %}
@@ -69,7 +69,7 @@
                             <div class="issue project-issue completed clear hidden" title="{{ issue.description }}">
                                 {{ issue }}
                                 {% if issue.assigned_to %}
-                                <img src="{{ issue.assignd_to.email|gravatar }}" class="gravatar_small right">
+                                <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                                 {% endif %}                            
                             </div>
