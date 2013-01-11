@@ -446,4 +446,38 @@ $(function() {
 		}
 	});
 	
+    $(".tag").click(function(e)
+    {    
+        $($(this).attr('class').split(' ')).each(function() 
+        { 
+            if (/tag_\d+/.test(this))
+            {              
+                var tag_id = this.match(/^tag_(\d+)$/)[1];  
+                if (e.ctrlKey)
+                {
+                    var params = location.search.substr(1).split("&");
+                    for (var i = 0; i < params.length; i++)
+                    {
+                        var props = params[i].split("=");                        
+                        if (props.length > 1 && props[0].toLowerCase() == "tag")
+                        {
+                            tag_id+= "," + props[1];                            
+                            break;
+                        }
+                    }
+                }                
+
+                var id_array = tag_id.split(",");
+
+                id_array = $.grep(id_array, function(v, k)
+                {
+                    return $.inArray(v ,id_array) === k;
+                });
+               
+                window.location.href = "?tag=" + id_array.join();
+                return false;
+            }    
+        });
+    });
+
 });

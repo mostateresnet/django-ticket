@@ -94,12 +94,18 @@ class ProjectDetailView(DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
 
+        
+
         if 'filter' in self.kwargs:
             context['issues'] = self.object.filtered_issues(self.kwargs['filter'])
             context['filter'] = self.kwargs['filter']
         else:
             context['issues'] = self.object.open_issues()
             context['filter'] = "OPEN"
+
+        tag_filter = self.request.GET.get('tag', '').split(',')
+        if (tag_filter and '' not in tag_filter):
+            context['issues'] = context['issues'].filter(tags__in=tag_filter).distinct()
 
         context['tags'] = self.object.get_tags()
 

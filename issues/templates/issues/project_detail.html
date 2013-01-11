@@ -48,7 +48,7 @@
         {% if project.get_scm_url %}
             <a class="right" href="{{ project.get_scm_url }}" target="_blank">View Source Project</a>
         {% endif %}
-        <h3>{{ object }}</h3>
+        <a href="{% url project_detail project.slug %}"><h3>{{ object }}</h3></a>
 
         <button type = "button" id="new-issue-button"> Add Issue </button>
 
@@ -107,12 +107,12 @@
         {% endif %}
         <ul class="issue-list">
         {% for issue in issues %}
-	  <li id="issue-{{ issue.pk }}" class="issue {% assigned_css_class issue.assigned_to.pk user.pk issue.status %}">
-	      {% include 'issues/includes/issue_detail.html' %}
-	      {% include 'issues/includes/issue_view.html' %}
-	      {% include 'issues/includes/issue_edit.html' %}
-	      <div class="clear"></div>
-	  </li>
+	      <li id="issue-{{ issue.pk }}" class="issue {% assigned_css_class issue.assigned_to.pk user.pk issue.status %}" >
+	          {% include 'issues/includes/issue_detail.html' %}
+	          {% include 'issues/includes/issue_view.html' %}
+	          {% include 'issues/includes/issue_edit.html' %}
+	          <div class="clear"></div>
+	      </li>
         {% endfor %}
         </ul>
     </section>
