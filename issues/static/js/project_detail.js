@@ -390,7 +390,7 @@ $(function() {
 
                     $("#note-header-" + issue_id).removeClass("hidden");
 
-                    var newNote = $("<div> " + current_user_name + " on " + data['datetime'] + 
+                    var newNote = $("<div class = \"note\"> " + current_user_name + " on " + data['datetime'] + 
                     "</br>&emsp;"  + prepend + note + "</div>");
 
                     $("#note-list-" + issue_id).append(newNote);
