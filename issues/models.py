@@ -215,7 +215,7 @@ class UserMethods(User):
             return None
 
     def needs_review_issues(self):
-        return self.issue_set.filter(status='NR')
+        return self.issue_set.filter(status='NR' and assigned_to.pk != user.pk)
 
     class Meta:
         proxy = True

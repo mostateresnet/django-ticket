@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from issues.models import Issue, Project
+from issues.models import Issue, Project, Note, Commit
 from django.contrib.auth.models import User
 
 
@@ -38,3 +38,16 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = ('name', 'slug', 'priority', 'status')
+
+class CommitForm(ModelForm):
+
+    class Meta:
+        model = Commit
+        fields = ('revision', 'issue')
+
+class NoteForm(ModelForm):
+
+    class Meta:
+        model = Note
+        fields = ('label', 'issue', 'creator')
+

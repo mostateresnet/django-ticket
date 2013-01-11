@@ -1,5 +1,7 @@
 import datetime
 import json
+from django.utils import formats
+from django.utils.timezone import now, utc, localtime
 from django import forms
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -11,7 +13,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.db import transaction
 from annoying.utils import HttpResponseReload
-from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm
+from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm, NoteForm, CommitForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -163,9 +165,12 @@ class IssueDetailView(UpdateView):
 class CommitCreateView(CreateView):
     model = Commit
 
+    def get_form_class(self):        
+        return CommitForm
+
     def form_valid(self, form):
         commit = form.save()
-        return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url(), 'datetime': commit.created.strftime("%m/%d/%Y %r")}), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'success', 'id': commit.pk, 'url': commit.get_url(), 'datetime': formats.date_format(localtime(commit.created), "SHORT_DATETIME_FORMAT")}), mimetype='application/json')
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
@@ -174,9 +179,12 @@ class CommitCreateView(CreateView):
 class NoteCreateView(CreateView):
     model = Note
 
+    def get_form_class(self):        
+        return NoteForm
+#.replace(tzinfo=utc)
     def form_valid(self, form):
         note = form.save()
-        return HttpResponse(json.dumps({'status': 'success', 'id': note.pk, 'datetime': note.created.strftime("%m/%d/%Y %r")}), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'success', 'id': note.pk, 'datetime': formats.date_format(localtime(note.created), "SHORT_DATETIME_FORMAT")}), mimetype='application/json')
 
     def form_invalid(self, form):
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')

@@ -318,7 +318,7 @@ $(function() {
             $.ajax({
                 url: CREATE_COMMIT_URL,
                 type: "post",
-                data: {'revision': revision, 'issue': issue_id, 'created': "1/1/70 00:00" },
+                data: {'revision': revision, 'issue': issue_id },
                 success: function(data) 
                 {       
                     if ('errors' in data)
@@ -379,7 +379,7 @@ $(function() {
             $.ajax({
                 url:  CREATE_NOTE_URL,
                 type: "post",
-                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user, 'created': "1/1/70 00:00" },
+                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user },
                 success: function(data) 
                 {
                     if ('errors' in data)
