@@ -5,6 +5,10 @@ when you run "manage.py test".
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from issues.models import Project, Issue, Tag
+import json
 
 
 class ProjectListViewTest(TestCase):
@@ -14,3 +18,309 @@ class ProjectListViewTest(TestCase):
         """
         response = self.client.get(reverse('project_list'))
         self.assertEqual(response.status_code, 200, "ProjectListView should respond with HTTP 200 OK")
+
+
+class UserListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.user.save()
+
+    def test_user_list_responds_200(self):
+        response = self.client.get(reverse('user_profile_view', args=(str(self.user.pk), )))
+        self.assertEqual(response.status_code, 200, "UserListView should respond with HTTP 200 OK")
+
+
+class ProjectNewViewTest(TestCase):
+    def test_project_new_responds_200(self):
+        url = '/new_project/'
+        response = self.client.post(url, {'name': 'New Project name', 'slug': 'new-project-slug', 'status': 'AC', 'priority': -1})
+        project_count = Project.objects.filter(name="New Project name").count()
+        self.assertEqual(project_count, 1, "Project did not get inserted successfully")
+        self.assertEqual(response.status_code, 200, "ProjectNewView should respond with HTTP 200 OK")
+
+    def test_project_new_form_invalid(self):
+        url = '/new_project/'
+        response = self.client.post(url, {'name': 'New Project name', 'status': 'AC', 'priority': -1})
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'error', "HttpResponse should return an error for this test case")
+        self.assertEqual(response.status_code, 200, "ProjectNewView should respond with HTTP 200 OK")
+
+
+class ProjectSortViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.project2 = Project.objects.create(name="project2", slug="project2", status="AC", priority=-1)
+        self.project3 = Project.objects.create(name="project3", slug="project3", status="AC", priority=-1)
+
+    def test_project_sort_view(self):
+        url = '/project_sort/'
+        project_list = [self.project3.pk, self.project2.pk, self.project1.pk]
+        response = self.client.post(url, {'sorted_ids[]': project_list})
+        self.project3 = Project.objects.filter(pk=self.project3.pk)[0]
+        self.assertEqual(self.project3.priority, 3, "Projects did not sort properly")
+        self.assertEqual(response.status_code, 200, "ProjectSortView should respond with HTTP 200 OK")
+
+
+class UserSortViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
+        self.issue2 = self.project1.issue_set.create(title="issue2", creator=self.user, assigned_to=self.user, status="AS")
+        self.issue3 = self.project1.issue_set.create(title="issue3", creator=self.user, assigned_to=self.user, status="AS")
+
+    def test_issue_sorting(self):
+        url = reverse('user_sort_issue_view', args=(str(self.user.pk), ))
+        issue_list = [self.issue1.pk, self.issue2.pk, self.issue3.pk]
+        response = self.client.post(url, {'sorted_ids[]': issue_list})
+        self.issue3 = Issue.objects.filter(pk=self.issue3.pk)[0]
+        self.assertEqual(self.issue3.user_priority, 1, "Issues did not sort properly")
+        self.assertEqual(response.status_code, 200, "UserSortIssueView should respond with HTTP 200 OK")
+
+
+class ProjectDetailViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
+
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
+        self.issue2 = self.project1.issue_set.create(title="issue2", creator=self.user2, assigned_to=self.user, status="UA")
+        self.issue3 = self.project1.issue_set.create(title="issue3", creator=self.user2, assigned_to=self.user, status="IP")
+        self.issue4 = self.project1.issue_set.create(title="issue4", creator=self.user2, assigned_to=self.user, status="CP")
+        self.issue5 = self.project1.issue_set.create(title="issue5", creator=self.user, status="UA")
+
+        self.tag1 = Tag.objects.create(label="test label", color="AAAAAA")
+
+        self.client.login(username='john', password='johnpassword')
+
+    def test_project_detail_view_200(self):
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), )))
+        self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
+
+    def test_project_detail_view_filter_in_kwargs(self):
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue1.status))))
+        self.assertEqual(response.context_data['filter'], self.issue1.status, "Issue page cannot sort for issues that have the status AS")
+
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue2.status))))
+        self.assertEqual(response.context_data['filter'], self.issue2.status, "Issue page cannot sort for issues that have the status UA")
+
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue3.status))))
+        self.assertEqual(response.context_data['filter'], self.issue3.status, "Issue page cannot sort for issues that have the status IP")
+
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue4.status))))
+        self.assertEqual(response.context_data['filter'], self.issue4.status, "Issue page cannot sort for issues that have the status CP")
+
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue5.status))))
+        self.assertEqual(response.context_data['filter'], self.issue5.status, "Issue page cannot sort for issues that have the status CP")
+
+        self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
+
+    def test_tag_filtering(self):
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue1.status))) + '?tag=1')
+        self.assertEqual(response.context_data['filter'], self.issue1.status, "Issue page cannot sort for issues that have the status AS")
+        self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
+
+
+class TagCreateViewTest(TestCase):
+    def setUp(self):
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+
+    def test_tag_create(self):
+        response = self.client.post(reverse('tag_create_view', args=(str(self.project1.slug), )), {'label': 'User Interface', 'color': 'AAAAAA'})
+        tag = Tag.objects.get(label="User Interface")
+        self.assertEqual(tag.label, "User Interface", "New tag wasn't inserted successfully")
+        self.assertEqual(response.status_code, 200, "TagCreateView should respond with HTTP 200 OK")
+
+
+class TabUpdateViewTest(TestCase):
+    def setUp(self):
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.tag1 = Tag.objects.create(label="test label", color="AAAAAA")
+
+    def test_tag_update_valid(self):
+        response = self.client.post(
+            reverse('tag_update_view', args=(str(self.project1.slug), self.tag1.pk)), {'label': 'User Interface', 'color': 'BBBBBB'})
+        self.assertEqual(response.status_code, 200, "TagUpdateView should respond with HTTP 200 OK")
+
+    def test_tag_update_invalid(self):
+        response = self.client.post(
+            reverse('tag_update_view', args=(str(self.project1.slug), self.tag1.pk)), {'label': 'User Interface', 'color': ""})
+        self.assertEqual(response.status_code, 200, "TagUpdateView should respond with HTTP 200 OK")
+
+
+class IssueDetailViewTest(TestCase):
+    def setUp(self):
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
+
+    def test_update_issue_success(self):
+        form_data = {str(
+            self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-description': 'NewDescription', str(self.issue1.pk) + '-assigned_to': str(self.user2.pk),
+            'milestone_date': '2014-01-01', str(self.issue1.pk) + '-days_estimate': 5, }
+        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+
+        self.issue1 = Issue.objects.get(pk=self.issue1.pk)
+
+        self.assertEqual(self.issue1.title, "NewTitle", "The issue title didn't update successfully")
+        self.assertEqual(self.issue1.description, "NewDescription", "The issue title didn't update successfully")
+        self.assertEqual(self.issue1.assigned_to, self.user2, "The issue assigned_to didn't update successfully")
+        self.assertEqual(str(self.issue1.milestone.deadline), "2014-01-01", "The issue milestone didn't update successfully")
+        self.assertEqual(str(self.issue1.days_estimate), "5", "The issue days_estimate didn't update successfully")
+        self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
+
+    def test_status_in_self_request_POST(self):
+        form_data = {'status': 'IP'}
+        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+
+        self.issue1 = Issue.objects.get(pk=self.issue1.pk)
+        self.assertEqual(self.issue1.status, "IP", "The issue status didn't update successfully")
+        self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
+
+    def test_approved_by_in_self_request_POST(self):
+        form_data = {'status': 'CP', 'approved_by': str(self.user2.pk)}
+        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+
+        self.issue1 = Issue.objects.get(pk=self.issue1.pk)
+        self.assertEqual(self.issue1.status, "CP", "The issue status didn't update successfully")
+        self.assertEqual(self.issue1.approved_by, self.user2, "The issue approved_by didn't update successfully")
+        self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
+
+    def test_form_invalid(self):
+        form_data = {str(
+            self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-description': 'NewDescription', str(self.issue1.pk) + '-assigned_to': "aa",
+            'milestone_date': '2014-01-01', str(self.issue1.pk) + '-days_estimate': "f", }
+        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'error', "HttpResponse should return an error for this test case")
+        self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
+
+
+class CommitCreateViewTest(TestCase):
+    def setUp(self):
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="IP")
+
+    def test_form_valid(self):
+        form_data = {'revision': 'aaaaabbbbbccccc', 'issue': str(self.issue1.pk)}
+        response = self.client.post(reverse('commit_create_view', args=(str(self.project1.slug), )), form_data)
+
+        self.issue1 = Issue.objects.get(pk=self.issue1.pk)
+
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(self.issue1.commit_set.all()[0].revision, 'aaaaabbbbbccccc', "The commit revision wasn't created correctly")
+        self.assertEqual(response_data['status'], 'success', "HttpResponse should return success for this test case")
+        self.assertEqual(response.status_code, 200, "CommitCreateView should respond with HTTP 200 OK")
+
+    def test_form_invalid(self):
+        form_data = {'revision': 'aaaaabbbbbccccc', 'issue': ""}
+        response = self.client.post(reverse('commit_create_view', args=(str(self.project1.slug), )), form_data)
+
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'error', "HttpResponse should return error for this test case")
+        self.assertEqual(response.status_code, 200, "CommitCreateView should respond with HTTP 200 OK")
+
+
+class NoteCreateViewTest(TestCase):
+    def setUp(self):
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="IP")
+
+    def test_create_new_note(self):
+        form_data = {'label': 'NewNoteLabel', 'issue': str(self.issue1.pk), 'creator': str(self.user.pk), }
+        response = self.client.post(reverse('note_create_view', args=(str(self.project1.slug), )), form_data)
+
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'success', "HttpResponse should return success for this test case")
+        self.assertEqual(response.status_code, 200, "CommitCreateView should respond with HTTP 200 OK")
+
+    def test_form_invalid(self):
+        form_data = {'label': 'NewNoteLabel', 'issue': "", 'creator': "", }
+        response = self.client.post(reverse('note_create_view', args=(str(self.project1.slug), )), form_data)
+
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'error', "HttpResponse should return error for this test case")
+        self.assertEqual(response.status_code, 200, "CommitCreateView should respond with HTTP 200 OK")
+
+
+class SortIssuesTest(TestCase):
+    def setUp(self):
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="UA")
+        self.issue2 = self.project1.issue_set.create(title="issue2", creator=self.user, assigned_to=self.user, status="AS")
+        self.issue3 = self.project1.issue_set.create(title="issue3", creator=self.user, assigned_to=self.user, status="IP")
+        self.issue4 = self.project1.issue_set.create(title="issue4", creator=self.user, assigned_to=self.user, status="AS")
+        self.issue5 = self.project1.issue_set.create(title="issue5", creator=self.user, assigned_to=self.user, status="UA")
+
+    def test_sort_issue(self):
+        form_data = {str(self.issue5.pk): '5', str(self.issue4.pk): '4', str(self.issue3.pk): '3', str(self.issue2.pk): '2', str(
+            self.issue1.pk): '1', }
+        response = self.client.post(reverse('sort_issue', args=(str(self.project1.slug), )), form_data)
+
+        self.issue1 = Issue.objects.get(pk=self.issue1.pk)
+        self.issue5 = Issue.objects.get(pk=self.issue5.pk)
+
+        self.assertEqual(self.issue1.priority, 1, "Issue1's priority should be 1")
+        self.assertEqual(self.issue5.priority, 5, "Issue5's priority should be 5")
+        self.assertEqual(response.status_code, 200, "def sort_issue should respond with HTTP 200 OK")
+
+
+class NewIssueTest(TestCase):
+    def setUp(self):
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.tag1 = Tag.objects.create(label="testtag1", color="AAAAAA")
+        self.tag2 = Tag.objects.create(label="testtag2", color="BBBBBB")
+        self.client.login(username='john', password='johnpassword')
+
+    def test_create_new_issue(self):
+        form_data = {'title': 'NewTitle', 'description': 'NewDescription', 'assigned_to': str(
+            self.user.pk), 'milestone_date': '2014-01-01', 'tags': [str(self.tag1.pk), str(self.tag2.pk)]}
+        response = self.client.post(reverse('new_issue', args=(str(self.project1.slug), )), form_data)
+
+        new_issue = Issue.objects.get(title="NewTitle")
+
+        self.assertEqual(new_issue.title, "NewTitle", "Issue title didn't get saved correctly")
+        self.assertEqual(new_issue.description, "NewDescription", "Issue description didn't get saved correctly")
+        self.assertEqual(new_issue.assigned_to, self.user, "Issue user didn't get saved correctly")
+        self.assertEqual(str(new_issue.milestone.deadline), "2014-01-01", "Issue milestone didn't update successfully")
+        self.assertEqual(new_issue.tags.all()[0], self.tag1, "tag1 didn't append to the new issue successfully")
+        self.assertEqual(new_issue.tags.all()[1], self.tag2, "tag2 didn't append to the new issue successfully")
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'success', "HttpResponse should return success for this test case")
+        self.assertEqual(response.status_code, 200, "def new_issue should respond with HTTP 200 OK")
+
+    def test_create_new_issue__issue_status_UA(self):
+        form_data = {'title': 'NewTitle', 'description': 'NewDescription', 'milestone_date': '2014-01-01', 'tags': [str(self.tag1.pk),
+                                                                                                                    str(self.tag2.pk)]}
+        response = self.client.post(reverse('new_issue', args=(str(self.project1.slug), )), form_data)
+
+        new_issue = Issue.objects.get(title="NewTitle")
+
+        self.assertEqual(new_issue.title, "NewTitle", "Issue title didn't get saved correctly")
+        self.assertEqual(new_issue.description, "NewDescription", "Issue description didn't get saved correctly")
+        self.assertEqual(str(new_issue.milestone.deadline), "2014-01-01", "Issue milestone didn't update successfully")
+        self.assertEqual(new_issue.tags.all()[0], self.tag1, "tag1 didn't append to the new issue successfully")
+        self.assertEqual(new_issue.tags.all()[1], self.tag2, "tag2 didn't append to the new issue successfully")
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'success', "HttpResponse should return success for this test case")
+        self.assertEqual(response.status_code, 200, "def new_issue should respond with HTTP 200 OK")
+
+    def test_create_new_issue_failure(self):
+        form_data = {'title': "", 'description': 'NewDescription', 'assigned_to': 'a', 'tags': [str(self.tag1.pk), str(self.tag2.pk)]}
+        response = self.client.post(reverse('new_issue', args=(str(self.project1.slug), )), form_data)
+
+        response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
+        self.assertEqual(response_data['status'], 'error', "HttpResponse should return error for this test case")
+        self.assertEqual(response.status_code, 200, "def new_issue should respond with HTTP 200 OK")
