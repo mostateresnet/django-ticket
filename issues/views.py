@@ -149,7 +149,6 @@ class IssueDetailView(UpdateView):
         if 'status' in self.request.POST:
             return IssueStatusForm
         else:
-            print "THIS:" + str(self.object.form_class())
             return self.object.form_class()
 
     def get_form_kwargs(self):
