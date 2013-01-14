@@ -154,7 +154,9 @@ $(function() {
     $( ".new_tag").click(function(e)
     {
         var new_tag_name = $(this).siblings('.new_tag_input').attr('value');
-        var post_action = window.location.pathname + "tags/";
+
+        var post_action = CREATE_TAG_URL;
+
         var default_color = "AAAAAA";
         var post_data = "label=" + new_tag_name + "&color=" + default_color;
         $('.new_tag_input').attr('value','');
