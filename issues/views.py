@@ -94,8 +94,6 @@ class ProjectDetailView(DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
 
-        
-
         if 'filter' in self.kwargs:
             context['issues'] = self.object.filtered_issues(self.kwargs['filter'])
             context['filter'] = self.kwargs['filter']
@@ -170,7 +168,7 @@ class IssueDetailView(UpdateView):
 class CommitCreateView(CreateView):
     model = Commit
 
-    def get_form_class(self):        
+    def get_form_class(self):
         return CommitForm
 
     def form_valid(self, form):
@@ -184,9 +182,10 @@ class CommitCreateView(CreateView):
 class NoteCreateView(CreateView):
     model = Note
 
-    def get_form_class(self):        
+    def get_form_class(self):
         return NoteForm
 #.replace(tzinfo=utc)
+
     def form_valid(self, form):
         note = form.save()
         return HttpResponse(json.dumps({'status': 'success', 'id': note.pk, 'datetime': formats.date_format(localtime(note.created), "SHORT_DATETIME_FORMAT")}), mimetype='application/json')
