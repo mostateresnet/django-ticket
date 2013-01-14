@@ -238,6 +238,14 @@ class Note(models.Model):
     created = models.DateTimeField(default=now)
     issue = models.ForeignKey('Issue', blank=True, null=True)
     creator = models.ForeignKey(User, related_name="+")
+    viewers = models.ManyToManyField(User, through='NoteViewed')
 
     def __unicode__(self):
         return self.label
+
+class NoteViewed(models.Model):
+    note = models.ForeignKey(Note)
+    user = models.ForeignKey(User)
+    last_viewed = models.DateTimeField(default=now, blank=True)
+
+
