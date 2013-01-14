@@ -194,13 +194,6 @@ class NoteCreateView(CreateView):
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
 
-def issue_detail(request, slug, id):
-#    project = Project.objects.get(slug=slug)
-    issue = Issue.objects.get(id=id)
-    issue.save()
-    return HttpResponse("success")
-
-
 def sort_issue(request, slug):
     project = Project.objects.get(slug=slug)
     for id, priority in request.POST.items():
