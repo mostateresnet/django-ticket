@@ -14,12 +14,12 @@
 
 {% if issue.status != 'NR' %}
     <button id="{{ issue.pk }}-work-on" class="right issue-button issue_work_on">Work On</button>    
-    <button id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</button>   
-    <button id="add-commit-{{ issue.pk }}" class="right issue-button issue_add_commit">Add Commit</button>                  
+    <button id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</button>                   
 {% else %}
     <button id="{{ issue.pk }}-approve" class="right issue-button issue_approve">Approve</button>
     <button id="{{ issue.pk }}-reject" class="right issue-button issue_reject">Reject</button>  
 {% endif %}
+<button id="add-commit-{{ issue.pk }}" class="right issue-button issue_add_commit">Add Commit</button>  
 <button id="add-note-{{ issue.pk }}" class="right issue-button issue_add_note">Add Note</button>                  
 
 {% with commits=issue.commit_set.all notes=issue.note_set.all %}

@@ -196,14 +196,6 @@ ul.issue-list {
     display:none;
 }
 
-.assigned .issue_add_commit{
-    display:none;
-}
-
-.unassigned .issue_add_commit{
-    display:none;
-}
-
 .unassigned .issue_work_on{
     display:none;
 }
