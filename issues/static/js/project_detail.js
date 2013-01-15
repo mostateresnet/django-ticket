@@ -423,11 +423,12 @@ $(function() {
                         alert(data['errors']);
                         return false;
                     }
+                    else{
+                      window.location.reload(true);
+                    }
                 },
                 error: function () { alert("error"); },
             });
-
-           window.location.reload(true);
         }
     });
 	
