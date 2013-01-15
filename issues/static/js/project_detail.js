@@ -332,7 +332,7 @@ $(function() {
 
                     var newCommit;
                     if ('url' in data)
-                    { newCommit = $("<li> <a href=\"" + data['url'] + "\">" + revision + "</a> &emsp; on " + data['datetime'] + "</li>"); }                    
+                    { newCommit = $("<li> <a href=\"" + data['url'] + "\" target=\"_blank\">" + revision + "</a> &emsp; on " + data['datetime'] + "</li>"); }                    
                     else 
                     { newCommit = $("<li>" + revision + " &emsp; on " + data['datetime'] + "</li>"); }
 
