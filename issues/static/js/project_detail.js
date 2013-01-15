@@ -416,6 +416,14 @@ $(function() {
                 url: UPDATE_ISSUE_URL + issueid, 
                 type: "post",
                 data: "status=CP&approved_by="+current_user,
+                success: function(data)
+                {
+                    if ('errors' in data)
+                    {
+                        alert(data['errors']);
+                        return false;
+                    }
+                },
                 error: function () { alert("error"); },
             });
 
