@@ -243,9 +243,8 @@ class Note(models.Model):
     def __unicode__(self):
         return self.label
 
+
 class NoteViewed(models.Model):
     note = models.ForeignKey(Note)
     user = models.ForeignKey(User)
     last_viewed = models.DateTimeField(default=now, blank=True)
-
-

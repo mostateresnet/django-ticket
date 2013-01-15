@@ -93,6 +93,7 @@ class ProjectDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
+        context['needs_review_issues'] = self.object.needs_review_issues().exclude(assigned_to=self.request.user)
 
         if 'filter' in self.kwargs:
             context['issues'] = self.object.filtered_issues(self.kwargs['filter'])

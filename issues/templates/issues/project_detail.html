@@ -69,12 +69,12 @@
         
         {% include 'issues/includes/issue_new.html' %}
         {% include 'issues/includes/color_selector.html' %}
-        {% if project.needs_review_issues.count > 0 %}
+        {% if needs_review_issues %}
             <div class="needs-review-issues content-border">
                 <h2>Needs Review Issues</h2>
                 <ul class="issue-list">
 
-                    {% for issue in project.needs_review_issues %}
+                    {% for issue in needs_review_issues %}
                         {% if issue.assigned_to != user %}
                          <li id="issue-nr-{{ issue.pk }}" class="issue needs-review">
                             <span class="assigned-to">
