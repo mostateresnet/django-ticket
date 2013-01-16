@@ -1,0 +1,5 @@
+<div class = "tag_list">
+  {% for tag in issue.tags.all %}
+    <div class = "tag tag_{{ tag.pk }}">{{ tag.label }}</div>
+  {% endfor %}
+</div>

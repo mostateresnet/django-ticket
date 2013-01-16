@@ -25,6 +25,7 @@ class ProjectListView(ListView):
         context = super(ListView, self).get_context_data(**kwargs)
         context['users'] = UserMethods.objects.filter(is_active=True)
         context['project_form'] = ProjectForm()
+        context['tags'] = Tag.objects.all()
         return context
 
 
@@ -34,6 +35,7 @@ class UserListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
 
         if 'user_id' in self.kwargs:
             context['user_data'] = UserMethods.objects.get(pk=self.kwargs['user_id'])

@@ -66,21 +66,6 @@ ul.issue-list {
     border: none;
 }
 
-.tag
-{
-  padding: 2px 2px 2px 2px;
-  margin: 0px 2px 0px 2px;
-  float: left;
-  color: black;
-  cursor: pointer;
-}
-
-.tag_list
-{
-  display: block;
-  padding-left: 3em;
-}
-
 .assigned-to {
     float: right;
     padding-right: 10px;
@@ -142,18 +127,6 @@ ul.issue-list {
     padding-top: 1em;
 }
 
-
-.issue-title, .issue-nr-title {
-    cursor: pointer;
-}
-
-
-.details_drop
-{
-  padding-left: 3em;
-  white-space: nowrap;
-}
-
 .new_issue_container
 {
     width:80%; 
@@ -166,15 +139,6 @@ ul.issue-list {
 
 .new_issue_right
 { width: 25%; }
-
-.issue_status
-{
-    padding: 2px 2px 2px 2px;
-    margin: 2px 2px 2px 2px;
-    width: 28%;
-    border-radius: 4px;
-    border: 1px solid #3A3A3A;
-}
 
 .issue-button
 {
@@ -204,15 +168,6 @@ ul.issue-list {
 {
     width:80%; 
     margin:0 auto; 
-}
-
-.issue_description
-{
-    border-radius: 4px;
-    padding: 4px 4px 4px 4px;
-    margin: 2px 2px 2px 2px;
-    border: 1px solid #3A3A3A;
-    white-space:normal;
 }
 
 
@@ -311,11 +266,6 @@ ul.issue-list {
     font-size: 1.1em;
 }
 
-.field-header{
-    text-decoration: underline;
-    font-weight: bold;
-}
-
 .new_tag_input
 {
     border-width:1px;
@@ -335,11 +285,6 @@ ul.issue-list {
 .needs-review-issues
 {
     padding-bottom: 10px;
-}
-
-.note:nth-last-of-type(2n)
-{
-    background-color: #242424;
 }
 
 .ui-state-active{

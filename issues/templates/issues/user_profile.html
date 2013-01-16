@@ -7,6 +7,14 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/user_profile.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tab_lists.css" />
+    
+    <!-- we need to dry this piece of code out, it is also found in project_list.html and project_detail.html. Ask Shane -->
+    <style>
+    {% for tagcss in tags %}
+        .tag_{{ tagcss.pk }}
+        { background-color: #{{ tagcss.color}} ; }        
+    {% endfor %}
+    </style>
 {% endblock %}
 
 {% block js %}
@@ -50,17 +58,32 @@
                 <div id="user-issue-list">
                     {% for issue in user_data.inprogress_issues %}
                         <div class="issue user-issue in-progress clear" title="{{ issue.description }}">
-                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            <span class="issue-title slide-title">{{ issue }}</span> 
+                            <div class="right"> {{ issue.project.as_a }}</div>
+                            <div class="details hidden">
+                                {% include 'issues/includes/tag_display.html' %}
+                                {% include 'issues/includes/issue_view.html' %}
+                            </div>
                         </div>
                     {% endfor %}
                     {% for issue in user_data.completed_issues %}
                         <div class="issue user-issue completed clear hidden" title="{{ issue.description }}">
-                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            <span class="issue-title slide-title">{{ issue }}</span> 
+                            <div class="right"> {{ issue.project.as_a }}</div>
+                            <div class="details hidden">
+                                {% include 'issues/includes/tag_display.html' %}
+                                {% include 'issues/includes/issue_view.html' %}
+                            </div>
                         </div>
                     {% endfor %}
                     {% for issue in user_data.needs_review_issues %}
                         <div class="issue user-issue needs-review clear hidden" title="{{ issue.description }}">
-                            {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
+                            <span class="issue-title slide-title">{{ issue }}</span> 
+                            <div class="right"> {{ issue.project.as_a }}</div>
+                            <div class="details hidden">
+                                {% include 'issues/includes/tag_display.html' %}
+                                {% include 'issues/includes/issue_view.html' %}
+                            </div>
                         </div>
                     {% endfor %}
                 </div>

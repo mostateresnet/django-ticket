@@ -7,6 +7,14 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/project_list.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tab_lists.css" />
+    
+    <!-- we need to dry this piece of code out, it is also found in user_profile.html and project_detail.html. Ask Shane -->
+    <style>
+    {% for tagcss in tags %}
+        .tag_{{ tagcss.pk }}
+        { background-color: #{{ tagcss.color}} ; }        
+    {% endfor %}
+    </style>
 {% endblock %}
 
 {% block js %}
@@ -43,39 +51,67 @@
                     <div class="nojump collapse-issue-list clear">
                         {% for issue in project.in_progress_issues|slice:":10" %}
                             <div class="issue project-issue in-progress clear" title="{{ issue.description }}">
-                                {{ issue }} 
+                                <span class="issue-title slide-title">{{ issue }}</span> 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                                <div class="details hidden">
+                                    {% include 'issues/includes/tag_display.html' %}
+                                    {% include 'issues/includes/issue_view.html' %}
+                                </div>
                             </div>
                         {% endfor %}
                         {% for issue in project.assigned_issues|slice:":10" %}
                             <div class="issue project-issue assigned clear hidden" title="{{ issue.description }}">
-                                {{ issue }} 
+                                <span class="issue-title slide-title">{{ issue }}</span> 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                                <div class="details hidden">
+                                    {% include 'issues/includes/tag_display.html' %}
+                                    {% include 'issues/includes/issue_view.html' %}
+                                </div>
                             </div>
                         {% endfor %}
                         {% for issue in project.needs_review_issues %}
                             <div class="issue project-issue needs-review clear hidden" title="{{ issue.description }}">
-                                {{ issue }}                                 
+                                <span class="issue-title slide-title">{{ issue }}</span>                                 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
+                                <div class="details hidden">
+                                    {% include 'issues/includes/tag_display.html' %}
+                                    {% include 'issues/includes/issue_view.html' %}
+                                </div>
                             </div>
                         {% endfor %}
                         {% for issue in project.unassigned_issues|slice:":10" %}
-                            <div class="issue project-issue unassigned hidden" title="{{ issue.description }}">{{ issue }}</div>
+                            <div class="issue project-issue unassigned hidden" title="{{ issue.description }}">
+                                <span class="issue-title slide-title">{{ issue }}</span> 
+                                <div class="details hidden">
+                                    {% include 'issues/includes/tag_display.html' %}
+                                    {% include 'issues/includes/issue_view.html' %}
+                                </div>
+                            </div>
                         {% endfor %}
                         {% for issue in project.recently_completed_issues|slice:":10" %}
                             <div class="issue project-issue completed clear hidden" title="{{ issue.description }}">
-                                {{ issue }}
+                                <span class="issue-title slide-title">{{ issue }}</span> 
                                 {% if issue.assigned_to %}
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
                                 {% endif %}                            
+                                <div class="details hidden">
+                                    {% include 'issues/includes/tag_display.html' %}
+                                    {% include 'issues/includes/issue_view.html' %}
+                                </div>
                             </div>
                         {% endfor %}                        
                         {% for issue in project.recently_deleted_issues|slice:":10" %}
-                            <div class="issue project-issue deleted hidden" title="{{ issue.description }}">{{ issue }}</div>
+                            <div class="issue project-issue deleted hidden" title="{{ issue.description }}">
+                            <span class="issue-title slide-title">{{ issue }}</span> 
+                            <div class="details hidden">
+                                {% include 'issues/includes/tag_display.html' %}
+                                {% include 'issues/includes/issue_view.html' %}
+                            </div>
+                            </div>
                         {% endfor %}
                     </div>
                 </div>

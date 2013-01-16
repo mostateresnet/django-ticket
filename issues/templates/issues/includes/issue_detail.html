@@ -30,8 +30,4 @@
 {% endif %}
 <span class="issue-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
 
-<div class = "tag_list">
-  {% for tag in issue.tags.all %}
-    <div class = "tag tag_{{ tag.pk }}">{{ tag.label }}</div>
-  {% endfor %}
-</div>
+{% include 'issues/includes/tag_display.html' %}

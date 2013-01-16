@@ -39,7 +39,7 @@ $(function() {
         $(this).siblings('.edit_drop').slideUp(function() 
         { $(this).siblings('.details_drop').slideToggle(); });
     });
-
+    
     $( ".issue-nr-title").click(function(e){
         $(this).siblings('.details_drop').slideToggle();
     });
