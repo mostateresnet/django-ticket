@@ -35,13 +35,45 @@ $('html').ajaxSend(function(event, xhr, settings) {
 });
 
 $(function() {
+
+    function set_viewed_issue(issue, user)
+    {
+        $( "#new-notes-"+issue).remove();
+        var url = UPDATE_ISSUE_URL + issue;
+        $.ajax({
+            url: url, 
+            type: "post",
+            data: "viewed=1",
+            error: function () { alert("error"); },
+        });
+
+    }
+
     $( ".issue-title").click(function(e){
         $(this).siblings('.edit_drop').slideUp(function() 
-        { $(this).siblings('.details_drop').slideToggle(); });
+        { 
+            $(this).siblings('.details_drop').slideToggle(function()
+            {
+                if ($(this).is(":visible"))
+                {
+                    var id = $(this).attr('id')
+                    var issue_id = parseInt(id.match(/^issue-details-(\d+)$/)[1]);    
+                    set_viewed_issue(issue_id, current_user);
+                }
+            }); 
+        });
     });
     
     $( ".issue-nr-title").click(function(e){
-        $(this).siblings('.details_drop').slideToggle();
+        $(this).siblings('.details_drop').slideToggle(function()        
+        {
+            if ($(this).is(":visible"))
+            {
+                var id = $(this).attr('id');
+                var issue_id = parseInt(id.match(/^issue-details-(\d+)$/)[1]);    
+                set_viewed_issue(issue_id, current_user);
+            }
+        }); 
     });
 
     $( ".issue_edit").click(function(e){
@@ -112,6 +144,7 @@ $(function() {
 
         var existing_label = $(".tag_mod.tag_" + tag_id + ":first").siblings('.tag_label').text();
 
+        //FIXME: DYNAMIC URL
         var post_action = window.location.pathname + "tags/" + tag_id;
         var post_data = "label=" + existing_label + "&color=" + new_color;
         $.post(post_action, post_data);

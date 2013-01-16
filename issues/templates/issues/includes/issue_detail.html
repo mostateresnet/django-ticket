@@ -1,4 +1,5 @@
 {% load gravatar %}
+{% load has_new_notes %}
 
 {% if issue.milestone %}
   <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone.deadline.date }}</a>
@@ -24,10 +25,10 @@
 <img class="handle" src="{{ STATIC_URL }}img/handle.png" />
 
 <span class="issue-id" >{{ issue.pk }}</span>
-
-{% if issue.has_children %}
-<span >({{ issue.completed_children_count }} / {{ issue.children_count }})</span>
+{% if issue|has_new_notes:user %}
+    <label id="new-notes-{{ issue.pk }}" class="new-note">New Note! </label>
 {% endif %}
+
 <span class="issue-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
 
 {% include 'issues/includes/tag_display.html' %}

@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Q
-from django.utils.timezone import now
+from django.utils.timezone import now, utc
 from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
 import datetime
@@ -124,6 +124,7 @@ class Issue(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length="64", blank=True, null=True, choices=STATUS_CHOICES)
     created = models.DateTimeField(default=now)
+    viewers = models.ManyToManyField(User, through='IssueViewed', related_name='viewer_set')
 
     class Meta:
         ordering = ['project', '-priority']
@@ -171,6 +172,13 @@ class Issue(models.Model):
         form_kwargs = self.form_kwargs()
         form_kwargs.update(kwargs)
         return IssueCloseForm(**form_kwargs)
+
+    def has_new_notes(self, viewing_user):
+        notes = self.note_set.exclude(creator=viewing_user).order_by('-created')
+        if (notes):
+            return IssueViewed.objects.filter(user=viewing_user, issue=self).exclude(last_viewed__lte=notes[0].created).count() == 0
+        else:
+            return False
 
     @models.permalink
     def get_absolute_url(self):
@@ -238,13 +246,13 @@ class Note(models.Model):
     created = models.DateTimeField(default=now)
     issue = models.ForeignKey('Issue', blank=True, null=True)
     creator = models.ForeignKey(User, related_name="+")
-    viewers = models.ManyToManyField(User, through='NoteViewed')
 
     def __unicode__(self):
         return self.label
 
 
-class NoteViewed(models.Model):
-    note = models.ForeignKey(Note)
+class IssueViewed(models.Model):
+    issue = models.ForeignKey(Issue)
     user = models.ForeignKey(User)
     last_viewed = models.DateTimeField(default=now, blank=True)
+

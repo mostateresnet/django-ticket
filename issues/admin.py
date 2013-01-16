@@ -1,4 +1,4 @@
-from issues.models import Issue, Milestone, Tag, Project, Commit, Note
+from issues.models import Issue, Milestone, Tag, Project, Commit, Note, IssueViewed
 from django.contrib import admin
 
 
@@ -32,3 +32,5 @@ admin.site.register(Project, ProjectAdmin)
 admin.site.register(Commit)
 admin.site.register(Note)
 admin.site.register(Issue)
+admin.site.register(IssueViewed)
+

@@ -7,13 +7,13 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.base import TemplateView
-from issues.models import Project, Issue, Milestone, Tag, UserMethods, Commit, Note
+from issues.models import Project, Issue, Milestone, Tag, UserMethods, Commit, Note, IssueViewed
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.db import transaction
 from annoying.utils import HttpResponseReload
-from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm, NoteForm, CommitForm
+from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm, NoteForm, CommitForm, IssueViewedForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -39,8 +39,6 @@ class UserListView(ListView):
 
         if 'user_id' in self.kwargs:
             context['user_data'] = UserMethods.objects.get(pk=self.kwargs['user_id'])
-
-    # UserMethods.objects.filter(pk=self.kwargs['user_id'])[0]
 
         return context
 
@@ -95,7 +93,8 @@ class ProjectDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
         context['issue_form'] = IssueForm()
-        context['needs_review_issues'] = self.object.needs_review_issues().exclude(assigned_to=self.request.user)
+        if self.request.user.is_authenticated():
+            context['needs_review_issues'] = self.object.needs_review_issues().exclude(assigned_to=self.request.user)
 
         if 'filter' in self.kwargs:
             context['issues'] = self.object.filtered_issues(self.kwargs['filter'])
@@ -141,12 +140,19 @@ class IssueDetailView(UpdateView):
             # call method that modifies post data for our custom milestone handling
             post_data = append_new_milestone(self.request.POST.copy(), project, kwargs['pk'])
             self.request.POST = post_data
-        return super(IssueDetailView, self).post(*args, **kwargs)
+
+        response = super(IssueDetailView, self).post(*args, **kwargs)
+
+        if 'viewed' in self.request.POST:
+            IssueViewed.objects.filter(user=self.request.user, issue=self.object).delete()
+            IssueViewed(user=self.request.user, issue=self.object).save()
+
+        return response
 
     def get_form_class(self):
         if 'approved_by' in self.request.POST:
             return IssueCloseForm
-        if 'status' in self.request.POST:
+        elif 'status' in self.request.POST:
             return IssueStatusForm
         else:
             return self.object.form_class()
@@ -186,7 +192,6 @@ class NoteCreateView(CreateView):
 
     def get_form_class(self):
         return NoteForm
-#.replace(tzinfo=utc)
 
     def form_valid(self, form):
         note = form.save()

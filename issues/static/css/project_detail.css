@@ -290,3 +290,9 @@ ul.issue-list {
 .ui-state-active{
     border: 1px solid #A51616 !important;
 }
+
+.new-note
+{
+color: red;
+}
+

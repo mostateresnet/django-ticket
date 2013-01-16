@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from issues.models import Issue, Project, Note, Commit
+from issues.models import Issue, Project, Note, Commit, IssueViewed
 from django.contrib.auth.models import User
 
 
@@ -52,3 +52,10 @@ class NoteForm(ModelForm):
     class Meta:
         model = Note
         fields = ('label', 'issue', 'creator')
+
+class IssueViewedForm(ModelForm):
+
+    class Meta:
+        model = IssueViewed
+        fields = ('last_viewed', )
+
