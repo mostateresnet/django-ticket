@@ -43,7 +43,7 @@
         <div id="note-list-{{ issue.pk }}" class="note-list">
             <span id="note-header-{{ issue.pk }}" class="field-header {% if not notes %} hidden {% endif %}">Notes</span><br />
             {% for note in notes %}
-                <div class="note">{{ note.creator.get_full_name }} on {{ note.created|date:"SHORT_DATETIME_FORMAT" }} </br>&emsp; {{ note.label|linebreaksbr }}</div>
+                <div class="note">{{ note.creator.get_full_name }} on {{ note.created|date:"SHORT_DATETIME_FORMAT" }} </br>&emsp; {{ note|linebreaksbr }}</div>
             {% endfor %}
         </div>
     

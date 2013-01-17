@@ -2,7 +2,7 @@
 {% load has_new_notes %}
 
 {% if issue.milestone %}
-  <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone.deadline.date }}</a>
+  <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone }}</a>
 {% endif %}
 <span class="assigned-to">
   {% if issue.assigned_to %}

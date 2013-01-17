@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from issues.models import Project, Issue, Tag
+from issues.models import Project, Issue, Tag, Note, Commit, Milestone
 import json
 
 
@@ -22,11 +22,18 @@ class ProjectListViewTest(TestCase):
 
 class UserListViewTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
-        self.user.save()
+        self.user1 = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
+
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user1, assigned_to=self.user1, status="CP")
 
     def test_user_list_responds_200(self):
-        response = self.client.get(reverse('user_profile_view', args=(str(self.user.pk), )))
+        #user_profile with completed issues
+        response = self.client.get(reverse('user_profile_view', args=(str(self.user1.pk), )))
+        self.assertEqual(response.status_code, 200, "UserListView should respond with HTTP 200 OK")
+        #user_profile without completed issues
+        response = self.client.get(reverse('user_profile_view', args=(str(self.user2.pk), )))
         self.assertEqual(response.status_code, 200, "UserListView should respond with HTTP 200 OK")
 
 
@@ -96,12 +103,40 @@ class ProjectDetailViewTest(TestCase):
         self.issue5 = self.project1.issue_set.create(title="issue5", creator=self.user, status="UA")
 
         self.tag1 = Tag.objects.create(label="test label", color="AAAAAA")
+        self.note1 = Note.objects.create(label="test note", issue=self.issue1, creator=self.user)
+        self.note2 = Note.objects.create(label="test note 2", issue=self.issue1, creator=self.user2)
+
+        self.commit1 = Commit.objects.create(revision="somesha1sum", issue=self.issue1)
 
         self.client.login(username='john', password='johnpassword')
+
+        self.project2 = Project.objects.create(name="project2", slug="project2", status="AC", priority=-1, 
+            scm_owner="owner", scm_repo="repo", scm_type="GH")
+        self.issue6 = self.project2.issue_set.create(title="issue6", creator=self.user2, assigned_to=self.user, status="UA")
+        self.commit2 = Commit.objects.create(revision="somesha1sum", issue=self.issue6)
+
+        self.milestone1 = Milestone.objects.create(project=self.project2, deadline="3000-1-1")
+        self.issue6.milestone = self.milestone1
+
+        self.project3 = Project.objects.create(name="project3", slug="project3", status="CP", priority=-1, 
+            scm_owner="owner", scm_repo="repo", scm_type="BB")
+        self.issue7 = self.project3.issue_set.create(title="issue7", creator=self.user2, assigned_to=self.user, status="UA")
+        self.commit3 = Commit.objects.create(revision="somesha1sum", issue=self.issue7)
+
 
     def test_project_detail_view_200(self):
         response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), )))
         self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
+        self.assertEqual(self.project1.get_scm_url(), None, "Method get_scm_url for no SCM is not returning the expected string.")
+
+        response = self.client.get(reverse('project_detail', args=(str(self.project2.slug), )))
+        self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
+        self.assertEqual(self.project2.get_scm_url(),"https://github.com/owner/repo", "Method get_scm_url for github is not returning the expected string.")
+
+        response = self.client.get(reverse('project_detail', args=(str(self.project3.slug), )))
+        self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
+        self.assertEqual(self.project3.get_scm_url(),"https://bitbucket.org/owner/repo", "Method get_scm_url for bitbucket is not returning the expected string.")
+
 
     def test_project_detail_view_filter_in_kwargs(self):
         response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue1.status))))
@@ -125,7 +160,6 @@ class ProjectDetailViewTest(TestCase):
         response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue1.status))) + '?tag=1')
         self.assertEqual(response.context_data['filter'], self.issue1.status, "Issue page cannot sort for issues that have the status AS")
         self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
-
 
 class TagCreateViewTest(TestCase):
     def setUp(self):
@@ -160,7 +194,7 @@ class IssueDetailViewTest(TestCase):
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
         self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
-
+       
     def test_update_issue_success(self):
         form_data = {str(
             self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-description': 'NewDescription', str(self.issue1.pk) + '-assigned_to': str(self.user2.pk),
@@ -175,6 +209,10 @@ class IssueDetailViewTest(TestCase):
         self.assertEqual(str(self.issue1.milestone.deadline), "2014-01-01", "The issue milestone didn't update successfully")
         self.assertEqual(str(self.issue1.days_estimate), "5", "The issue days_estimate didn't update successfully")
         self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
+
+        form_data = {str(self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-status': 'DL', }
+        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+#        print response
 
     def test_status_in_self_request_POST(self):
         form_data = {'status': 'IP'}

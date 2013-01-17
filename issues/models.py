@@ -53,9 +53,6 @@ class Project(models.Model):
         # we should filter by project...
         return Tag.objects.all()  # filter(project=self)
 
-    def closed_issues(self):
-        return Issue.objects.filter(project=self, ).order_by('-close_date')
-
     def filtered_issues(self, status_filter):
         return Issue.objects.filter(project=self, status=status_filter)
 
@@ -149,12 +146,6 @@ class Issue(models.Model):
             pass
         super(Issue, self).save(*args, **kwargs)
 
-    def close(self, revision, when=None):
-        if not when:
-            when = now().date()
-        self.close_date = when
-        self.save()
-
     def form_class(self):
         from issues.forms import IssueForm
         return IssueForm
@@ -166,12 +157,6 @@ class Issue(models.Model):
         form_kwargs = self.form_kwargs()
         form_kwargs.update(kwargs)
         return self.form_class()(**form_kwargs)
-
-    def close_form(self, **kwargs):
-        from issues.forms import IssueCloseForm
-        form_kwargs = self.form_kwargs()
-        form_kwargs.update(kwargs)
-        return IssueCloseForm(**form_kwargs)
 
     def has_new_notes(self, viewing_user):
         notes = self.note_set.exclude(creator=viewing_user).order_by('-created')
