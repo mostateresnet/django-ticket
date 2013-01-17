@@ -339,8 +339,9 @@ $(function() {
             url: UPDATE_ISSUE_URL + issueid, 
             type: "post",
             data: "status=IP",
-            success: function() { 
-                document.getElementById(target.parentNode.parentNode.id).className="issue in-progress";
+            success: function() 
+            { 
+                document.getElementById("issue-" + issueid).className="issue in-progress";
             },
             error: function () { alert("error"); },
         });
