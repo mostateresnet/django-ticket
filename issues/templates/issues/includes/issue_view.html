@@ -22,7 +22,7 @@
 <button id="add-commit-{{ issue.pk }}" class="right issue-button issue_add_commit">Add Commit</button>  
 <button id="add-note-{{ issue.pk }}" class="right issue-button issue_add_note">Add Note</button>                  
 
-{% with commits=issue.commit_set.all notes=issue.note_set.all %}
+{% with commits=issue.commit_set.all notes=issue.get_notes %}
 
     {% if issue.description or notes or commits %}
         <div class ="clear issue_description">

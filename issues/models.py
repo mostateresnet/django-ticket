@@ -180,6 +180,9 @@ class Issue(models.Model):
         else:
             return False
 
+    def get_notes(self):
+        return self.note_set.all().order_by('created')
+
     @models.permalink
     def get_absolute_url(self):
         return ('issue_detail', (), {'slug': self.project.slug, 'pk': self.id})
