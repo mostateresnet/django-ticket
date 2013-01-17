@@ -1,26 +1,33 @@
 {% load assigned_css_class %}
 <div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}"> 
-<p class ="left issue_status">Created by: <span class="emphasis">{{ issue.creator.get_full_name }}</span></p> 
-{% if issue.milestone %}
-    <p class ="left issue_status">Milestone: <span class="emphasis">{{ issue.milestone }}</span></p>
-{% endif %}
-{% if issue.days_estimate %}
-    <p class ="left issue_status">Days Estimate: <span class="emphasis">{{ issue.days_estimate }}</span></p>
-{% endif %}
 
-{% if issue.status != 'DL' and issue.status != 'CP' and issue.status != 'NR' %}
-    <button class ="right issue-button issue_edit" href="">Edit</button>    
-{% endif %}
+<div class="buttons right">
+    <button id="add-commit-{{ issue.pk }}" class="issue-button issue_add_commit">Add Commit</button>  
+    <button id="add-note-{{ issue.pk }}" class="issue-button issue_add_note">Add Note</button> 
 
-{% if issue.status != 'NR' %}
-    <button id="{{ issue.pk }}-work-on" class="right issue-button issue_work_on">Work On</button>    
-    <button id="close-{{ issue.pk }}" class="right issue-button issue_complete">Complete</button>                   
-{% else %}
-    <button id="{{ issue.pk }}-approve" class="right issue-button issue_approve">Approve</button>
-    <button id="{{ issue.pk }}-reject" class="right issue-button issue_reject">Reject</button>  
-{% endif %}
-<button id="add-commit-{{ issue.pk }}" class="right issue-button issue_add_commit">Add Commit</button>  
-<button id="add-note-{{ issue.pk }}" class="right issue-button issue_add_note">Add Note</button>                  
+    {% if issue.status != 'NR' %}
+        <button id="{{ issue.pk }}-work-on" class="issue-button issue_work_on">Work On</button>    
+        <button id="close-{{ issue.pk }}" class="issue-button issue_complete">Complete</button>                   
+    {% else %}
+        <button id="{{ issue.pk }}-approve" class="issue-button issue_approve">Approve</button>
+        <button id="{{ issue.pk }}-reject" class="issue-button issue_reject">Reject</button>  
+    {% endif %}
+
+    
+    {% if issue.status != 'DL' and issue.status != 'CP' and issue.status != 'NR' %}
+        <button class ="issue-button issue_edit" href="">Edit</button>    
+    {% endif %}
+</div>
+
+<div class="created-info">
+    <p class ="left issue_status issue_creator">Created by: <span class="emphasis">{{ issue.creator.get_full_name }}</span></p> 
+    {% if issue.milestone %}
+        <p class ="left issue_status issue_dates">Milestone: <span class="emphasis">{{ issue.milestone }}</span></p>
+    {% endif %}
+    {% if issue.days_estimate %}
+        <p class ="left issue_status issue_dates">Days Estimate: <span class="emphasis">{{ issue.days_estimate }}</span></p>
+    {% endif %}
+</div>
 
 {% with commits=issue.commit_set.all notes=issue.get_notes %}
 

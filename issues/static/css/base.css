@@ -117,9 +117,16 @@ input, textarea, select, button{
 {
     padding: 2px 2px 2px 2px;
     margin: 2px 2px 2px 2px;
-    width: 28%;
     border-radius: 4px;
     border: 1px solid #3A3A3A;
+    max-width: 200px;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.issue_creator
+{
+    width: 25%
 }
 
 .details_drop
