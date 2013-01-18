@@ -129,6 +129,11 @@ input, textarea, select, button{
     width: 25%
 }
 
+.issue_approved_by
+{
+    width: 100%
+}
+
 .details_drop
 {
   padding-left: 3em;

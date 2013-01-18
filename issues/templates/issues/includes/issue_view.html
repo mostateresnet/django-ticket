@@ -63,5 +63,15 @@
     {% endif %}
 {% endwith %}    
 
+{% if issue.status = 'CP' %}
+<div class="">
+    <p class ="clear issue_description">
+     Reviewed by: 
+     <span class="emphasis">{{ issue.approved_by.get_full_name }}</span>
+     On: 
+     <span class="emphasis">{{ issue.close_date }}</span>
+    </p> 
+</div>
+{% endif %}
 
 </div>
