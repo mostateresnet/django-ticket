@@ -159,11 +159,11 @@ class Issue(models.Model):
         return self.form_class()(**form_kwargs)
 
     def has_new_notes(self, viewing_user):
-        notes = self.note_set.exclude(creator=viewing_user).order_by('-created')
-        if (notes):
-            return IssueViewed.objects.filter(user=viewing_user, issue=self).exclude(last_viewed__lte=notes[0].created).count() == 0
-        else:
-            return False
+        if viewing_user.is_authenticated():
+            notes = self.note_set.exclude(creator=viewing_user).order_by('-created')[:1]
+            if notes:
+                return IssueViewed.objects.filter(user=viewing_user, issue=self).exclude(last_viewed__lte=notes[0].created).count() == 0
+        return False
 
     def get_notes(self):
         return self.note_set.all().order_by('created')
@@ -243,4 +243,3 @@ class IssueViewed(models.Model):
     issue = models.ForeignKey(Issue)
     user = models.ForeignKey(User)
     last_viewed = models.DateTimeField(default=now, blank=True)
-

@@ -41,10 +41,10 @@ class UserListViewTest(TestCase):
         self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user1, assigned_to=self.user1, status="CP")
 
     def test_user_list_responds_200(self):
-        #user_profile with completed issues
+        # user_profile with completed issues
         response = self.client.get(reverse('user_profile_view', args=(str(self.user1.pk), )))
         self.assertEqual(response.status_code, 200, "UserListView should respond with HTTP 200 OK")
-        #user_profile without completed issues
+        # user_profile without completed issues
         response = self.client.get(reverse('user_profile_view', args=(str(self.user2.pk), )))
         self.assertEqual(response.status_code, 200, "UserListView should respond with HTTP 200 OK")
 
@@ -122,8 +122,8 @@ class ProjectDetailViewTest(TestCase):
 
         self.client.login(username='john', password='johnpassword')
 
-        self.project2 = Project.objects.create(name="project2", slug="project2", status="AC", priority=-1, 
-            scm_owner="owner", scm_repo="repo", scm_type="GH")
+        self.project2 = Project.objects.create(name="project2", slug="project2", status="AC", priority=-1,
+                                               scm_owner="owner", scm_repo="repo", scm_type="GH")
         self.issue6 = self.project2.issue_set.create(title="this is issue6", creator=self.user2, assigned_to=self.user, status="UA")
         self.commit2 = Commit.objects.create(revision="somesha1sum", issue=self.issue6)
 
@@ -131,11 +131,10 @@ class ProjectDetailViewTest(TestCase):
         self.issue6.milestone = self.milestone1
         self.issue6.save()
 
-        self.project3 = Project.objects.create(name="project3", slug="project3", status="CP", priority=-1, 
-            scm_owner="owner", scm_repo="repo", scm_type="BB")
+        self.project3 = Project.objects.create(name="project3", slug="project3", status="CP", priority=-1,
+                                               scm_owner="owner", scm_repo="repo", scm_type="BB")
         self.issue7 = self.project3.issue_set.create(title="issue7", creator=self.user2, assigned_to=self.user, status="UA")
         self.commit3 = Commit.objects.create(revision="somesha1sum", issue=self.issue7)
-
 
     def test_project_detail_view_200(self):
         response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), )))
@@ -144,14 +143,20 @@ class ProjectDetailViewTest(TestCase):
 
         response = self.client.get(reverse('project_detail', args=(str(self.project2.slug), )))
         self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
-        self.assertEqual(self.project2.get_scm_url(),"https://github.com/owner/repo", "Method get_scm_url for github is not returning the expected string.")
+        self.assertEqual(
+            self.project2.get_scm_url(), "https://github.com/owner/repo", "Method get_scm_url for github is not returning the expected string.")
         self.assertNotEqual(self.milestone1, None, "Creating milestone failed.")
         self.assertNotEqual(self.issue6.milestone, None, "Issue milestone setting failed.")
 
         response = self.client.get(reverse('project_detail', args=(str(self.project3.slug), )))
         self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
-        self.assertEqual(self.project3.get_scm_url(),"https://bitbucket.org/owner/repo", "Method get_scm_url for bitbucket is not returning the expected string.")
+        self.assertEqual(self.project3.get_scm_url(
+        ), "https://bitbucket.org/owner/repo", "Method get_scm_url for bitbucket is not returning the expected string.")
 
+    def test_project_detail_view_200_while_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), )))
+        self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK while logged out")
 
     def test_project_detail_view_filter_in_kwargs(self):
         response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue1.status))))
@@ -175,6 +180,7 @@ class ProjectDetailViewTest(TestCase):
         response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), str(self.issue1.status))) + '?tag=1')
         self.assertEqual(response.context_data['filter'], self.issue1.status, "Issue page cannot sort for issues that have the status AS")
         self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
+
 
 class TagCreateViewTest(TestCase):
     def setUp(self):
@@ -209,7 +215,7 @@ class IssueDetailViewTest(TestCase):
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
         self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
-       
+
     def test_update_issue_success(self):
         form_data = {str(
             self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-description': 'NewDescription', str(self.issue1.pk) + '-assigned_to': str(self.user2.pk),
