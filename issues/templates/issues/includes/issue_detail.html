@@ -11,9 +11,9 @@
         <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
       {% endif %}
       {% if issue.status == 'IP' %}
-        <img src="{{ STATIC_URL }}img/clock.gif" width=32 height=32 style="background: url({{ issue.assigned_to.email|gravatar }})"/> 
+        <img id="gravatar-{{ issue.pk }}" src="{{ STATIC_URL }}img/clock.gif" width=32 height=32 style="background: url({{ issue.assigned_to.email|gravatar }})"/> 
       {% else %}
-        <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32 />
+        <img id="gravatar-{{ issue.pk }}" src= "" width=32 height=32 style="background: url({{ issue.assigned_to.email|gravatar }})"/>
       {% endif %}
     </div>
   {% else %}

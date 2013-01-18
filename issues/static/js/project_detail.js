@@ -342,6 +342,7 @@ $(function() {
             success: function() 
             { 
                 document.getElementById("issue-" + issueid).className="issue in-progress";
+                document.getElementById("gravatar-" + issueid).src="/static/img/clock.gif";
             },
             error: function () { alert("error"); },
         });
