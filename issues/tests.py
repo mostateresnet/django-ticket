@@ -12,6 +12,18 @@ import json
 
 
 class ProjectListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
+
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
+        self.issue2 = self.project1.issue_set.create(title="issue2", creator=self.user2, assigned_to=self.user, status="UA")
+        self.issue3 = self.project1.issue_set.create(title="issue3", creator=self.user2, assigned_to=self.user, status="IP")
+        self.issue4 = self.project1.issue_set.create(title="issue4", creator=self.user2, assigned_to=self.user, status="CP")
+        self.issue5 = self.project1.issue_set.create(title="issue5", creator=self.user, status="UA")
+
     def test_project_list_responds_200(self):
         """
         Tests that the ProjectListView responds with 200 OK.
@@ -112,11 +124,12 @@ class ProjectDetailViewTest(TestCase):
 
         self.project2 = Project.objects.create(name="project2", slug="project2", status="AC", priority=-1, 
             scm_owner="owner", scm_repo="repo", scm_type="GH")
-        self.issue6 = self.project2.issue_set.create(title="issue6", creator=self.user2, assigned_to=self.user, status="UA")
+        self.issue6 = self.project2.issue_set.create(title="this is issue6", creator=self.user2, assigned_to=self.user, status="UA")
         self.commit2 = Commit.objects.create(revision="somesha1sum", issue=self.issue6)
 
         self.milestone1 = Milestone.objects.create(project=self.project2, deadline="3000-1-1")
         self.issue6.milestone = self.milestone1
+        self.issue6.save()
 
         self.project3 = Project.objects.create(name="project3", slug="project3", status="CP", priority=-1, 
             scm_owner="owner", scm_repo="repo", scm_type="BB")
@@ -132,6 +145,8 @@ class ProjectDetailViewTest(TestCase):
         response = self.client.get(reverse('project_detail', args=(str(self.project2.slug), )))
         self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
         self.assertEqual(self.project2.get_scm_url(),"https://github.com/owner/repo", "Method get_scm_url for github is not returning the expected string.")
+        self.assertNotEqual(self.milestone1, None, "Creating milestone failed.")
+        self.assertNotEqual(self.issue6.milestone, None, "Issue milestone setting failed.")
 
         response = self.client.get(reverse('project_detail', args=(str(self.project3.slug), )))
         self.assertEqual(response.status_code, 200, "ProjectDetailView should respond with HTTP 200 OK")
@@ -210,9 +225,15 @@ class IssueDetailViewTest(TestCase):
         self.assertEqual(str(self.issue1.days_estimate), "5", "The issue days_estimate didn't update successfully")
         self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
 
-        form_data = {str(self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-status': 'DL', }
-        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
-#        print response
+        self.issue1.assigned_to = None
+        self.issue1.save()
+        self.assertEqual(self.issue1.assigned_to, None, "The issue assigned_to None didn't update successfully")
+        self.assertEqual(self.issue1.status, 'UA', "The issue status did not reset successfully")
+
+        self.issue1.status = "DL"
+        self.issue1.save()
+        self.assertEqual(self.issue1.assigned_to, None, "The issue Delete didn't update the assigned_to successfully")
+        self.assertEqual(self.issue1.priority, -1, "The issue Delete didn't update the priority successfully")
 
     def test_status_in_self_request_POST(self):
         form_data = {'status': 'IP'}
