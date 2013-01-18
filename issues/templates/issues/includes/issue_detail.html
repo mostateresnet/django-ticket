@@ -1,9 +1,7 @@
 {% load gravatar %}
 {% load has_new_notes %}
 
-{% if issue.milestone %}
-  <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone }}</a>
-{% endif %}
+
 <span class="assigned-to">
   {% if issue.assigned_to %}
     <div style="position: relative; left:0; top:0">
@@ -32,3 +30,6 @@
 <span class="issue-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
 
 {% include 'issues/includes/tag_display.html' %}
+{% if issue.milestone %}
+  <a class="milestone" href="{{ issue.milestone.get_chart_url }}">{{ issue.milestone }}</a>
+{% endif %}

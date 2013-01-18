@@ -75,8 +75,9 @@ ul.issue-list {
     padding-right: 10px;
 }
 .milestone {
-    float: right;
-    padding-right: 1em;
+    float: left;
+    padding: 2px 2px 2px 2px;
+    margin: 0px 2px 0px 2px;
 }
 .type-list {
     float: right;
