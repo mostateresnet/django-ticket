@@ -341,8 +341,9 @@ $(function() {
             data: "status=IP",
             success: function() 
             { 
-                document.getElementById("issue-" + issueid).className="issue in-progress";
-                document.getElementById("gravatar-" + issueid).src="/static/img/clock.gif";
+                $("#issue-" + issueid).removeClass();
+                $("#issue-" + issueid).addClass("issue in-progress");
+                $("#gravatar-" + issueid).attr("src", "/static/img/clock.gif");
             },
             error: function () { alert("error"); },
         });
