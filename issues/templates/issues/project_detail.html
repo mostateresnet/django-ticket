@@ -51,7 +51,7 @@
         {% if project.get_scm_url %}
             <a class="right" href="{{ project.get_scm_url }}" target="_blank">View Source Project</a>
         {% endif %}
-        <a href="{% url project_detail project.slug %}"><h3>{{ object }}</h3></a>
+        <h3><span><a href="{% url project_detail project.slug %}">{{ object }}</a></span></h3>
 
         <button type = "button" id="new-issue-button"> Add Issue </button>
 
