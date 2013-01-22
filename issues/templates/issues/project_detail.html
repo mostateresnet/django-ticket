@@ -28,10 +28,8 @@
         var current_user = "{{ user.pk }}";
         var current_user_name = "{{ user.get_full_name }}";
         UPDATE_ISSUE_URL  = '{% url project_detail project.slug %}';
-        CREATE_NOTE_URL   = '{% url note_create_view project.slug %}';
-        CREATE_COMMIT_URL = '{% url commit_create_view project.slug %}';
         SORT_ISSUE_URL    = '{% url sort_issue project.slug %}';
-        CREATE_TAG_URL   = '{% url tag_create_view project.slug %}';
+        CREATE_TAG_URL   = '{% url tag_create_view %}';
 
         var milestone_dates = [
         {% for milestone in project.future_milestones %}

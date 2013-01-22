@@ -1,5 +1,5 @@
 {% load assigned_css_class %}
-<div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}"> 
+<div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}" data-note-url="{% url note_create_view issue.pk %}" data-commit-url="{% url commit_create_view issue.pk %}" > 
 
 <div class="buttons right">
     <button id="add-commit-{{ issue.pk }}" class="issue-button issue_add_commit">Add Commit</button>  

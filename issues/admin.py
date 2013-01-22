@@ -33,4 +33,3 @@ admin.site.register(Commit)
 admin.site.register(Note)
 admin.site.register(Issue)
 admin.site.register(IssueViewed)
-

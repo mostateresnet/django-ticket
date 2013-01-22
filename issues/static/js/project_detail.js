@@ -144,8 +144,7 @@ $(function() {
 
         var existing_label = $(".tag_mod.tag_" + tag_id + ":first").siblings('.tag_label').text();
 
-        //FIXME: DYNAMIC URL
-        var post_action = window.location.pathname + "tags/" + tag_id;
+        var post_action = $("#tag-container-" + tag_id).attr('data-tag-update-url') 
         var post_data = "label=" + existing_label + "&color=" + new_color;
         $.post(post_action, post_data);
 
@@ -198,10 +197,14 @@ $(function() {
             $("<style type='text/css'> .tag_" + data.id + " { background-color:#" + default_color + ";}</style>").appendTo("head");
 
             var new_element = new_tag_line.clone();
+
+            new_element.attr('data-tag-update-url', data.url);    
+            new_element.attr('id', "tag-container-" + data.id);    
+
             var tag_mod = new_element.find('.tag_mod');
             tag_mod.removeClass("tag_"); // Left over from the clone...
             tag_mod.addClass('tag_'+ data.id);
-            tag_mod.attr('data-cls', data.id);    
+            tag_mod.attr('data-cls', data.id);
             new_element.find('.tag_label').text(new_tag_name);
             new_element.find('.tag_check').attr('id', 'tagchk_' + data.id);
         
@@ -353,6 +356,7 @@ $(function() {
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^add-commit-(\d+)$/)[1]);
+            CREATE_COMMIT_URL = $("#issue-details-" + issue_id).attr('data-commit-url')
             $.ajax({
                 url: CREATE_COMMIT_URL,
                 type: "post",
@@ -414,6 +418,7 @@ $(function() {
         var note = window.prompt("Add Note:","");
         if (note) 
         {           
+            CREATE_NOTE_URL = $("#issue-details-" + issue_id).attr('data-note-url')
             $.ajax({
                 url:  CREATE_NOTE_URL,
                 type: "post",

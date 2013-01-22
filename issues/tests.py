@@ -187,7 +187,7 @@ class TagCreateViewTest(TestCase):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
 
     def test_tag_create(self):
-        response = self.client.post(reverse('tag_create_view', args=(str(self.project1.slug), )), {'label': 'User Interface', 'color': 'AAAAAA'})
+        response = self.client.post(reverse('tag_create_view', ), {'label': 'User Interface', 'color': 'AAAAAA'})
         tag = Tag.objects.get(label="User Interface")
         self.assertEqual(tag.label, "User Interface", "New tag wasn't inserted successfully")
         self.assertEqual(response.status_code, 200, "TagCreateView should respond with HTTP 200 OK")
@@ -200,12 +200,12 @@ class TabUpdateViewTest(TestCase):
 
     def test_tag_update_valid(self):
         response = self.client.post(
-            reverse('tag_update_view', args=(str(self.project1.slug), self.tag1.pk)), {'label': 'User Interface', 'color': 'BBBBBB'})
+            reverse('tag_update_view', args=(self.tag1.pk, )), {'label': 'User Interface', 'color': 'BBBBBB'})
         self.assertEqual(response.status_code, 200, "TagUpdateView should respond with HTTP 200 OK")
 
     def test_tag_update_invalid(self):
         response = self.client.post(
-            reverse('tag_update_view', args=(str(self.project1.slug), self.tag1.pk)), {'label': 'User Interface', 'color': ""})
+            reverse('tag_update_view', args=(self.tag1.pk, )), {'label': 'User Interface', 'color': ""})
         self.assertEqual(response.status_code, 200, "TagUpdateView should respond with HTTP 200 OK")
 
 
@@ -277,7 +277,7 @@ class CommitCreateViewTest(TestCase):
 
     def test_form_valid(self):
         form_data = {'revision': 'aaaaabbbbbccccc', 'issue': str(self.issue1.pk)}
-        response = self.client.post(reverse('commit_create_view', args=(str(self.project1.slug), )), form_data)
+        response = self.client.post(reverse('commit_create_view', args=(str(self.issue1.pk), )), form_data)
 
         self.issue1 = Issue.objects.get(pk=self.issue1.pk)
 
@@ -288,7 +288,7 @@ class CommitCreateViewTest(TestCase):
 
     def test_form_invalid(self):
         form_data = {'revision': 'aaaaabbbbbccccc', 'issue': ""}
-        response = self.client.post(reverse('commit_create_view', args=(str(self.project1.slug), )), form_data)
+        response = self.client.post(reverse('commit_create_view', args=(str(self.issue1.pk), )), form_data)
 
         response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
         self.assertEqual(response_data['status'], 'error', "HttpResponse should return error for this test case")
@@ -303,7 +303,7 @@ class NoteCreateViewTest(TestCase):
 
     def test_create_new_note(self):
         form_data = {'label': 'NewNoteLabel', 'issue': str(self.issue1.pk), 'creator': str(self.user.pk), }
-        response = self.client.post(reverse('note_create_view', args=(str(self.project1.slug), )), form_data)
+        response = self.client.post(reverse('note_create_view', args=(str(self.issue1.pk), )), form_data)
 
         response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
         self.assertEqual(response_data['status'], 'success', "HttpResponse should return success for this test case")
@@ -311,7 +311,7 @@ class NoteCreateViewTest(TestCase):
 
     def test_form_invalid(self):
         form_data = {'label': 'NewNoteLabel', 'issue': "", 'creator': "", }
-        response = self.client.post(reverse('note_create_view', args=(str(self.project1.slug), )), form_data)
+        response = self.client.post(reverse('note_create_view', args=(str(self.issue1.pk), )), form_data)
 
         response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
         self.assertEqual(response_data['status'], 'error', "HttpResponse should return error for this test case")

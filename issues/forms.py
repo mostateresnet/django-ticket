@@ -53,9 +53,9 @@ class NoteForm(ModelForm):
         model = Note
         fields = ('label', 'issue', 'creator')
 
+
 class IssueViewedForm(ModelForm):
 
     class Meta:
         model = IssueViewed
         fields = ('last_viewed', )
-

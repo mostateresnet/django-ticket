@@ -16,6 +16,7 @@ from annoying.utils import HttpResponseReload
 from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm, NoteForm, CommitForm, IssueViewedForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 
 class ProjectListView(ListView):
@@ -117,7 +118,7 @@ class TagCreateView(CreateView):
 
     def form_valid(self, form):
         pk_id = form.save().pk
-        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id}), mimetype='application/json')
+        return HttpResponse(json.dumps({'status': 'success', 'id': pk_id, 'url': reverse('tag_update_view', args=[pk_id])}), mimetype='application/json')
 
 
 class TagUpdateView(UpdateView):
