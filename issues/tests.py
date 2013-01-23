@@ -220,7 +220,7 @@ class IssueDetailViewTest(TestCase):
         form_data = {str(
             self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-description': 'NewDescription', str(self.issue1.pk) + '-assigned_to': str(self.user2.pk),
             'milestone_date': '2014-01-01', str(self.issue1.pk) + '-days_estimate': 5, }
-        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+        response = self.client.post(reverse('issue_detail', args=(str(self.issue1.pk),)), form_data)
 
         self.issue1 = Issue.objects.get(pk=self.issue1.pk)
 
@@ -243,7 +243,7 @@ class IssueDetailViewTest(TestCase):
 
     def test_status_in_self_request_POST(self):
         form_data = {'status': 'IP'}
-        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+        response = self.client.post(reverse('issue_detail', args=(str(self.issue1.pk),)), form_data)
 
         self.issue1 = Issue.objects.get(pk=self.issue1.pk)
         self.assertEqual(self.issue1.status, "IP", "The issue status didn't update successfully")
@@ -251,7 +251,7 @@ class IssueDetailViewTest(TestCase):
 
     def test_approved_by_in_self_request_POST(self):
         form_data = {'status': 'CP', 'approved_by': str(self.user2.pk)}
-        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+        response = self.client.post(reverse('issue_detail', args=(str(self.issue1.pk),)), form_data)
 
         self.issue1 = Issue.objects.get(pk=self.issue1.pk)
         self.assertEqual(self.issue1.status, "CP", "The issue status didn't update successfully")
@@ -262,7 +262,7 @@ class IssueDetailViewTest(TestCase):
         form_data = {str(
             self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-description': 'NewDescription', str(self.issue1.pk) + '-assigned_to': "aa",
             'milestone_date': '2014-01-01', str(self.issue1.pk) + '-days_estimate': "f", }
-        response = self.client.post(reverse('issue_detail', args=(str(self.project1.slug), str(self.issue1.pk))), form_data)
+        response = self.client.post(reverse('issue_detail', args=(str(self.issue1.pk),)), form_data)
 
         response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
         self.assertEqual(response_data['status'], 'error', "HttpResponse should return an error for this test case")

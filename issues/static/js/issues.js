@@ -84,7 +84,7 @@ $(function() {
 
     });
     
-$(".color_spot").live('click',function(e)
+    $(".color_spot").live('click',function(e)
     {
         $("#color_selector").attr('data-sel', $(this).attr('data-sel'));
 
@@ -165,7 +165,7 @@ $(".color_spot").live('click',function(e)
         } );
     });
 
-$( ".edit_form, #new-issue" ).submit(function(event)
+    $( ".edit_form, #new-issue" ).submit(function(event)
     {       
         // Intercept the post data and append
         // our custom tags.
@@ -234,16 +234,16 @@ $( ".edit_form, #new-issue" ).submit(function(event)
     $( ".issue-delete" ).click(function(event){
         var targetid = event.target.id;
         var n=targetid.split("-");
-        var issueid=n[0];
-        var url = UPDATE_ISSUE_URL + issueid;
+        var issue_id=n[0];
+        UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
         if( confirm("Are you sure you want to delete this issue?") )
         {
             $.post(
-                    url,
+                    UPDATE_ISSUE_URL,
                     {'status': 'DL',},
                     function(data, textStatus, jqXHR) {
                         if (textStatus == "success"){
-                            $( '#issue-'+issueid ).remove();
+                            $( '#issue-'+issue_id ).remove();
                         }
                     });
         }
@@ -254,15 +254,16 @@ $( ".edit_form, #new-issue" ).submit(function(event)
         $(this).closest('.edit_drop').slideUp();
     });
     
-        $( ".issue_complete" ).click(function(event){
+    $( ".issue_complete" ).click(function(event){
         var revision = window.confirm("Complete this issue?");
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^close-(\d+)$/)[1]);
-            var url = window.location.pathname + issue_id
+            //var url = window.location.pathname + issue_id
+            UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
             
             $.post(
-                url,
+                UPDATE_ISSUE_URL,
                 {'status':'NR',},
                 function(data, textStatus, jqXHR) {
                     if (textStatus == "success"){
@@ -275,16 +276,17 @@ $( ".edit_form, #new-issue" ).submit(function(event)
     $( ".issue_work_on").click(function(e){
         var target = event.target;
         var n=target.id.split("-");
-        var issueid=n[0];
+        var issue_id=n[0];
+        UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
         $.ajax({
-            url: UPDATE_ISSUE_URL + issueid, 
+            url: UPDATE_ISSUE_URL,
             type: "post",
             data: "status=IP",
             success: function() 
             { 
-                $("#issue-" + issueid).removeClass();
-                $("#issue-" + issueid).addClass("issue in-progress");
-                $("#gravatar-" + issueid).attr("src", "/static/img/clock.gif");
+                $("#issue-" + issue_id).removeClass();
+                $("#issue-" + issue_id).addClass("issue in-progress");
+                $("#gravatar-" + issue_id).attr("src", "/static/img/clock.gif");
             },
             error: function () { alert("error"); },
         });

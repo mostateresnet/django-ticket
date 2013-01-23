@@ -137,9 +137,9 @@ class IssueDetailView(UpdateView):
 
     def post(self, *args, **kwargs):
         if self.request.POST.get('milestone_date'):
-            project = Project.objects.get(slug=kwargs['slug'])
+            issue = Issue.objects.get(pk=kwargs['pk'])
             # call method that modifies post data for our custom milestone handling
-            post_data = append_new_milestone(self.request.POST.copy(), project, kwargs['pk'])
+            post_data = append_new_milestone(self.request.POST.copy(), issue.project, kwargs['pk'])
             self.request.POST = post_data
 
         response = super(IssueDetailView, self).post(*args, **kwargs)

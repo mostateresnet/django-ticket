@@ -170,7 +170,7 @@ class Issue(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('issue_detail', (), {'slug': self.project.slug, 'pk': self.id})
+        return ('issue_detail', (), {'pk': self.id})
 
     def __unicode__(self):
         return self.title
