@@ -7,6 +7,7 @@
     {{ block.super }}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/user_profile.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tab_lists.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/issues.css" />
     
     <!-- we need to dry this piece of code out, it is also found in project_list.html and project_detail.html. Ask Shane -->
     <style>
@@ -20,6 +21,7 @@
 {% block js %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/user_profile.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/issues.js"></script>
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
     <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
     <script>
@@ -90,11 +92,16 @@
             </div>
         </div>
         <div id="sortable-assigned-issues" class="hidden content-border">
-            <ul id="sortable-issues" class="sortable">
-                {% for issue in user_data.assigned_issues %}
-                        <li class="ui-state-default" title="{{ issue.description }}" id="{{ issue.pk }}"><span class="ui-icon ui-icon-arrowthick-2-n-s"></span>{{ issue }}<div class="right"> {{ issue.project.as_a }}</div></li>
-                {% endfor %}
-            </ul>
+        <ul class="issue-list">
+            {% for issue in user_data.assigned_issues %}
+              <li id="issue-{{ issue.pk }}" class="issue" >
+                  {% include 'issues/includes/issue_detail.html' %}
+                  {% include 'issues/includes/issue_view.html' %}
+                  {% include 'issues/includes/issue_edit.html' %}
+                  <div class="clear"></div>
+              </li>
+            {% endfor %}
+        </ul>
         </div>
 
     </section>

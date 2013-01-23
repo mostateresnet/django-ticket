@@ -7,6 +7,7 @@
 {% block css %}
     {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/project_detail.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/issues.css" />
 
     <!-- we need to dry this piece of code out, it is also found in user_profile.html and project_list.html. Ask Shane -->
     <style> 
@@ -21,6 +22,7 @@
 {% block js %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/project_detail.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/issues.js"></script>
 
     <script type="text/javascript">
         var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/includes/tag_line.html' %}{% endspaceless %}{% endfilter %}");
