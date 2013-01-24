@@ -6,9 +6,10 @@
 
 {% block css %}
     {{ block.super }}
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/user_profile.css" />
+    
     <link rel="stylesheet" href="{{ STATIC_URL }}css/tab_lists.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/issues.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/user_profile.css" />
     
     <!-- we need to dry this piece of code out, it is also found in project_list.html and project_detail.html. Ask Shane -->
     <style>
@@ -21,9 +22,12 @@
 
 {% block js %}
     {{ block.super }}
-    <script type="text/javascript" src="{{ STATIC_URL }}js/user_profile.js"></script>
+    
     <script type="text/javascript" src="{{ STATIC_URL }}js/issues.js"></script>
-
+    <script type="text/javascript" src="{{ STATIC_URL }}js/user_profile.js"></script>
+    
+    
+    
     <script>
         var issue_sort_url = "{% url user_sort_issue_view user_data.pk %}";
         var current_user = "{{ user.pk }}";
@@ -67,21 +71,11 @@
             <div id="users-completed" class="user-tab tab completed">Completed</div>
             <!-- <div id="users-reorder" class="user-tab tab reorder">Manage</div> -->
         </div>
-        <div id="user-issues" class="content-border">
+        <div id="user-issues" class="content-border hidden">
             <div class="user">
                 <div id="user-issue-list">
-                    {% for issue in user_data.inprogress_issues %}
-                        <div class="issue user-issue in-progress clear" title="{{ issue.description }}">
-                            <span class="issue-title slide-title">{{ issue }}</span> 
-                            <div class="right"> {{ issue.project.as_a }}</div>
-                            <div class="details hidden">
-                                {% include 'issues/includes/tag_display.html' %}
-                                {% include 'issues/includes/issue_view.html' %}
-                            </div>
-                        </div>
-                    {% endfor %}
                     {% for issue in user_data.completed_issues %}
-                        <div class="issue user-issue completed clear hidden" title="{{ issue.description }}">
+                        <div class="issue user-issue display-completed clear hidden" title="{{ issue.description }}">
                             <span class="issue-title slide-title">{{ issue }}</span> 
                             <div class="right"> {{ issue.project.as_a }}</div>
                             <div class="details hidden">
@@ -91,7 +85,7 @@
                         </div>
                     {% endfor %}
                     {% for issue in user_data.needs_review_issues %}
-                        <div class="issue user-issue needs-review clear hidden" title="{{ issue.description }}">
+                        <div class="issue user-issue display-needs-review clear hidden" title="{{ issue.description }}">
                             <span class="issue-title slide-title">{{ issue }}</span> 
                             <div class="right"> {{ issue.project.as_a }}</div>
                             <div class="details hidden">
@@ -103,10 +97,18 @@
                 </div>
             </div>
         </div>
-        <div id="sortable-assigned-issues" class="hidden content-border">
+        <div id="sortable-assigned-issues" class="content-border">
         <ul class="issue-list" id="issue-assigned-to-list">
             {% for issue in user_data.assigned_issues %}
-              <li id="issue-{{ issue.pk }}" class="issue {% assigned_css_class issue.assigned_to.pk user.pk issue.status %}" >
+              <li id="issue-{{ issue.pk }}" class="issue display-assigned hidden interactive-issue {% assigned_css_class issue.assigned_to.pk user.pk issue.status %}" >
+                  {% include 'issues/includes/issue_detail.html' %}
+                  {% include 'issues/includes/issue_view.html' %}
+                  {% include 'issues/includes/issue_edit.html' %}
+                  <div class="clear"></div>
+              </li>
+            {% endfor %}
+            {% for issue in user_data.inprogress_issues %}
+              <li id="issue-{{ issue.pk }}" class="issue display-in-progress interactive-issue {% assigned_css_class issue.assigned_to.pk user.pk issue.status %}" >
                   {% include 'issues/includes/issue_detail.html' %}
                   {% include 'issues/includes/issue_view.html' %}
                   {% include 'issues/includes/issue_edit.html' %}

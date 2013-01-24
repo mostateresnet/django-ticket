@@ -24,7 +24,7 @@
     cursor: pointer;
 }
 
-.issue:nth-last-of-type(2n)	
+.user-issue:nth-last-of-type(2n), .project-issue:nth-last-of-type(2n)
 { 
     background-color: #242424;
 }

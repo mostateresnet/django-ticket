@@ -212,7 +212,7 @@ class UserMethods(User):
 
     def needs_review_issues(self):
         return self.issue_set.filter(status='NR')
-        
+
     def all_milestones(self):
         return Milestone.objects.filter(deadline__gte=now(), project__in=self.issue_set.values_list('project', flat=True)).order_by('project')
 

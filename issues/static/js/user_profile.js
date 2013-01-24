@@ -62,18 +62,30 @@ $(function()
         //assign active tab
         $("#"+target_id).addClass("active");
         
-        if (tab == "assigned")
+        
+        //show issues based on the tab clicked 
+        if (tab == "assigned" || tab == "in-progress")
         {
             $("#user-issues").hide();
             $("#sortable-assigned-issues").show();
+            $(".interactive-issue").each(function(i){
+            if ($(this).hasClass("display-"+tab))
+                {
+                    $(this).show();
+                }
+                else
+                {
+                    $(this).hide();
+                }
+            });
         }
-        //show issues based on the tab clicked        
+               
         else
         {
             $("#sortable-assigned-issues").hide();
             $("#user-issues").show();
             $(".user-issue").each(function(i){
-            if ($(this).hasClass(tab))
+            if ($(this).hasClass("display-"+tab))
                 {
                     $(this).show();
                 }
@@ -83,6 +95,13 @@ $(function()
                 }
             });
         } 
+    });
+    
+    $( ".issue_work_on").click(function(e){
+        var issue_id = parseInt(this.id.match(/^(\d+)-work-on$/)[0])
+        // alert("#issue-"+issue_id);
+        // $("#issue-"+issue_id).addClass("display-in-progress asdfsfsfasdfsdf");
+        $("#issue-"+issue_id).hide();
     });
     
 });

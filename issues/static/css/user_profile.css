@@ -55,3 +55,13 @@
 {
     display: none;
 }
+
+.user-issue
+{
+    border: none;
+}
+
+.user-issue:first-child
+{
+    border-top: none;
+}

@@ -285,7 +285,7 @@ $(function() {
             success: function() 
             { 
                 $("#issue-" + issue_id).removeClass();
-                $("#issue-" + issue_id).addClass("issue in-progress");
+                $("#issue-" + issue_id).addClass("issue in-progress display-in-progress interactive-issue");
                 $("#gravatar-" + issue_id).attr("src", "/static/img/clock.gif");
             },
             error: function () { alert("error"); },
