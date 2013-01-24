@@ -71,3 +71,7 @@ h4{
     background-color: #242424;
 }
 
+.project-issue .buttons{
+    display: none;
+}
+

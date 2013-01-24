@@ -65,3 +65,7 @@
 {
     border-top: none;
 }
+
+.user-issue .buttons{
+    display: none;
+}
