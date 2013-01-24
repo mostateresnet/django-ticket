@@ -31,13 +31,15 @@
 
 {% with commits=issue.commit_set.all notes=issue.get_notes %}
 
-    {% if issue.description or notes or commits %}
-        <div class ="clear issue_description">
+    
+    <div class ="clear issue_description">
         {% if issue.description %}
             <div>
                 <span class="field-header">Description</span><br />
                 {{ issue.description|linebreaksbr }}
             </div>
+        {% else %}                
+            No Description Available
         {% endif %}
 
         <div id="note-list-{{ issue.pk }}" class="note-list">
@@ -59,8 +61,10 @@
             {% endfor %}
             </ul>
         </div>
+
+        
     </div>
-    {% endif %}
+
 {% endwith %}    
 
 {% if issue.status = 'CP' %}
