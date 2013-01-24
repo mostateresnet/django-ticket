@@ -12,12 +12,12 @@ var colors =
 
 $(function() {
 
-    function set_viewed_issue(issue, user)
+    function set_viewed_issue(issue_id, user)
     {
-        $( "#new-notes-"+issue).remove();
-        var url = UPDATE_ISSUE_URL + issue;
+        $( "#new-notes-"+issue_id).remove();
+        UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
         $.ajax({
-            url: url, 
+            url: UPDATE_ISSUE_URL, 
             type: "post",
             data: "viewed=1",
             error: function () { alert("error"); },
@@ -33,8 +33,9 @@ $(function() {
                 if ($(this).is(":visible"))
                 {
                     var id = $(this).attr('id')
-                    var issue_id = parseInt(id.match(/^issue-details-(\d+)$/)[1]);    
-                    //set_viewed_issue(issue_id, current_user);
+                    var issue_id = parseInt(id.match(/^issue-details-(\d+)$/)[1]);   
+                    //alert(issue_id);
+                    set_viewed_issue(issue_id, current_user);
                 }
             }); 
         });
@@ -259,7 +260,6 @@ $(function() {
         if (revision) {
             var id = event.currentTarget.id;
             var issue_id = parseInt(id.match(/^close-(\d+)$/)[1]);
-            //var url = window.location.pathname + issue_id
             UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
             
             $.post(
@@ -368,19 +368,21 @@ $(function() {
     var date = new Date();
 	
 	//initializes all datepickers
-	$( ".milestone-datepicker").datepicker({ 
+	$( ".milestone-datepicker").datepicker({
 		dateFormat: 'yy-mm-dd',
         minDate: '0',
 		beforeShowDay: function(date) {
+            var project_id = $(this).attr('data-project-pk');
             var m = ('0' + (date.getMonth()+1)).slice(-2);
             var d = date.getDate(), y = date.getFullYear();
+            
             d=String(d);
             if (d.length ==1)
             {
                 d="0"+d            
             }
-			for (i = 0; i < milestone_dates.length; i++) {
-				if($.inArray(y + '-' + m + '-' + d,milestone_dates) != -1) {
+			for (i = 0; i < milestone_dates[project_id].length; i++) {
+				if($.inArray(y + '-' + m + '-' + d,milestone_dates[project_id]) != -1) {
 					//return [false];
 					return [true, 'ui-state-active', ''];
 				}

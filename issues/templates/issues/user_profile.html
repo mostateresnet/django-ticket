@@ -1,5 +1,6 @@
 {% extends "issues/base.html" %}
 {% load gravatar %}
+{% load assigned_css_class %}
 
 {% block title %}User Profile{% endblock %}
 
@@ -22,10 +23,21 @@
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/user_profile.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/issues.js"></script>
-    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+
     <script>
         var issue_sort_url = "{% url user_sort_issue_view user_data.pk %}";
+        var current_user = "{{ user.pk }}";
+        var current_user_name = "{{ user.get_full_name }}";
+        
+        var milestone_dates  = new Object;
+        {% regroup user_data.all_milestones by project.pk as project_list %}
+        {% for project in project_list %}
+          milestone_dates[{{ project.grouper }}] = [
+          {% for milestone in project.list %}
+            "{{ milestone }}"{% if not forloop.last %},{% endif %}
+          {% endfor %}
+          ];
+        {% endfor %}
     </script>
 {% endblock %}
 
@@ -92,9 +104,9 @@
             </div>
         </div>
         <div id="sortable-assigned-issues" class="hidden content-border">
-        <ul class="issue-list">
+        <ul class="issue-list" id="issue-assigned-to-list">
             {% for issue in user_data.assigned_issues %}
-              <li id="issue-{{ issue.pk }}" class="issue" >
+              <li id="issue-{{ issue.pk }}" class="issue {% assigned_css_class issue.assigned_to.pk user.pk issue.status %}" >
                   {% include 'issues/includes/issue_detail.html' %}
                   {% include 'issues/includes/issue_view.html' %}
                   {% include 'issues/includes/issue_edit.html' %}

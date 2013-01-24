@@ -33,7 +33,8 @@
         SORT_ISSUE_URL    = '{% url sort_issue project.slug %}';
         CREATE_TAG_URL   = '{% url tag_create_view %}';
 
-        var milestone_dates = [
+        var milestone_dates = new Object();
+        milestone_dates[{{project.pk}}] = [
         {% for milestone in project.future_milestones %}
             "{{ milestone }}",
         {% endfor %}

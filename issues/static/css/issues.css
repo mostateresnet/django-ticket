@@ -56,12 +56,6 @@
     cursor:pointer;
 }
 
-.edit_drop
-{
-    width:80%; 
-    margin:0 auto; 
-}
-
 .tag_mod
 {
   margin: 1px 1px 1px 1px;
@@ -154,7 +148,47 @@
     border: 1px solid #A51616 !important;
 }
 
+
+.in-progress .issue_work_on{
+    display:none;
+}
+
+.assigned .issue_complete{
+    display:none;
+}
+
+.unassigned .issue_complete{
+    display:none;
+}
+
+.unassigned .issue_work_on{
+    display:none;
+}
+
 .new-note
 {
-color: red;
+    color: red;
+}
+
+.new_issue_left
+{ width: 65%; }
+
+.new_issue_right
+{ width: 25%; }
+
+#new-issue div div p select, 
+#issue_input form div p input, 
+#issue_input select, 
+#new-issue div div p input
+{
+    width:100%;
+    border-width:1px;
+}
+
+#issue_input textarea, 
+#new-issue div div p textarea
+{
+    width:100%;
+    border-width:1px;
+    padding: 0px;
 }

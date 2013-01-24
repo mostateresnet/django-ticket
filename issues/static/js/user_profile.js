@@ -23,10 +23,18 @@ $(function()
         }
     });
     
-    $( ".sortable" ).sortable({
+    $( "#issue-assigned-to-list" ).sortable({
+        distance: 5,
+        axis: 'y',
+        handle: '.handle',
         update: function( event, ui) {
-            var id = (this).id
+            var id = (this).id;
             var sortedIDs = $("#"+id).sortable("toArray");
+            // trim "issue-" off of the id of each li element
+            for (var i=0; i<sortedIDs.length; i++)
+            {
+                sortedIDs[i] = parseInt(sortedIDs[i].match(/^issue-(\d+)$/)[1]);
+            }
             $.ajax({
                 url: issue_sort_url, 
                 type: "POST",
@@ -36,7 +44,6 @@ $(function()
             });
         }
     });
-    $( ".sortable" ).disableSelection();
     
     $(".user-tab").click(function(e)
     {
@@ -77,4 +84,5 @@ $(function()
             });
         } 
     });
+    
 });

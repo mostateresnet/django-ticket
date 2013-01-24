@@ -2,7 +2,11 @@
     padding: 1%;
 }
 
-
+.edit_drop
+{
+    width:80%; 
+    margin:0 auto; 
+}
 
 
 
@@ -88,49 +92,10 @@ ul.issue-list {
     display: block;
 }
 
-.new_issue_left
-{ width: 65%; }
-
-.new_issue_right
-{ width: 25%; }
-
-
-
-.in-progress .issue_work_on{
-    display:none;
-}
-
-.assigned .issue_complete{
-    display:none;
-}
-
-.unassigned .issue_complete{
-    display:none;
-}
-
-.unassigned .issue_work_on{
-    display:none;
-}
-
-#new-issue div div p select, 
-#issue_input form div p input, 
-#issue_input select, 
-#new-issue div div p input
+.issue .project-name
 {
-    width:100%;
-    border-width:1px;
+    display: none;
 }
-
-
-#issue_input textarea, 
-#new-issue div div p textarea
-{
-    width:100%;
-    border-width:1px;
-    padding: 0px;
-}
-
-
 
 .needs-review
 {

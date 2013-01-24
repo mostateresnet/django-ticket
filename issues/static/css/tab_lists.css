@@ -31,7 +31,7 @@
 
 .issue {
     overflow: auto;
-    margin-left: 2em;
+    margin-left: 1em;
     margin-right: 1em;
     color: #999999;
 }
@@ -71,5 +71,5 @@
 
 .issue .issue-button
 {
-    display:none;
+
 }

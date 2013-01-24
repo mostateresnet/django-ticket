@@ -37,6 +37,21 @@
     min-height: 200px;
 }
 
+.issue-list
+{
+    padding: 0px;
+}
+
 .statistic { font-weight:bold; }
 .small_text_wrap { max-width: 200px; }
 
+.edit_drop
+{
+    width:95%; 
+    margin:0 auto; 
+}
+
+.issue .assigned-to
+{
+    display: none;
+}
