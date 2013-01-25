@@ -101,9 +101,10 @@ $(function() {
         {
             var target = event.target;
             var n=target.id.split("-");
-            var issueid=n[0];
+            var issue_id=n[0];
+            UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
             $.ajax({
-                url: UPDATE_ISSUE_URL + issueid, 
+                url: UPDATE_ISSUE_URL,
                 type: "post",
                 data: "status=CP&approved_by="+current_user,
                 success: function(data)
