@@ -3,14 +3,6 @@
     cursor: url("../../site_media/img/slide.cur"), move;
 }
 
-.issue .issue-id {
-    font-weight: bold;
-    display: inline-block;
-    width: 2em;
-    text-align:right;
-    margin-right: 0.2em;
-}
-
 .issue:first-child {
     border-top: solid 1px #3A3A3A;
 }

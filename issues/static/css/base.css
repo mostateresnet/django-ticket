@@ -130,6 +130,14 @@ input, textarea, select, button{
     min-width: 200px;
 }
 
+.issue .issue-id {
+    font-weight: bold;
+    display: inline-block;
+    width: 2em;
+    text-align:right;
+    margin-right: 0.2em;
+}
+
 .issue_approved_by
 {
     width: 100%

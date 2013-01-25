@@ -51,6 +51,7 @@
                     <div class="nojump collapse-issue-list clear">
                         {% for issue in project.in_progress_issues|slice:":10" %}
                             <div class="issue project-issue in-progress clear" title="{{ issue.description }}">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
@@ -62,6 +63,7 @@
                         {% endfor %}
                         {% for issue in project.assigned_issues|slice:":10" %}
                             <div class="issue project-issue assigned clear hidden" title="{{ issue.description }}">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
@@ -73,6 +75,7 @@
                         {% endfor %}
                         {% for issue in project.needs_review_issues %}
                             <div class="issue project-issue needs-review clear hidden" title="{{ issue.description }}">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span>                                 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
                                 <a class="right" href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.first_name }}</a>
@@ -84,6 +87,7 @@
                         {% endfor %}
                         {% for issue in project.unassigned_issues|slice:":10" %}
                             <div class="issue project-issue unassigned hidden" title="{{ issue.description }}">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 <div class="details hidden">
                                     {% include 'issues/includes/tag_display.html' %}
@@ -93,6 +97,7 @@
                         {% endfor %}
                         {% for issue in project.recently_completed_issues|slice:":10" %}
                             <div class="issue project-issue completed clear hidden" title="{{ issue.description }}">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 {% if issue.assigned_to %}
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
@@ -106,6 +111,7 @@
                         {% endfor %}                        
                         {% for issue in project.recently_deleted_issues|slice:":10" %}
                             <div class="issue project-issue deleted hidden" title="{{ issue.description }}">
+                            <span class="issue-id" >{{ issue.pk }}</span>
                             <span class="issue-title slide-title">{{ issue }}</span> 
                             <div class="details hidden">
                                 {% include 'issues/includes/tag_display.html' %}
@@ -162,21 +168,25 @@
                     <div class="user-issue-list collapse-issue-list clear">
                         {% for issue in user.inprogress_issues %}
                             <div class="issue user-issue in-progress clear">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                             </div>
                         {% endfor %}
                         {% for issue in user.assigned_issues %}
                             <div class="issue user-issue assigned clear hidden">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                             </div>
                         {% endfor %}
                         {% for issue in user.completed_issues|slice:":5" %}
                             <div class="issue user-issue completed clear hidden">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                             </div>
                         {% endfor %}
                         {% for issue in user.needs_review_issues %}
                             <div class="issue user-issue needs-review clear hidden">
+                                <span class="issue-id" >{{ issue.pk }}</span>
                                 {{ issue }}<div class="right"> {{ issue.project.as_a }}</div>
                             </div>
                         {% endfor %}
