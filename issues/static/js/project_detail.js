@@ -76,12 +76,13 @@ $(function() {
      {
             var target = event.target;
             var n=target.id.split("-");
-            var issueid=n[0];
+            var issue_id=n[0];
+            UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
 
-           if (postNote('REJECTED: ', issueid))
+           if (postNote('REJECTED: ', issue_id))
            {
             $.ajax({
-                url: UPDATE_ISSUE_URL + issueid, 
+                url: UPDATE_ISSUE_URL,
                 type: "post",
                 data: "status=AS",
                 error: function () { alert("error"); },

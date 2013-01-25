@@ -9,22 +9,52 @@ var colors =
     '004444', '005A5A', '006F6F', '007777', '008888', '00AAAA', '00CCCC', '00EEEE', '00FFFF',
     '440044', '5A005A', '6F006F', '770077', '880088', 'AA00AA', 'CC00CC', 'EE00EE', 'FF00FF'
 ];
+function set_viewed_issue(issue_id, user)
+{
+    $( "#new-notes-"+issue_id).remove();
+    UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
+    $.ajax({
+        url: UPDATE_ISSUE_URL, 
+        type: "post",
+        data: "viewed=1",
+        error: function () { alert("error"); },
+    });
 
-$(function() {
-
-    function set_viewed_issue(issue_id, user)
-    {
-        $( "#new-notes-"+issue_id).remove();
-        UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
+}
+    
+function postNote(prepend, issue_id)
+{
+    var note = window.prompt("Add Note:","");
+    if (note) 
+    {           
+        CREATE_NOTE_URL = $("#issue-details-" + issue_id).attr('data-note-url')
         $.ajax({
-            url: UPDATE_ISSUE_URL, 
+            url:  CREATE_NOTE_URL,
             type: "post",
-            data: "viewed=1",
+            data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user },
+            success: function(data) 
+            {
+                if ('errors' in data)
+                {
+                    alert("error");
+                    return false;
+                }
+
+                $("#note-header-" + issue_id).removeClass("hidden");
+
+                var newNote = $("<div class = \"note\"> " + current_user_name + " on " + data['datetime'] + 
+                "</br>&emsp;"  + prepend + note + "</div>");
+
+                $("#note-list-" + issue_id).append(newNote);
+            },
             error: function () { alert("error"); },
         });
-
+        return true;
     }
+    return false;
+}
     
+$(function() {    
     $( ".issue-title").click(function(e){
         $(this).siblings('.edit_drop').slideUp(function() 
         { 
@@ -333,37 +363,7 @@ $(function() {
             postNote('', issue_id);
     });
     
-    function postNote(prepend, issue_id)
-    {
-        var note = window.prompt("Add Note:","");
-        if (note) 
-        {           
-            CREATE_NOTE_URL = $("#issue-details-" + issue_id).attr('data-note-url')
-            $.ajax({
-                url:  CREATE_NOTE_URL,
-                type: "post",
-                data: {'label': prepend + note, 'issue': issue_id, 'creator': current_user },
-                success: function(data) 
-                {
-                    if ('errors' in data)
-                    {
-                        alert("error");
-                        return false;
-                    }
-
-                    $("#note-header-" + issue_id).removeClass("hidden");
-
-                    var newNote = $("<div class = \"note\"> " + current_user_name + " on " + data['datetime'] + 
-                    "</br>&emsp;"  + prepend + note + "</div>");
-
-                    $("#note-list-" + issue_id).append(newNote);
-                },
-                error: function () { alert("error"); },
-            });
-            return true;
-        }
-        return false;
-    }
+    
     
     var date = new Date();
 	
