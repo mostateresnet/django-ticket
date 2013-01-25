@@ -129,6 +129,7 @@
         </div>
         <div id="project-sort" class="content-border hidden">
             {% include 'issues/project_new.html' %}
+            <div>Reordering the projects below determines the global order on the main page.</div>
             <button type="button" class="right" id="new_project_button">New Project</button>
             <ul id="sortable-projects" class="sortable">
                 {% for project in object_list %}
