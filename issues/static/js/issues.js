@@ -36,7 +36,7 @@ function postNote(prepend, issue_id)
             {
                 if ('errors' in data)
                 {
-                    alert("error");
+                    alert("ERROR: "+data.errors);
                     return false;
                 }
 
@@ -47,7 +47,7 @@ function postNote(prepend, issue_id)
 
                 $("#note-list-" + issue_id).append(newNote);
             },
-            error: function () { alert("error"); },
+            error: function () { alert("ERROR: There has been an error in your post request."); },
         });
         return true;
     }
@@ -335,7 +335,7 @@ $(function() {
                 {       
                     if ('errors' in data)
                     {
-                        alert("error");
+                        alert("ERROR :"+data.errors);
                         return;
                     }      
                     $("#commit-header-" + issue_id).removeClass("hidden");
@@ -348,7 +348,7 @@ $(function() {
 
                     $("#commit-list-" + issue_id).append(newCommit);
                 },
-                error: function () { alert("error"); },
+                error: function () { alert("ERROR: There has been an error in your post request."); },
             });
 
   

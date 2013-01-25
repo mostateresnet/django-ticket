@@ -85,7 +85,7 @@ $(function() {
                 url: UPDATE_ISSUE_URL,
                 type: "post",
                 data: "status=AS",
-                error: function () { alert("error"); },
+                error: function () { alert("ERROR: There has been an error in your post request."); },
             });
 
             window.location.reload(true);
@@ -112,14 +112,14 @@ $(function() {
                 {
                     if ('errors' in data)
                     {
-                        alert(data['errors']);
+                        alert("ERROR: "+data.errors);
                         return false;
                     }
                     else{
                       $( '#issue-nr-'+issue_id ).remove();
                     }
                 },
-                error: function () { alert("error"); },
+                error: function () { alert("ERROR: There has been an error in your post request."); },
             });
         }
     });

@@ -34,7 +34,7 @@ $(function()
                 type: "POST",
                 data: {'sorted_ids':sortedIDs,},
                 success: function () {},
-                error: function () { alert("error"); },
+                error: function () { alert("ERROR: There has been an error in your post request."); },
             });
             }
             else if (id == "sortable-users")
