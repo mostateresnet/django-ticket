@@ -93,7 +93,7 @@
                                 {% endif %}
                             </span>
 
-                                <span class="issue-nr-title" title="{{ issue.description }}" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
+                                <span class="issue-nr-title" rel="#issue-details-{{ issue.pk }}">{{ issue }}</span>
                               
                                 <div class = "tag_list">
                                   {% for tag in issue.tags.all %}

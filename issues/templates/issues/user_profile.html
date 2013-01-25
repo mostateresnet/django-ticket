@@ -75,7 +75,7 @@
             <div class="user">
                 <div id="user-issue-list">
                     {% for issue in user_data.completed_issues %}
-                        <div class="issue user-issue display-completed clear hidden" title="{{ issue.description }}">
+                        <div class="issue user-issue display-completed clear hidden">
                             <span class="issue-id" >{{ issue.pk }}</span>
                             <span class="issue-title slide-title">{{ issue }}</span> 
                             <div class="right"> {{ issue.project.as_a }}</div>
@@ -86,7 +86,7 @@
                         </div>
                     {% endfor %}
                     {% for issue in user_data.needs_review_issues %}
-                        <div class="issue user-issue display-needs-review clear hidden" title="{{ issue.description }}">
+                        <div class="issue user-issue display-needs-review clear hidden">
                             <span class="issue-id" >{{ issue.pk }}</span>
                             <span class="issue-title slide-title">{{ issue }}</span> 
                             <div class="right"> {{ issue.project.as_a }}</div>

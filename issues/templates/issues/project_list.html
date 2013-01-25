@@ -50,7 +50,7 @@
                     <img class="collapse_issue node left" src="{{ STATIC_URL}}img/collapse.png" /><h4 class="left">{{ project.as_a }}</h4>
                     <div class="nojump collapse-issue-list clear">
                         {% for issue in project.in_progress_issues|slice:":10" %}
-                            <div class="issue project-issue in-progress clear" title="{{ issue.description }}">
+                            <div class="issue project-issue in-progress clear">
                                 <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
@@ -62,7 +62,7 @@
                             </div>
                         {% endfor %}
                         {% for issue in project.assigned_issues|slice:":10" %}
-                            <div class="issue project-issue assigned clear hidden" title="{{ issue.description }}">
+                            <div class="issue project-issue assigned clear hidden">
                                 <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
@@ -74,7 +74,7 @@
                             </div>
                         {% endfor %}
                         {% for issue in project.needs_review_issues %}
-                            <div class="issue project-issue needs-review clear hidden" title="{{ issue.description }}">
+                            <div class="issue project-issue needs-review clear hidden">
                                 <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span>                                 
                                 <img src="{{ issue.assigned_to.email|gravatar }}" class="gravatar_small right">
@@ -86,7 +86,7 @@
                             </div>
                         {% endfor %}
                         {% for issue in project.unassigned_issues|slice:":10" %}
-                            <div class="issue project-issue unassigned hidden" title="{{ issue.description }}">
+                            <div class="issue project-issue unassigned hidden">
                                 <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 <div class="details hidden">
@@ -96,7 +96,7 @@
                             </div>
                         {% endfor %}
                         {% for issue in project.recently_completed_issues|slice:":10" %}
-                            <div class="issue project-issue completed clear hidden" title="{{ issue.description }}">
+                            <div class="issue project-issue completed clear hidden">
                                 <span class="issue-id" >{{ issue.pk }}</span>
                                 <span class="issue-title slide-title">{{ issue }}</span> 
                                 {% if issue.assigned_to %}
@@ -110,7 +110,7 @@
                             </div>
                         {% endfor %}                        
                         {% for issue in project.recently_deleted_issues|slice:":10" %}
-                            <div class="issue project-issue deleted hidden" title="{{ issue.description }}">
+                            <div class="issue project-issue deleted hidden">
                             <span class="issue-id" >{{ issue.pk }}</span>
                             <span class="issue-title slide-title">{{ issue }}</span> 
                             <div class="details hidden">
