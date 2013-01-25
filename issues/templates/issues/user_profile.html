@@ -57,9 +57,8 @@
             <p><label class = "statistic">In Progress: </label><label>{{ user_data.inprogress_issues.count }}</label></p>
             <p><label class = "statistic">Assigned:  </label><label>{{ user_data.assigned_issues.count }}</label></p>
             <p><label class = "statistic">Completed: </label><label>{{ user_data.completed_issues.count }}</label></p>
-            <p><label class = "statistic">Most Active: </label> ???? </p>
             <p><label class = "statistic">Last Project: </label><label>{{ user_data.last_completed.project.as_a }}</label></p>
-            <p><label class = "statistic">Last Completed: </label><p class = "small_text_wrap">{{ user_data.last_completed|truncatechars:256 }}</p></p>
+            <p><label class = "statistic">Last Completed: </label><p class = "small_text_wrap"><span class="issue-id">{{ user_data.last_completed.pk }}</span> {{ user_data.last_completed|truncatechars:256 }}</p></p>
             <label></label>
     </section>
 
