@@ -70,10 +70,14 @@
 {% if issue.status = 'CP' %}
 <div class="">
     <p class ="clear issue_description">
-     Reviewed by: 
-     <span class="emphasis">{{ issue.approved_by.get_full_name }}</span>
-     On: 
-     <span class="emphasis">{{ issue.close_date }}</span>
+    {% if issue.approved_by %}
+         Reviewed by: 
+         <span class="emphasis"><a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.approved_by.get_full_name }}</a></span>
+         On: 
+         <span class="emphasis">{{ issue.close_date }}</span>
+     {% else %}
+        This issue was not reviewed by anyone.
+     {% endif %}
     </p> 
 </div>
 {% endif %}
