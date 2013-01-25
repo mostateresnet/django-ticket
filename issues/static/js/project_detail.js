@@ -116,7 +116,7 @@ $(function() {
                         return false;
                     }
                     else{
-                      window.location.reload(true);
+                      $( '#issue-nr-'+issue_id ).remove();
                     }
                 },
                 error: function () { alert("error"); },
