@@ -105,6 +105,15 @@ ul.issue-list {
 .needs-review-issues
 {
     padding-bottom: 10px;
+    border-top-left-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+.needs-review-issues .issue-list
+{
+    padding: 10px;
+    margin: 0px;
 }
 
 
