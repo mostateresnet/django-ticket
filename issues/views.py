@@ -13,10 +13,25 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
 from django.db import transaction
 from annoying.utils import HttpResponseReload
-from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm, NoteForm, CommitForm, IssueViewedForm
+from issues.forms import IssueForm, IssueStatusForm, IssueCloseForm, ProjectForm, NoteForm, CommitForm, IssueViewedForm, TagForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django import http
+#from django.utils import simplejson as json
+
+
+class JSONResponseMixin(object):
+    def render_to_response(self, context):
+        return self.get_json_response(self.convert_context_to_json(context))
+
+    def get_json_response(self, content, **httpresponse_kwargs):
+        return http.HttpResponse(content,
+                                 content_type='application/json',
+                                 **httpresponse_kwargs)
+
+    def convert_context_to_json(self, context):
+        return json.dumps(context)
 
 
 class ProjectListView(ListView):
@@ -121,8 +136,27 @@ class TagCreateView(CreateView):
         return HttpResponse(json.dumps({'status': 'success', 'id': pk_id, 'url': reverse('tag_update_view', args=[pk_id])}), mimetype='application/json')
 
 
+class TagSearchView(JSONResponseMixin, ListView):
+
+    def get_queryset(self):
+        return Tag.objects.filter(label__iexact=self.request.GET.get('label', ''))
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        try:
+            result = self.get_queryset()[0]
+            context['label'] = result.label
+            context['pk'] = result.pk
+        except IndexError:
+            pass;        
+        return context
+
+
 class TagUpdateView(UpdateView):
     model = Tag
+
+    def get_form_class(self):
+        return TagForm
 
     def form_valid(self, form):
         pk_id = form.save().pk
@@ -142,12 +176,14 @@ class IssueDetailView(UpdateView):
             post_data = append_new_milestone(self.request.POST.copy(), issue.project, kwargs['pk'])
             self.request.POST = post_data
 
+        self.request.POST = append_new_tags(self.request.POST.copy(), kwargs['pk'])
+
         response = super(IssueDetailView, self).post(*args, **kwargs)
 
         if 'viewed' in self.request.POST:
             IssueViewed.objects.filter(user=self.request.user, issue=self.object).delete()
             IssueViewed(user=self.request.user, issue=self.object).save()
-
+        
         return response
 
     def get_form_class(self):
@@ -218,6 +254,9 @@ def new_issue(request, slug):
         # call method that modifies post data for our custom milestone handling
         post_data = append_new_milestone(request.POST.copy(), project, None)
         request.POST = post_data
+
+    request.POST = append_new_tags(request.POST.copy(), None)
+
     form = IssueForm(request.POST)
     if form.is_valid():
         issue = form.save(commit=False)
@@ -235,6 +274,19 @@ def new_issue(request, slug):
         return HttpResponse(json.dumps({'status': 'success', 'url': project.get_absolute_url()}), mimetype='application/json')
     else:
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
+
+def append_new_tags(POST_copy, issue_id):
+    with transaction.commit_on_success():
+        for ntag in POST_copy.getlist('new-tags'):
+            tag_values = ntag.split(",")
+            tag_result = Tag.objects.create(label=','.join(tag_values[:-1]).strip(),color=tag_values[-1])
+            if (issue_id):
+                tag_append = "%s-tags" % issue_id  
+            else:
+                tag_append = "tags"
+
+            POST_copy.appendlist(tag_append, tag_result.pk)
+    return POST_copy        
 
 # method that modifies post data for our custom milestone handling
 

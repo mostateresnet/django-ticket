@@ -172,14 +172,22 @@ input, textarea, select, button{
 .tag
 {
   padding: 2px 2px 2px 2px;
-  margin: 0px 2px 0px 2px;
-  float: left;
+  margin: 1px 1px 1px 1px;
+  border-width:1px;
+  border-style:solid;
+  border-color:#3A3A3A;
+  border-radius:3px;
+  -moz-border-radius:3px;
+  -webkit-border-radius:3px;
+
   color: black;
   cursor: pointer;
 }
 
 .tag_list
 {
+  margin-top: 4px;
+  margin-bottom: 4px;
   display: block;
   padding-left: 3em;
 }

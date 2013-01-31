@@ -3,13 +3,15 @@ from django.conf.urls.defaults import patterns, url
 
 from issues.views import (ProjectListView, ProjectNewView, ProjectSortView,
                           UserListView, UserSortIssueView, ProjectDetailView, IssueDetailView,
-                          BurndownChartView, TagCreateView, TagUpdateView, CommitCreateView, NoteCreateView, sort_issue, new_issue)
+                          BurndownChartView, TagCreateView, TagUpdateView, CommitCreateView, 
+                          NoteCreateView, TagSearchView, sort_issue, new_issue)
 
 
 urlpatterns = patterns('',
                        url(r'^$', ProjectListView.as_view(), name="project_list"),
                        url(r'^tags/$', TagCreateView.as_view(), name="tag_create_view"),
                        url(r'^tags/(?P<pk>\d+)$', TagUpdateView.as_view(), name="tag_update_view"),
+                       url(r'^tags/search$', TagSearchView.as_view(), name="tag_search_view"),
                        url(r'^new_project/$', ProjectNewView.as_view(), name="project_new"),
                        url(r'^project_sort/$', ProjectSortView.as_view(), name="project_sort"),
                        url(r'^profile/(?P<user_id>\d+)$', UserListView.as_view(), name="user_profile_view"),

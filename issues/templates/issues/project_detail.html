@@ -25,13 +25,13 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/issues.js"></script>
 
     <script type="text/javascript">
-        var new_tag_line =  $("{% filter escapejs %}{% spaceless %}{% include 'issues/includes/tag_line.html' %}{% endspaceless %}{% endfilter %}");
         var project_slug = "{{ project.slug }}";
         var current_user = "{{ user.pk }}";
         var current_user_name = "{{ user.get_full_name }}";
         UPDATE_ISSUE_URL  = '{% url project_detail project.slug %}';
         SORT_ISSUE_URL    = '{% url sort_issue project.slug %}';
         CREATE_TAG_URL   = '{% url tag_create_view %}';
+        SEARCH_TAG_URL   = '{% url tag_search_view %}';
 
         var milestone_dates = new Object();
         milestone_dates[{{project.pk}}] = [
@@ -97,7 +97,7 @@
                               
                                 <div class = "tag_list">
                                   {% for tag in issue.tags.all %}
-                                    <div class = "tag tag_{{ tag.pk }}">{{ tag.label }}</div>
+                                    <span class = "tag tag_{{ tag.pk }}">{{ tag.label }}</span>
                                   {% endfor %}
                                 </div>
                                     {% include 'issues/includes/issue_view.html' %}

@@ -127,7 +127,10 @@ $(function() {
 
 	
     $(".tag").click(function(e)
-    {    
+    {            
+        if ($(this).hasClass('tag_mod'))
+        { return true; }
+
         $($(this).attr('class').split(' ')).each(function() 
         { 
             if (/tag_\d+/.test(this))
@@ -158,6 +161,83 @@ $(function() {
                 return false;
             }    
         });
+    });
+
+    $(".tag_remove").live("click", function(e)
+    {
+        $(this).parent().hide("puff", {}, 500, function()
+        { $(this).remove(); });
+        //e.stopPropagation();
+        return false;
+    });
+
+    $('.tag_field').keydown(function(e) 
+    {
+        var tag_name = $(this).val().toLowerCase()
+        var issue_pk = $(this).attr('data-pk');
+        // We need to ignore a few characters that will break the html....
+
+        if (e.which == 32 || e.which == 13) // Spacebar
+        {
+            // Check to see if a tag with this name already exists
+            // if so, use its pk, if not, create it, and use that pk
+            var used_tag = ($("#tag-data-" + issue_pk + "-" + tag_name).length > 0);
+            if (!used_tag) 
+            { $(this).val(''); }
+
+            if (tag_name != "")
+            {
+                // Need to check if this tag is already present
+                var tag_pk = 0;            
+                
+                $.ajax({
+                    url: SEARCH_TAG_URL,
+                    type: "get",
+                    data: "label=" + tag_name,
+                    success: function(data)
+                    {
+                        if ('pk' in data)
+                        {  
+                            tag_name = data['label'];
+                            tag_pk = data['pk'];
+                        }
+
+
+                        var parent = $("#tag-list-"+issue_pk);
+
+                        // Does this tag addition already exist?
+                       
+                        if (!used_tag)                    
+                        {
+                            var tag_detail;
+                            if (tag_pk > 0)
+                            { 
+                                tag_detail = 
+                                    $("<span id=\"tag-data-" + issue_pk + "-" + tag_name.toLowerCase() + 
+                                    "\" data-pk=\"" + tag_pk + "\" class=\"left tag_mod tag tag_" + tag_pk + "\">" + tag_name + 
+                                    " <div class = \"tag_remove\"/></span>"
+                                    );
+                            }
+                            else 
+                            { 
+                                tag_detail = 
+                                    $("<span id=\"tag-data-" + issue_pk + "-" + tag_name.toLowerCase() + 
+                                    "\" class=\"left tag_mod tag\" style=\"background-color:#AAAAAA;\">" + tag_name + 
+                                    " <div class = \"tag_remove\"/></span>"
+                                    );
+                            }
+
+                            parent.append(tag_detail);
+                        }
+
+                    },
+                });
+
+            }
+
+            e.preventDefault();
+            return false;
+        }
     });
 
 });

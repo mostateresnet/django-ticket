@@ -1,3 +1,11 @@
+function rgb2hex(rgb) {
+    rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+    function hex(x) {
+        return ("0" + parseInt(x).toString(16)).slice(-2);
+    }
+    return hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
 var colors = 
 [
     '444444', '5A5A5A', '6F6F6F', '777777', '888888', 'AAAAAA', 'CCCCCC', 'EEEEEE', 'FFFFFF',
@@ -100,7 +108,7 @@ $(function() {
     
     $(document).click(function(e)
     {
-        if($(e.target || e.srcElement).closest('#color_selector').length == 0)
+        if(!$(e.target).hasClass('tag_mod'))
         { $("#color_selector").hide('slow'); }
     });
 
@@ -110,7 +118,12 @@ $(function() {
         var clr_selector = $('#color_selector');
         clr_selector.css('left',pos.left - 2 + 'px');
         clr_selector.css('top',pos.top + 16 + 'px');
-        clr_selector.attr('data-cls',$(this).attr('data-cls'));
+
+        if ($(this).attr('data-pk'))
+        { clr_selector.attr('data-cls',$(this).attr('data-pk')); }
+        else
+        { clr_selector.attr('data-cls',$(this).attr('id')); }
+
         clr_selector.show('slow');
 
     });
@@ -121,17 +134,22 @@ $(function() {
 
         var tag_id = $("#color_selector").attr('data-cls');
         var color_id = $("#color_selector").attr('data-sel');
+
         var new_color = colors[color_id];
 
-        $(".tag_" + tag_id).css('background-color', '#' + new_color);
-        $( "#color_selector").hide('slow');
+        var post_action = $(".tag_" + tag_id + ".tag_mod:first").attr('data-tag-update-url') 
+        if (post_action)
+        {
+            $(".tag_" + tag_id).css('background-color', '#' + new_color);
+            $( "#color_selector").hide('slow');
 
-        var existing_label = $(".tag_mod.tag_" + tag_id + ":first").siblings('.tag_label').text();
-
-        var post_action = $("#tag-container-" + tag_id).attr('data-tag-update-url') 
-        var post_data = "label=" + existing_label + "&color=" + new_color;
-        $.post(post_action, post_data);
-
+            var post_data = "color=" + new_color;
+            $.post(post_action, post_data);
+        }
+        else
+        {
+            $("#" + tag_id).css('background-color', '#' + new_color);
+        }
     });
 
     $(".color_spot").live('hover',function(e)
@@ -167,35 +185,6 @@ $(function() {
         }
     });
 
-    $( ".new_tag").click(function(e)
-    {
-        var new_tag_name = $(this).siblings('.new_tag_input').attr('value');
-
-        var post_action = CREATE_TAG_URL;
-
-        var default_color = "AAAAAA";
-        var post_data = "label=" + new_tag_name + "&color=" + default_color;
-        $('.new_tag_input').attr('value','');
-       $.post(post_action, post_data, function(data)   
-       {                 
-            $("<style type='text/css'> .tag_" + data.id + " { background-color:#" + default_color + ";}</style>").appendTo("head");
-
-            var new_element = new_tag_line.clone();
-
-            new_element.attr('data-tag-update-url', data.url);    
-            new_element.attr('id', "tag-container-" + data.id);    
-
-            var tag_mod = new_element.find('.tag_mod');
-            tag_mod.removeClass("tag_"); // Left over from the clone...
-            tag_mod.addClass('tag_'+ data.id);
-            tag_mod.attr('data-cls', data.id);
-            new_element.find('.tag_label').text(new_tag_name);
-            new_element.find('.tag_check').attr('id', 'tagchk_' + data.id);
-        
-            $('.add_tag_area').before(new_element);
-        } );
-    });
-
     $( ".edit_form, #new-issue" ).submit(function(event)
     {       
         // Intercept the post data and append
@@ -204,24 +193,32 @@ $(function() {
         var serial_data = $this.serialize();
 
         var pk_str = $this.attr('id');
-        var pk_id = pk_str.match(/\d+/);
+        var issue_pk = pk_str.match(/\d+/);
         var append_str = "";
 
-        $this.find(".tag_editor input:checked").each(function()
+        $("#" + $this.attr('id') + " .tag").each(function()
         {
-            var i = $(this).attr('id');
-            var chk_id = i.match(/\d+/);
-            if (pk_id)
-            { append_str += "&" + pk_id + "-tags=" + chk_id;  }
+            var tag_pk = $(this).attr('data-pk');
+            var tag_name = $(this).text();
+            var tag_color = rgb2hex($(this).css("background-color"));
+            if (tag_pk)
+            {            
+                if (issue_pk)
+                { append_str += "&" + issue_pk + "-tags=" + tag_pk;  }
+                else
+                { append_str += "&tags=" + tag_pk;  }
+            }
             else
-            { append_str += "&tags=" + chk_id;  }
+            {
+                append_str += "&new-tags=" + tag_name +  "," + tag_color;  
+            }
         });
-		
+
 		//processing for milestone here
 		var milestone_date;
-		if (pk_id) //if it is an edit
+		if (issue_pk) //if it is an edit
 		{
-			milestone_date = $("#id_"+pk_id+"-milestone").val();
+			milestone_date = $("#id_"+issue_pk+"-milestone").val();
 			serial_data += "&milestone_date="+milestone_date;
 		}
 		else //if it is a new issue
@@ -237,11 +234,11 @@ $(function() {
 
             if (data.status == "error")
             {
-                if(pk_id)
+                if(issue_pk)
                 {
                     for (var key in data.errors)
                     {
-                        $("#id_"+pk_id+"-"+key).closest("p").toggleClass("errors", true)
+                        $("#id_"+issue_pk+"-"+key).closest("p").toggleClass("errors", true)
                     }
                 }
                 else

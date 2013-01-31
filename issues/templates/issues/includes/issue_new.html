@@ -4,23 +4,19 @@
         <div class = "left new_issue_left">
             <p>{{ issue_form.title.label_tag }}:{{ issue_form.title }}</p>        
             <p>{{ issue_form.description.label_tag }}:{{ issue_form.description }}</p>
+            <p> <div class = "tag_form">
+                    {{ issue_form.tags.label_tag }}
+                    <div id="tag-list-" class="tag_parent"></div>
+                </div>
+                <input class = "tag_field" data-pk="{{ issue.pk }}" type="text"/>
+            </p>
+
         </div>
 
         <div class = "right new_issue_right">
             <p>{{ issue_form.assigned_to.label_tag }}:{{ issue_form.assigned_to }}</p>
             <p>{{ issue_form.milestone.label_tag }}:<input type="text" name="milestone" id="id_milestone" class="milestone-datepicker" /></p> 
             <p>{{ issue_form.days_estimate.label_tag }}:{{ issue_form.days_estimate }}</p>      
-            <p>{{ issue_form.tags.label_tag }}:</p>
-
-           <div class = "tag_editor clear" data-count="{{ tags.count }}">            
-                {% for tag in tags %}
-                        {% include 'issues/includes/tag_line.html' %}
-                {% endfor %}
-                <div class = "clear add_tag_area" style = "display: inline-block">
-                    <input type="text" class="new_tag_input"/><button type="button" class = "new_tag right">Add</button>
-                </div>
-            </div>
-
         </div>
         <div class = "clear" >
             <input type="submit" value="Save"/>

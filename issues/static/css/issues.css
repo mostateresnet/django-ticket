@@ -34,7 +34,6 @@
     padding-right: 10px;
 }
 .milestone {
-    float: left;
     padding: 2px 2px 2px 2px;
     margin: 0px 2px 0px 2px;
 }
@@ -45,39 +44,6 @@
     margin: 2px 2px 2px 2px;
     text-align:center;
     cursor:pointer;
-}
-
-.tag_mod
-{
-  margin: 1px 1px 1px 1px;
-  width: 14px;
-  height: 14px;
-  border-width:0px;
-  display: inline-block;
-}
-
-.tag_line
-{
-  margin: 1px 1px 1px 1px;
-  display: block;
-}
-
-
-.tag_editor
-{
-   border:1px solid #383838;
-   padding: 4px;
-}
-
-
-.new_tag
-{
-   padding: 1px 4px 1px 4px;
-   margin-bottom: 1px;
-   display: inline-block;
-   height: 100%;
-   text-align:center;
-   cursor:pointer;
 }
 
 .color_spot
@@ -183,3 +149,41 @@
     border-width:1px;
     padding: 0px;
 }
+
+
+.tag_form
+{
+    overflow: hidden;
+}
+
+.tag_form label
+{
+    float: left;
+}
+
+.tag_parent
+{
+    float: left;
+    padding-left: 4px;
+    width: 90%;
+}
+
+.tag_field
+{
+    width: 100%;
+}
+
+.tag_remove
+{
+    height: 14px;
+    width: 14px;
+    border: 0px;
+    position: relative;
+    top: 2px;
+    border-style: solid;
+    border-color: transparent;
+    background-image: url( '../img/close_small.png' );
+    display: inline-block;
+}
+
+

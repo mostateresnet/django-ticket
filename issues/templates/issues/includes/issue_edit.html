@@ -5,7 +5,17 @@
                 {% csrf_token %}
                 <div class = "left new_issue_left">
                     <p >{{ form.title.label_tag }}:{{ form.title }}</p>        
-                    <p>{{ form.description.label_tag }}:{{ form.description }}</p>    
+                    <p>{{ form.description.label_tag }}:{{ form.description }}</p>
+                    <p> <div class = "tag_form">
+                            {{ form.tags.label_tag }}
+                            <div id="tag-list-{{ issue.pk }}" class="tag_parent">
+                            {% for tag in issue.tags.all %}
+                                {% include 'issues/includes/tag_addin.html' %}
+                            {% endfor %}
+                            </div>
+                        </div>
+                        <input class = "tag_field" data-pk="{{ issue.pk }}" type="text"/>
+                    </p>
                 </div>
                 <div class = "right new_issue_right">
                     <p>{{ form.assigned_to.label_tag }}:{{ form.assigned_to }}</p>
@@ -18,19 +28,6 @@
                     
                     /></p> 
                     <p>{{ form.days_estimate.label_tag }}:{{ form.days_estimate }}</p> 
-                    <label class = "left">{{ form.tags.label_tag }}:</label>
-                   <div class = "tag_editor clear" data-count="{{ tags.count }}">
-                        {% for tag in tags %}
-                            {% if tag in issue.tags.all %}
-                                {% include 'issues/includes/tag_line.html' with checked='True' %}
-                            {% else %}
-                                {% include 'issues/includes/tag_line.html' %}
-                            {% endif %}
-                        {% endfor %}
-                        <div class = "clear add_tag_area" style = "display: inline-block">
-                            <input type="text" class="new_tag_input"/><button type="button" class = "new_tag right">Add</button>
-                        </div>
-                    </div>
                 </div>
                 <div class = "clear" >
                     <input type="submit" value="Save"/>

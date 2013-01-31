@@ -4,3 +4,4 @@ $(function() {
         $(this).siblings('.details').slideToggle();
     });
 });
+
