@@ -18,7 +18,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django import http
-#from django.utils import simplejson as json
+# from django.utils import simplejson as json
 
 
 class JSONResponseMixin(object):
@@ -148,7 +148,7 @@ class TagSearchView(JSONResponseMixin, ListView):
             context['label'] = result.label
             context['pk'] = result.pk
         except IndexError:
-            pass;        
+            pass
         return context
 
 
@@ -183,7 +183,7 @@ class IssueDetailView(UpdateView):
         if 'viewed' in self.request.POST:
             IssueViewed.objects.filter(user=self.request.user, issue=self.object).delete()
             IssueViewed(user=self.request.user, issue=self.object).save()
-        
+
         return response
 
     def get_form_class(self):
@@ -275,18 +275,19 @@ def new_issue(request, slug):
     else:
         return HttpResponse(json.dumps({'status': 'error', 'errors': form.errors}), mimetype='application/json')
 
+
 def append_new_tags(POST_copy, issue_id):
     with transaction.commit_on_success():
         for ntag in POST_copy.getlist('new-tags'):
             tag_values = ntag.split(",")
-            tag_result = Tag.objects.create(label=','.join(tag_values[:-1]).strip(),color=tag_values[-1])
+            tag_result = Tag.objects.create(label=','.join(tag_values[:-1]).strip(), color=tag_values[-1])
             if (issue_id):
-                tag_append = "%s-tags" % issue_id  
+                tag_append = "%s-tags" % issue_id
             else:
                 tag_append = "tags"
 
             POST_copy.appendlist(tag_append, tag_result.pk)
-    return POST_copy        
+    return POST_copy
 
 # method that modifies post data for our custom milestone handling
 

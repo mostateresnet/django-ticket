@@ -3,7 +3,7 @@ from django.conf.urls.defaults import patterns, url
 
 from issues.views import (ProjectListView, ProjectNewView, ProjectSortView,
                           UserListView, UserSortIssueView, ProjectDetailView, IssueDetailView,
-                          BurndownChartView, TagCreateView, TagUpdateView, CommitCreateView, 
+                          BurndownChartView, TagCreateView, TagUpdateView, CommitCreateView,
                           NoteCreateView, TagSearchView, sort_issue, new_issue)
 
 

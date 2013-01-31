@@ -46,11 +46,13 @@ class CommitForm(ModelForm):
         model = Commit
         fields = ('revision', 'issue')
 
+
 class TagForm(ModelForm):
 
     class Meta:
         model = Tag
         fields = ('color', )
+
 
 class NoteForm(ModelForm):
 

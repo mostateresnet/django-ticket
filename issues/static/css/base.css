@@ -186,10 +186,8 @@ input, textarea, select, button{
 
 .tag_list
 {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  display: block;
   padding-left: 3em;
+  overflow: hidden;
 }
 
 .nojump { white-space: nowrap; }
