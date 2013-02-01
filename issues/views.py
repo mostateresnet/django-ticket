@@ -138,15 +138,28 @@ class TagCreateView(CreateView):
 
 class TagSearchView(JSONResponseMixin, ListView):
 
+    searching = False
+
     def get_queryset(self):
-        return Tag.objects.filter(label__iexact=self.request.GET.get('label', ''))
+        auto_complete_term = self.request.GET.get('term', '')
+        if (auto_complete_term):
+            self.searching = True
+            return Tag.objects.filter(label__icontains=auto_complete_term)
+        else:
+            return Tag.objects.filter(label__iexact=self.request.GET.get('label', ''))
 
     def get_context_data(self, **kwargs):
         context = {}
         try:
-            result = self.get_queryset()[0]
-            context['label'] = result.label
-            context['pk'] = result.pk
+            results = self.get_queryset()
+            if (self.searching):
+                context = list(results.values('label'))
+
+            else:
+                result = results[0]
+                context['label'] = result.label
+                context['pk'] = result.pk
+
         except IndexError:
             pass
         return context

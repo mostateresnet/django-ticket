@@ -436,6 +436,7 @@ $(function() {
 
     $('.tag_field').keydown(function(e) 
     {
+//        alert("");
         var tag_name = $(this).val().toLowerCase()
         var issue_pk = $(this).attr('data-pk');
         // We need to ignore a few characters that will break the html....
@@ -495,10 +496,30 @@ $(function() {
                 });
 
             }
-
             e.preventDefault();
             return false;
         }
     });
 
+    $('.tag_field').autocomplete({
+      source: SEARCH_TAG_URL,
+      minLength: 2,
+      select: function( event, ui ) 
+      {
+        if (event.which != 13)
+        {
+          $(this).val(ui.item.value);
+          var e = $.Event('keydown');
+          e.which = 32; // Space
+          $(this).trigger(e);
+        }
+
+        $(this).val('');
+        return false;
+      }
+    });
+
 });
+
+
+
