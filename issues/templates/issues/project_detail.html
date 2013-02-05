@@ -54,6 +54,13 @@
         {% endif %}
         <h3><span><a href="{% url project_detail project.slug %}">{{ object }}</a></span></h3>
 
+        {% with chart_url=project.current_milestone.get_chart_url %}
+          {% if chart_url %}
+            <iframe src="{{ chart_url }}" scrolling="no" id="burndown_chart"></iframe>
+            <div id="statistics"></div>
+          {% endif %}
+        {% endwith %}
+
         <button type = "button" id="new-issue-button"> Add Issue </button>
 
 

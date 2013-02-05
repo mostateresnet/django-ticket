@@ -190,6 +190,10 @@ input, textarea, select, button{
   overflow: hidden;
 }
 
+iframe {
+    border: 0px;
+}
+
 .nojump { white-space: nowrap; }
 .left { float: left; }
 .right { float: right; }

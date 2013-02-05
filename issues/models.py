@@ -1,9 +1,10 @@
+import datetime
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.utils.timezone import now, utc
 from django.contrib.auth.models import User
 from django.utils.safestring import SafeString
-import datetime
+from issues.helpers import day_range, days_of_work, days_apart, work_left, business_day_range, is_business_day
 
 
 class Tag(models.Model):
@@ -80,6 +81,13 @@ class Project(models.Model):
 
     def future_milestones(self):
         return self.milestone_set.filter(deadline__gte=now())
+
+    @property
+    def current_milestone(self):
+        try:
+            return self.future_milestones().annotate(issue_count=Count('issue')).exclude(issue_count=0).order_by('deadline')[0]
+        except (Milestone.DoesNotExist, IndexError):
+            return None
 
     def get_scm_url(self):
         if self.scm_owner and self.scm_repo:
@@ -230,6 +238,82 @@ class Milestone(models.Model):
 
     def __unicode__(self):
         return str(self.deadline)
+
+    def calculate_burndown_chart(self, width=800, height=450, when=None):
+        data = {}
+        issues = self.issue_set.all()
+        one_day = datetime.timedelta(days=1)
+        if when is None:
+            when = datetime.datetime.now()
+        try:
+            start_date = issues.filter(close_date__isnull=False).order_by('close_date')[0].close_date - one_day
+        except IndexError:
+            start_date = when
+
+        end_date = datetime.datetime.combine(self.deadline, datetime.time(17))
+        w = max(len(list(day_range(start_date, end_date))) - 1, 1)
+        h = max(days_of_work(issues), 1)
+        grid_w = width / w
+        grid_h = height / h
+        today_width = days_apart(start_date, when)
+        start_height = work_left(issues, start_date - one_day)
+        points = []
+        for date, day in day_range(start_date, min(end_date, when)):
+            point = (day, work_left(issues, date))
+            points.append(point)
+        # optimal "green" line
+        try:
+            optimal_slope = h / float(len(list(business_day_range(start_date + one_day, end_date))))
+        except ZeroDivisionError:
+            optimal_slope = 1.0
+        optimal_line_points = []
+        current_y = 0
+        optimal_line_points.append((0, 0))
+        for date, day in day_range(start_date + one_day, end_date):
+            if is_business_day(date):
+                current_y += optimal_slope
+            point = (day + 1, current_y)
+            optimal_line_points.append(point)
+        data['optimal_line_points'] = [(x * grid_w, y * grid_h) for x, y in optimal_line_points]
+        data['points'] = [(x * grid_w, y * grid_h) for x, y in points]
+        if today_width != 0:
+            slope = float(work_left(issues, when - one_day)) / today_width
+        else:
+            slope = 1
+        if slope == 0:
+            slope = 1
+        data['projected'] = {
+            'p1': {'x': 0, 'y': 0},
+            'p2': {'x': float(h) / float(slope) * grid_w, 'y': h * grid_h}
+        }
+        # maximum x value
+        data['width'] = w * grid_w
+        # maximum y value
+        data['height'] = h * grid_h
+        # date of first closed issues
+        data['start_date'] = start_date.date()
+        # date that self ends
+        data['end_date'] = end_date.date()
+        # today's date
+        data['today_date'] = when.date()
+        # x value for today's date
+        data['today_width'] = today_width * grid_w
+        # list of x values for each day
+        data['day_widths'] = [(x + 1) * grid_w for x in xrange(w)]
+        # list of y values for each issue
+        data['day_heights'] = [(y + 1) * grid_h for y in xrange(int(h))]
+        # width of svg with padding
+        data['svg_width'] = w * grid_w + 50
+        # height of svg with padding.
+        data['svg_height'] = h * grid_h + 40
+        # slop of optimal line
+        data['optimal_slope'] = optimal_slope
+        # slop of predicted/actual line
+        data['slope'] = slope
+        return data
+
+    class Meta:
+        get_latest_by = 'deadline'
 
 
 class Note(models.Model):

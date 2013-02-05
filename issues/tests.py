@@ -3,12 +3,14 @@ This file demonstrates writing tests using the unittest module. These will pass
 when you run "manage.py test".
 """
 
+import json
+import datetime
 from django.test import TestCase
+from django.test.utils import override_settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from issues.models import Project, Issue, Tag, Note, Commit, Milestone
-import json
 
 
 class ProjectListViewTest(TestCase):
@@ -389,3 +391,54 @@ class NewIssueTest(TestCase):
         response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
         self.assertEqual(response_data['status'], 'error', "HttpResponse should return error for this test case")
         self.assertEqual(response.status_code, 200, "def new_issue should respond with HTTP 200 OK")
+
+
+@override_settings(USE_TZ=False)
+class BurndownChartTest(TestCase):
+    def setUp(self):
+        self.ancient_past = datetime.datetime(1985, 11, 5)
+        self.one_day = datetime.timedelta(days=1)
+
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+
+        self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
+        self.milestone1 = Milestone.objects.create(project=self.project1, deadline=self.ancient_past)
+        self.milestone2 = Milestone.objects.create(project=self.project1, deadline=datetime.datetime.now() + self.one_day * 7)
+
+        self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS", milestone=self.milestone1)
+        self.issue2 = self.project1.issue_set.create(title="issue2", creator=self.user, assigned_to=self.user, status="UA", milestone=self.milestone1)
+        self.issue3 = self.project1.issue_set.create(title="issue3", creator=self.user, assigned_to=self.user, status="IP", milestone=self.milestone1)
+        self.issue4 = self.project1.issue_set.create(title="issue4", creator=self.user, assigned_to=self.user, status="AS",
+                                                     milestone=self.milestone1, close_date=self.ancient_past - self.one_day * 20)
+        self.issue5 = self.project1.issue_set.create(title="issue5", creator=self.user, status="UA", milestone=self.milestone1)
+        self.issue6 = self.project1.issue_set.create(title="issue6", creator=self.user, assigned_to=self.user, status="AS", milestone=self.milestone2)
+
+        self.client.login(username='john', password='johnpassword')
+
+    def test_chart_url_responds_200(self):
+        response = self.client.get(self.milestone2.get_chart_url())
+        self.assertEqual(response.status_code, 200, "BurndownChartView respond with HTTP 200 OK")
+
+    def test_chart_with_past_date(self):
+        data = self.milestone1.calculate_burndown_chart(when=self.milestone1.deadline - self.one_day * 10)
+        self.assertEqual(data.get('slope'), 1.0 / 11.0, "slope should be 1/11")
+
+    def test_chart_with_same_date(self):
+        data = self.milestone1.calculate_burndown_chart(when=self.milestone1.deadline)
+        self.assertEqual(data.get('slope'), 1.0 / 21.0, "slope should be 1/21")
+
+    def test_chart_with_future_date(self):
+        data = self.milestone1.calculate_burndown_chart(when=self.milestone1.deadline + self.one_day * 10)
+        self.assertEqual(data.get('slope'), 1.0 / 31.0, "slope should be 1/31")
+
+    def test_chart_with_no_closed_issues(self):
+        self.issue4.delete()
+        data = self.milestone1.calculate_burndown_chart(when=self.milestone1.deadline)
+        self.assertEqual(data.get('optimal_slope'), 1.0, "optimal_slope should be 1/1")
+
+    def test_chart_with_all_closed_issues(self):
+        for issue in self.milestone1.issue_set.all():
+            issue.status = 'CP'
+            issue.save()
+        data = self.milestone1.calculate_burndown_chart(when=self.milestone1.deadline)
+        self.assertEqual(data.get('slope'), 1.0, "slope should be 1/1")

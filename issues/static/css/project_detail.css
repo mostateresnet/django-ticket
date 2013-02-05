@@ -116,3 +116,13 @@ ul.issue-list {
     margin: 0px;
 }
 
+#burndown_chart {
+    width: 50%;
+    height: 150px;
+    float: left;
+}
+
+#statistics {
+    width: 50%;
+    height: 150px;
+}

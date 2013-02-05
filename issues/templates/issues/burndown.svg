@@ -1,7 +1,5 @@
-{% extends 'issues/base.svg' %}
-
 {% block content %}
-    <style type="text/css" >
+    <style type="text/css">
         <![CDATA[
 
             text{
@@ -79,6 +77,7 @@
         <line class="axis" x1="0" y1="{{ height }}" x2="{{ width }}" y2="{{ height }}" />
         <!-- Vertical axis -->
         <line class="axis" x1="0" y1="0" x2="0" y2="{{ height }}" />
+        {% comment %}
         <!-- End date label -->
         <g transform="translate({{ width }}, {{ height }})">
             <line class="label-line" x1="0" y1="0" x2="0" y2="10"/>
@@ -96,5 +95,6 @@
             <line class="label-line" x1="0" y1="0" x2="0" y2="10"/>
             <text transform="translate(-6 15) rotate(70)" >{{ start_date }}</text>
         </g>
+        {% endcomment %}
     </g>
 {% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'issues/base.html' %}
+
+{% block title %}Burndown Chart for {{ end_date }} Milestone{% endblock %}
+
+{% block css %}
+  <style type="text/css">
+    html, body, svg {
+      margin: 0px;
+      background-color: transparent;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+{% endblock %}
+
+{% block js %}{% endblock %}
+
+{% block body %}
+  <body>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 {{ svg_width }} {{ svg_height }}" preserveAspectRatio="none">
+      {% include 'issues/burndown.svg' %}
+    </svg>
+  </body>
+{% endblock %}
