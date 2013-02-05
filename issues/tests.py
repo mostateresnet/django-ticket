@@ -10,7 +10,7 @@ from django.test.utils import override_settings
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
-from issues.models import Project, Issue, Tag, Note, Commit, Milestone
+from issues.models import Project, Issue, Tag, Note, Commit, Milestone, IssueViewed
 
 
 class ProjectListViewTest(TestCase):
@@ -218,6 +218,8 @@ class IssueDetailViewTest(TestCase):
         self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
         self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
 
+        self.client.login(username='john', password='johnpassword')
+
     def test_update_issue_success(self):
         form_data = {str(
             self.issue1.pk) + '-title': 'NewTitle', str(self.issue1.pk) + '-description': 'NewDescription', str(self.issue1.pk) + '-assigned_to': str(self.user2.pk),
@@ -269,6 +271,13 @@ class IssueDetailViewTest(TestCase):
         response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
         self.assertEqual(response_data['status'], 'error', "HttpResponse should return an error for this test case")
         self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
+
+    def test_issue_viewed(self):
+        form_data = {'viewed': 1}
+        response = self.client.post(self.issue1.get_absolute_url(), form_data)
+        self.assertEqual(response.status_code, 200, 'IssueDetailView should respond with HTTP 200 OK')
+        view_count = IssueViewed.objects.filter(user=self.user, issue=self.issue1).count()
+        self.assertEqual(view_count, 1, 'There should be exactly one view attributed to this user')
 
 
 class CommitCreateViewTest(TestCase):
