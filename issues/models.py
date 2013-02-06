@@ -330,3 +330,4 @@ class IssueViewed(models.Model):
     issue = models.ForeignKey(Issue)
     user = models.ForeignKey(User)
     last_viewed = models.DateTimeField(default=now, blank=True)
+
