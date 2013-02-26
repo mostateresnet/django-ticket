@@ -134,4 +134,10 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Bug Tracking",
     ],
+    zip_safe=False,
+    install_requires=[
+        'South',
+        'django-annoying',
+        'django-extensions',
+    ],
 )
