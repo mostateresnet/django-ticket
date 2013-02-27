@@ -53,15 +53,13 @@ class UserListViewTest(TestCase):
 
 class ProjectNewViewTest(TestCase):
     def test_project_new_responds_200(self):
-        url = '/new_project/'
-        response = self.client.post(url, {'name': 'New Project name', 'slug': 'new-project-slug', 'status': 'AC', 'priority': -1})
+        response = self.client.post(reverse('project_new'), {'name': 'New Project name', 'slug': 'new-project-slug', 'status': 'AC', 'priority': -1})
         project_count = Project.objects.filter(name="New Project name").count()
         self.assertEqual(project_count, 1, "Project did not get inserted successfully")
         self.assertEqual(response.status_code, 200, "ProjectNewView should respond with HTTP 200 OK")
 
     def test_project_new_form_invalid(self):
-        url = '/new_project/'
-        response = self.client.post(url, {'name': 'New Project name', 'status': 'AC', 'priority': -1})
+        response = self.client.post(reverse('project_new'), {'name': 'New Project name', 'status': 'AC', 'priority': -1})
         response_data = json.JSONDecoder().decode(response.content)  # parses json string into a python dict
         self.assertEqual(response_data['status'], 'error', "HttpResponse should return an error for this test case")
         self.assertEqual(response.status_code, 200, "ProjectNewView should respond with HTTP 200 OK")
@@ -76,9 +74,8 @@ class ProjectSortViewTest(TestCase):
         self.project3 = Project.objects.create(name="project3", slug="project3", status="AC", priority=-1)
 
     def test_project_sort_view(self):
-        url = '/project_sort/'
         project_list = [self.project3.pk, self.project2.pk, self.project1.pk]
-        response = self.client.post(url, {'sorted_ids[]': project_list})
+        response = self.client.post(reverse('project_sort'), {'sorted_ids[]': project_list})
         self.project3 = Project.objects.filter(pk=self.project3.pk)[0]
         self.assertEqual(self.project3.priority, 3, "Projects did not sort properly")
         self.assertEqual(response.status_code, 200, "ProjectSortView should respond with HTTP 200 OK")
@@ -138,7 +135,7 @@ class ProjectDetailViewTest(TestCase):
         self.issue7 = self.project3.issue_set.create(title="issue7", creator=self.user2, assigned_to=self.user, status="UA")
         self.commit3 = Commit.objects.create(revision="somesha1sum", issue=self.issue7)
 
-        self.issue7.tags.create(label='test label', color = 'AAAAAA')
+        self.issue7.tags.create(label='test label', color='AAAAAA')
 
     def test_project_detail_view_200(self):
         response = self.client.get(reverse('project_detail', args=(str(self.project1.slug), )))
@@ -212,13 +209,14 @@ class TagUpdateViewTest(TestCase):
             reverse('tag_update_view', args=(self.tag1.pk, )), {'label': 'User Interface', 'color': ""})
         self.assertEqual(response.status_code, 200, "TagUpdateView should respond with HTTP 200 OK")
 
+
 class TagSearchViewTest(TestCase):
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
         self.issue1 = self.project1.issue_set.create(title="issue1", creator=self.user, assigned_to=self.user, status="AS")
-        self.issue1.tags.create(label='label', color = 'AAAAAA')
+        self.issue1.tags.create(label='label', color='AAAAAA')
         self.client.login(username='john', password='johnpassword')
 
     def test_tag_search_responds_200(self):
@@ -275,11 +273,11 @@ class IssueDetailViewTest(TestCase):
         self.assertEqual(response.status_code, 200, "IssueDetailView should respond with HTTP 200 OK")
 
     def test_append_in_self_request_POST(self):
-        form_data = { str(self.issue1.pk) + '-title': 'test', 'new-tags': 'test,AAAAAA'}
+        form_data = {str(self.issue1.pk) + '-title': 'test', 'new-tags': 'test,AAAAAA'}
         response = self.client.post(reverse('issue_detail', args=(str(self.issue1.pk),)), form_data)
         self.assertEqual(response.status_code, 200, "Adding new tags to an existing issue should respond with HTTP 200 OK")
 
-        form_data2 = {'title': 'test', 'new-tags': 'test,AAAAAA' }
+        form_data2 = {'title': 'test', 'new-tags': 'test,AAAAAA'}
         response = self.client.post(reverse('new_issue', args=(str(self.project1.slug), )), form_data2)
         self.assertEqual(response.status_code, 200, "Adding new tags to a new issue should respond with HTTP 200 OK")
 
@@ -481,4 +479,3 @@ class BurndownChartTest(TestCase):
             issue.save()
         data = self.milestone1.calculate_burndown_chart(when=self.milestone1.deadline)
         self.assertEqual(data.get('slope'), 1.0, "slope should be 1/1")
-
