@@ -1,16 +1,15 @@
-
-<div id = "new_project" class = "hidden clear">
-    <form id="new-project" action="/new_project/" method="post">
+<div id="new_project" class="hidden clear">
+    <form id="new-project" action="{% url project_new %}" method="post">
         {% csrf_token %}
         <label>Project </label>
         {{ project_form.name.label_tag }}:{{ project_form.name }}
         {{ project_form.slug.label_tag }}:{{ project_form.slug }}
-        <div style="display:none">
-        {{ project_form.priority.label_tag }}:{{ project_form.priority }}
-        {{ project_form.status.label_tag }}:{{ project_form.status }}
+        <div class="hidden">
+          {{ project_form.priority.label_tag }}:{{ project_form.priority }}
+          {{ project_form.status.label_tag }}:{{ project_form.status }}
         </div>
-        <input id="new_project_cancel_button" class = "right" type="Button" value="Cancel"/>
+        <input id="new_project_cancel_button" class="right" type="Button" value="Cancel"/>
         <input type="submit" value="Create" class="right"/>
     </form>
-    <div id="form_error" style = "display:none"></div>
+    <div id="form_error" class="hidden"></div>
 </div>
