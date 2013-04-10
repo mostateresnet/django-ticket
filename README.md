@@ -13,7 +13,7 @@ Setup
 -----
 *Install requirements:*
 ```sh
-pip install -r https://raw.github.com/mostateresnet/django-ticket/master/pip-reqs.txt
+pip install -r https://raw.github.com/mostateresnet/django-ticket/master/requirements.txt
 ```
 *Make a new django project:*
 ```sh

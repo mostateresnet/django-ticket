@@ -136,8 +136,6 @@ setup(
     ],
     zip_safe=False,
     install_requires=[
-        'South',
         'django-annoying',
-        'django-extensions',
     ],
 )
