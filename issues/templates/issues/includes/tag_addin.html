@@ -1,4 +1,5 @@
-<span id="tag-data-{{ issue.pk }}-{{ tag.label|lower }}" {% if tag %} data-tag-update-url="{% url tag_update_view tag.pk %}" {% endif %} data-pk="{{ tag.pk }}" class="left tag_mod tag tag_{{ tag.pk }}"> 
+{% load url from future %}
+<span id="tag-data-{{ issue.pk }}-{{ tag.label|lower }}" {% if tag %} data-tag-update-url="{% url 'tag_update_view' tag.pk %}" {% endif %} data-pk="{{ tag.pk }}" class="left tag_mod tag tag_{{ tag.pk }}"> 
     {{ tag }} 
     <div class = "tag_remove"></div>
 </span>

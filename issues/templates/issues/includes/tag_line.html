@@ -1,6 +1,6 @@
-<div id = "tag-container-{{ tag.pk }}" class = "tag_line" {% if tag %} data-tag-update-url="{% url tag_update_view tag.pk %}" {% endif %}>
+{% load url from future %}
+<div id = "tag-container-{{ tag.pk }}" class = "tag_line" {% if tag %} data-tag-update-url="{% url 'tag_update_view' tag.pk %}" {% endif %}>
     <div class = "tag_mod tag_{{ tag.pk }}" data-cls="{{ tag.pk }}"></div>&nbsp;
     <label class="tag_label">{{ tag }}</label>
     <input class = "right tag_check" type="checkbox" id="tagchk_{{ tag.pk }}" {% if checked %} checked="" {% endif %}>
 </div>
-

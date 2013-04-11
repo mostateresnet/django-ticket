@@ -1,5 +1,6 @@
 {% extends "issues/base.html" %}
 {% load gravatar %}
+{% load url from future %}
 {% load assigned_css_class %}
 
 {% block title %}User Profile{% endblock %}
@@ -13,8 +14,8 @@
     
     <!-- we need to dry this piece of code out, it is also found in project_list.html and project_detail.html. Ask Shane -->
     <script type="text/javascript">
-        CREATE_TAG_URL   = '{% url tag_create_view %}';
-        SEARCH_TAG_URL   = '{% url tag_search_view %}';
+        CREATE_TAG_URL   = '{% url "tag_create_view" %}';
+        SEARCH_TAG_URL   = '{% url "tag_search_view" %}';
     </script>
     <style>
     {% for tagcss in tags %}
@@ -33,7 +34,7 @@
    
   
     <script>
-        var issue_sort_url = "{% url user_sort_issue_view user_data.pk %}";
+        var issue_sort_url = "{% url 'user_sort_issue_view' user_data.pk %}";
         var current_user = "{{ user.pk }}";
         var current_user_name = "{{ user.get_full_name }}";
         

@@ -1,5 +1,6 @@
+{% load url from future %}
 <div id="new_project" class="hidden clear">
-    <form id="new-project" action="{% url project_new %}" method="post">
+    <form id="new-project" action="{% url 'project_new' %}" method="post">
         {% csrf_token %}
         <label>Project </label>
         {{ project_form.name.label_tag }}:{{ project_form.name }}

@@ -1,5 +1,6 @@
 {% extends "issues/base.html" %}
 {% load gravatar %}
+{% load url from future %}
 {% load assigned_css_class %}
 
 {% block title %}Issues for {{ object }}{% endblock %}
@@ -28,10 +29,10 @@
         var project_slug = "{{ project.slug }}";
         var current_user = "{{ user.pk }}";
         var current_user_name = "{{ user.get_full_name }}";
-        UPDATE_ISSUE_URL  = '{% url project_detail project.slug %}';
-        SORT_ISSUE_URL    = '{% url sort_issue project.slug %}';
-        CREATE_TAG_URL   = '{% url tag_create_view %}';
-        SEARCH_TAG_URL   = '{% url tag_search_view %}';
+        UPDATE_ISSUE_URL  = '{% url "project_detail" project.slug %}';
+        SORT_ISSUE_URL    = '{% url "sort_issue" project.slug %}';
+        CREATE_TAG_URL   = '{% url "tag_create_view" %}';
+        SEARCH_TAG_URL   = '{% url "tag_search_view" %}';
 
         var milestone_dates = new Object();
         milestone_dates[{{project.pk}}] = [
@@ -52,7 +53,7 @@
         {% if project.get_scm_url %}
             <a class="right" href="{{ project.get_scm_url }}" target="_blank">View Source Project</a>
         {% endif %}
-        <h3><span><a href="{% url project_detail project.slug %}">{{ object }}</a></span></h3>
+        <h3><span><a href="{% url 'project_detail' project.slug %}">{{ object }}</a></span></h3>
 
         {% with chart_url=project.current_milestone.get_chart_url %}
           {% if chart_url %}
@@ -90,9 +91,9 @@
                             <span class="assigned-to">
                                 {% if issue.assigned_to %}
                                     {% if issue.assigned_to.get_full_name %}
-                                        <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.get_full_name }}</a>
+                                        <a href="{% url 'user_profile_view' user_id=issue.assigned_to.pk %}">{{ issue.assigned_to.get_full_name }}</a>
                                     {% else %}
-                                        <a href="{% url user_profile_view user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
+                                        <a href="{% url 'user_profile_view' user_id=issue.assigned_to.pk %}">{{ issue.assigned_to }}</a>
                                     {% endif %}
                                   <img src= "{{ issue.assigned_to.email|gravatar }}" width=32 height=32>
                                 {% else %}
