@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mostateresnet/django-ticket.png?branch=master)](https://travis-ci.org/mostateresnet/django-ticket)
+[![Coverage Status](https://coveralls.io/repos/mostateresnet/django-ticket/badge.png?branch=master)](https://coveralls.io/r/mostateresnet/django-ticket)
 django-ticket
 =============
 
