@@ -13,8 +13,8 @@ env:
 
 # command to install dependencies
 install:
-  - pip install . -r requirements-test.txt Django$DJANGO_VERSION
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install -U https://bitbucket.org/andrewgodwin/south/get/tip.zip; fi
+  - pip install -M . -r requirements-test.txt Django$DJANGO_VERSION
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install -M -U https://bitbucket.org/andrewgodwin/south/get/tip.zip; fi
 
 # command to run tests
 script:
@@ -38,6 +38,3 @@ matrix:
 
 notifications:
   email: false
-
-env:
-  - PIP_USE_MIRRORS=true
