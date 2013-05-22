@@ -214,19 +214,19 @@ $(function() {
             }
         });
 
-		//processing for milestone here
-		var milestone_date;
-		if (issue_pk) //if it is an edit
-		{
-			milestone_date = $("#id_"+issue_pk+"-milestone").val();
-			serial_data += "&milestone_date="+milestone_date;
-		}
-		else //if it is a new issue
-		{
+        //processing for milestone here
+        var milestone_date;
+        if (issue_pk) //if it is an edit
+        {
+            milestone_date = $("#id_"+issue_pk+"-milestone").val();
+            serial_data += "&milestone_date="+milestone_date;
+        }
+        else //if it is a new issue
+        {
             milestone_date = $("#id_milestone").val();
-			serial_data += "&milestone_date="+milestone_date
-		}
-		                  
+            serial_data += "&milestone_date="+milestone_date
+        }
+                          
         serial_data += append_str;
         $.post($this.attr('action'), serial_data, function(data)
         {
@@ -363,12 +363,12 @@ $(function() {
     
     
     var date = new Date();
-	
-	//initializes all datepickers
-	$( ".milestone-datepicker").datepicker({
-		dateFormat: 'yy-mm-dd',
+    
+    //initializes all datepickers
+    $( ".milestone-datepicker").datepicker({
+        dateFormat: 'yy-mm-dd',
         minDate: '0',
-		beforeShowDay: function(date) {
+        beforeShowDay: function(date) {
             var project_id = $(this).attr('data-project-pk');
             var m = ('0' + (date.getMonth()+1)).slice(-2);
             var d = date.getDate(), y = date.getFullYear();
@@ -378,16 +378,16 @@ $(function() {
             {
                 d="0"+d            
             }
-			for (i = 0; i < milestone_dates[project_id].length; i++) {
-				if($.inArray(y + '-' + m + '-' + d,milestone_dates[project_id]) != -1) {
-					//return [false];
-					return [true, 'ui-state-active', ''];
-				}
-			}
-			return [true];
+            for (i = 0; i < milestone_dates[project_id].length; i++) {
+                if($.inArray(y + '-' + m + '-' + d,milestone_dates[project_id]) != -1) {
+                    //return [false];
+                    return [true, 'ui-state-active', ''];
+                }
+            }
+            return [true];
 
-		}
-	});
+        }
+    });
     
     $(".tag").click(function(e)
     {            
@@ -437,7 +437,7 @@ $(function() {
     $('.tag_field').keydown(function(e) 
     {
 //        alert("");
-        var tag_name = $(this).val().toLowerCase()
+        var tag_name = $(this).val()
         var issue_pk = $(this).attr('data-pk');
         // We need to ignore a few characters that will break the html....
 
@@ -445,7 +445,7 @@ $(function() {
         {
             // Check to see if a tag with this name already exists
             // if so, use its pk, if not, create it, and use that pk
-            var used_tag = ($("#tag-data-" + issue_pk + "-" + tag_name).length > 0);
+            var used_tag = ($("#tag-data-" + issue_pk + "-" + tag_name.toLowerCase()).length > 0);
             if (!used_tag) 
             { $(this).val(''); }
 
