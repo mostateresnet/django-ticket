@@ -15,7 +15,7 @@
 
         <div class = "right new_issue_right">
             <p>{{ issue_form.assigned_to.label_tag }}:{{ issue_form.assigned_to }}</p>
-            <p>{{ issue_form.milestone.label_tag }}:<input type="text" name="milestone" id="id_milestone" class="milestone-datepicker" /></p> 
+            <p>{{ issue_form.milestone.label_tag }}:<input type="text" name="milestone" id="id_milestone" class="milestone-datepicker" data-project-pk="{{ project.pk }}"/></p> 
             <p>{{ issue_form.days_estimate.label_tag }}:{{ issue_form.days_estimate }}</p>      
         </div>
         <div class = "clear" >
