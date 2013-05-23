@@ -112,6 +112,10 @@ $(function() {
                     else{
                       $( '#issue-nr-'+issue_id ).remove();
                     }
+                if ($('.needs-review').length==0)
+                {
+                    $('.needs-review-issues').remove()
+                }
                 },
                 error: function () { alert("ERROR: There has been an error in your post request."); },
             });
