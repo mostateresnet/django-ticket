@@ -73,17 +73,19 @@ $(function() {
             var issue_id=n[0];
             UPDATE_ISSUE_URL = $("#issue-details-" + issue_id).attr('data-issue-url');
 
-           if (postNote('REJECTED: ', issue_id))
-           {
-            $.ajax({
-                url: UPDATE_ISSUE_URL,
-                type: "post",
-                data: "status=AS",
-                error: function () { alert("ERROR: There has been an error in your post request."); },
-            });
-
-            window.location.reload(true);
-           }
+            if (postNote('REJECTED: ', issue_id))
+            {
+                $.ajax({
+                    url: UPDATE_ISSUE_URL,
+                    type: "post",
+                    data: "status=AS",
+                    error: function () { alert("ERROR: There has been an error in your post request."); },
+                    success: function ()
+                        {
+                            window.location.reload(true);
+                        }
+                });
+            }
 
     });
 
