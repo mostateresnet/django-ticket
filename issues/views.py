@@ -22,6 +22,7 @@ from django import http
 
 
 class JSONResponseMixin(object):
+
     def render_to_response(self, context):
         return self.get_json_response(self.convert_context_to_json(context))
 
@@ -72,6 +73,7 @@ class ProjectNewView(CreateView):
 
 
 class ProjectSortView(UpdateView):
+
     @transaction.commit_on_success
     def post(self, *args, **kwargs):
         sorted_ids = self.request.POST.getlist('sorted_ids[]')
@@ -85,6 +87,7 @@ class ProjectSortView(UpdateView):
 
 
 class UserSortIssueView(UpdateView):
+
     @transaction.commit_on_success
     def post(self, *args, **kwargs):
         sorted_ids = self.request.POST.getlist('sorted_ids[]')
@@ -193,7 +196,7 @@ class IssueDetailView(UpdateView):
 
         response = super(IssueDetailView, self).post(*args, **kwargs)
 
-        if 'viewed' in self.request.POST:
+        if 'viewed' in self.request.POST and self.request.user.is_authenticated():
             IssueViewed.objects.filter(user=self.request.user, issue=self.object).delete()
             IssueViewed(user=self.request.user, issue=self.object).save()
 
