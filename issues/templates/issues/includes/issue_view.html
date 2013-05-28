@@ -2,7 +2,7 @@
 {% load assigned_css_class %}
 <div class="hidden clear details_drop" id="issue-details-{{ issue.pk }}" data-note-url="{% url 'note_create_view' issue.pk %}" data-commit-url="{% url 'commit_create_view' issue.pk %}" data-issue-url="{% url 'issue_detail' issue.pk %}"> 
 
-<div class="buttons right">
+<span class="buttons right">
     <button id="add-commit-{{ issue.pk }}" class="issue-button issue_add_commit">Add Commit</button>  
     <button id="add-note-{{ issue.pk }}" class="issue-button issue_add_note">Add Note</button> 
 
@@ -18,9 +18,9 @@
     {% if issue.status != 'DL' and issue.status != 'CP' and issue.status != 'NR' %}
         <button class ="issue-button issue_edit" href="">Edit</button>    
     {% endif %}
-</div>
+</span>
 
-<div class="created-info">
+<span class="created-info">
     <p class ="left issue_status issue_creator">Created by: <span class="emphasis">{{ issue.creator.get_full_name }}</span></p> 
     {% if issue.milestone %}
         <p class ="left issue_status issue_dates">Milestone: <span class="emphasis">{{ issue.milestone }}</span></p>
@@ -28,7 +28,7 @@
     {% if issue.days_estimate %}
         <p class ="left issue_status issue_dates">Days Estimate: <span class="emphasis">{{ issue.days_estimate }}</span></p>
     {% endif %}
-</div>
+</span>
 
 {% with commits=issue.commit_set.all notes=issue.get_notes %}
 
