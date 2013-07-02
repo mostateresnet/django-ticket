@@ -14,6 +14,7 @@ from issues.models import Project, Issue, Tag, Note, Commit, Milestone, IssueVie
 
 
 class ProjectListViewTest(TestCase):
+
     def setUp(self):
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
@@ -35,6 +36,7 @@ class ProjectListViewTest(TestCase):
 
 
 class UserListViewTest(TestCase):
+
     def setUp(self):
         self.user1 = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
@@ -52,6 +54,7 @@ class UserListViewTest(TestCase):
 
 
 class ProjectNewViewTest(TestCase):
+
     def test_project_new_responds_200(self):
         response = self.client.post(reverse('project_new'), {'name': 'New Project name', 'slug': 'new-project-slug', 'status': 'AC', 'priority': -1})
         project_count = Project.objects.filter(name="New Project name").count()
@@ -66,6 +69,7 @@ class ProjectNewViewTest(TestCase):
 
 
 class ProjectSortViewTest(TestCase):
+
     def setUp(self):
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
 
@@ -82,6 +86,7 @@ class ProjectSortViewTest(TestCase):
 
 
 class UserSortViewTest(TestCase):
+
     def setUp(self):
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
 
@@ -101,6 +106,7 @@ class UserSortViewTest(TestCase):
 
 
 class ProjectDetailViewTest(TestCase):
+
     def setUp(self):
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.user2 = User.objects.create_user('jake', 'jakelennon@thebeatles.com', 'jakepassword')
@@ -184,6 +190,7 @@ class ProjectDetailViewTest(TestCase):
 
 
 class TagCreateViewTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
 
@@ -195,6 +202,7 @@ class TagCreateViewTest(TestCase):
 
 
 class TagUpdateViewTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.tag1 = Tag.objects.create(label="test label", color="AAAAAA")
@@ -211,6 +219,7 @@ class TagUpdateViewTest(TestCase):
 
 
 class TagSearchViewTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
@@ -231,6 +240,7 @@ class TagSearchViewTest(TestCase):
 
 
 class IssueDetailViewTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
@@ -309,6 +319,7 @@ class IssueDetailViewTest(TestCase):
 
 
 class CommitCreateViewTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
@@ -335,6 +346,7 @@ class CommitCreateViewTest(TestCase):
 
 
 class NoteCreateViewTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
@@ -358,6 +370,7 @@ class NoteCreateViewTest(TestCase):
 
 
 class SortIssuesTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
@@ -381,6 +394,7 @@ class SortIssuesTest(TestCase):
 
 
 class NewIssueTest(TestCase):
+
     def setUp(self):
         self.project1 = Project.objects.create(name="project1", slug="project1", status="AC", priority=-1)
         self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
@@ -432,6 +446,7 @@ class NewIssueTest(TestCase):
 
 @override_settings(USE_TZ=False)
 class BurndownChartTest(TestCase):
+
     def setUp(self):
         self.ancient_past = datetime.datetime(1985, 11, 5)
         self.one_day = datetime.timedelta(days=1)

@@ -202,6 +202,7 @@ class Commit(models.Model):
 
 
 class UserMethods(User):
+
     def assigned_issues(self):
         return self.issue_set.filter(status='AS').order_by('-user_priority')
 
